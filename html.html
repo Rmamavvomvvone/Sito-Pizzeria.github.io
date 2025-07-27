@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Menu Pizze Personalizzabili</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #e3e9f7 100%);
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+            padding-bottom: 100px;
+        }
+        .category-header {
+            position: sticky;
+            top: 0;
+            background: rgba(255,255,255,0.95);
+            z-index: 1000;
+            padding: 18px 0 10px;
+            box-shadow: 0 4px 18px rgba(13,110,253,0.08);
+            border-bottom: 1px solid #e3e9f7;
+            backdrop-filter: blur(4px);
+        }
+        .category-tabs {
+            display: flex;
+            overflow-x: auto;
+            gap: 14px;
+            padding-bottom: 5px;
+        }
+        .category-tab {
+            white-space: nowrap;
+            padding: 10px 28px;
+            border-radius: 24px;
+            background: linear-gradient(90deg, #f8f9fa 60%, #e3e9f7 100%);
+            cursor: pointer;
+            transition: all 0.25s;
+            border: 1.5px solid #dee2e6;
+            font-weight: 600;
+            font-size: 1.08rem;
+            box-shadow: 0 2px 8px rgba(13,110,253,0.04);
+            letter-spacing: 0.5px;
+        }
+        .category-tab:hover {
+            background: linear-gradient(90deg, #e9ecef 60%, #dbe6fa 100%);
+            border-color: #0d6efd;
+            color: #0d6efd;
+            box-shadow: 0 4px 12px rgba(13,110,253,0.08);
+        }
+        .category-tab.active {
+            background: linear-gradient(90deg, #0d6efd 60%, #3b82f6 100%);
+            color: #fff;
+            border-color: #0d6efd;
+            box-shadow: 0 6px 18px rgba(13,110,253,0.15);
+        }
+        .category-title {
+            font-size: 2.1rem;
+            margin: 38px 0 18px;
+            color: #1a237e;
+            position: relative;
+            padding-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .category-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #0d6efd 60%, #3b82f6 100%);
+            border-radius: 2px;
+        }
+        .pizza-card {
+            border: none;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(13,110,253,0.07);
+            transition: transform 0.25s, box-shadow 0.25s;
+            height: 100%;
+            margin-bottom: 22px;
+            cursor: pointer;
+            background: linear-gradient(120deg, #fff 80%, #e3e9f7 100%);
+        }
+        .pizza-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 16px 40px rgba(13,110,253,0.13);
+            border: 1.5px solid #0d6efd;
+        }
+        .cart-badge {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1050;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0d6efd 0%, #3b82f6 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(13,110,253,0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .cart-badge:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 24px rgba(13,110,253,0.4);
+        }
+        .cart-badge .badge-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff1744;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        .offcanvas-cart {
+            width: 420px;
+            background: linear-gradient(120deg, #fff 80%, #e3e9f7 100%);
+        }
+        .pizza-modal-img {
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        .cart-item {
+            border-bottom: 1.5px dashed #e3e9f7;
+            padding: 14px 0;
+            background: linear-gradient(90deg, #f8f9fa 80%, #e3e9f7 100%);
+            border-radius: 8px;
+            margin-bottom: 4px;
+        }
+        .btn-primary, .btn-success {
+            border-radius: 24px;
+            padding: 10px 28px;
+            font-size: 1.08rem;
+        }
+        .btn-outline-danger {
+            border-radius: 50%;
+            padding: 0.3em 0.6em;
+        }
+        .order-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #e3e9f7;
+        }
+        .coperto-info {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 4px solid #0d6efd;
+        }
+        .coperto-price {
+            font-weight: bold;
+            color: #dc3545;
+        }
+        .total-with-coperto {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #0d6efd;
+        }
+        .ingredient-list {
+            margin-top: 15px;
+        }
+        .ingredient-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .ingredient-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ingredient-price {
+            color: #28a745;
+            font-weight: bold;
+            min-width: 50px;
+            text-align: right;
+        }
+        .modified-ingredient {
+            background-color: #fff3cd;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+        .removed-ingredient {
+            text-decoration: line-through;
+            color: #dc3545;
+        }
+        .added-ingredient {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .add-ingredients-btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .additions-modal .modal-body {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        .addition-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .addition-item:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <!-- Carrello fisso -->
+    <div class="cart-badge" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart">
+        <i class="bi bi-cart3"></i>
+        <span class="badge-count" id="cartCounter">0</span>
+    </div>
+
+    <!-- Offcanvas Carrello -->
+    <div class="offcanvas offcanvas-end offcanvas-cart" tabindex="-1" id="offcanvasCart">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">Il tuo ordine</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="order-info">
+                <div class="mb-3">
+                    <label for="orderName" class="form-label">Nome ordinazione*</label>
+                    <input type="text" class="form-control" id="orderName" placeholder="Es: Tavolo 5" required>
+                </div>
+                <div class="mb-3">
+                    <label for="waiterNumber" class="form-label">Numero cameriere*</label>
+                    <input type="number" class="form-control" id="waiterNumber" placeholder="Es: 12" required>
+                </div>
+            </div>
+            
+            <div id="cartItems"></div>
+            
+            <div class="mt-3 pt-3 border-top">
+                <h5>Totale pizze: <span id="cartTotal">0.00</span>€</h5>
+                <div class="coperto-info">
+                    Coperto: <span id="copertoCount">0</span> pizze × 2.00€ = <span class="coperto-price" id="copertoTotal">0.00</span>€
+                </div>
+                <h5 class="total-with-coperto mt-2">Totale con coperto: <span id="totalWithCoperto">0.00</span>€</h5>
+                <button class="btn btn-success w-100 mt-3" id="checkoutBtn" disabled>Conferma ordine</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Pizza -->
+    <div class="modal fade" id="pizzaModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pizzaModalTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="" id="pizzaModalImage" class="img-fluid pizza-modal-img mb-3" alt="Pizza">
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Ingredienti base:</h6>
+                            <p id="pizzaModalBaseIngredients"></p>
+                            
+                            <div class="mt-3">
+                                <label for="pizzaQuantity" class="form-label">Quantità:</label>
+                                <input type="number" min="1" value="1" class="form-control" id="pizzaQuantity">
+                            </div>
+                            
+                            <div class="ingredient-list" id="ingredientList">
+                                <!-- Lista ingredienti modificabili -->
+                            </div>
+                            
+                            <button class="btn btn-outline-primary add-ingredients-btn" id="showAdditionsBtn">
+                                <i class="bi bi-plus-circle"></i> Aggiungi ingredienti
+                            </button>
+                            
+                            <h5 class="mt-3">Prezzo base: <span id="pizzaModalBasePrice">0.00</span>€</h5>
+                            <h5>Extra: <span id="pizzaModalExtraPrice">0.00</span>€</h5>
+                            <h4 class="text-primary">Totale: <span id="pizzaModalTotalPrice">0.00</span>€</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                    <button type="button" class="btn btn-primary" id="addToCartBtn">Aggiungi al carrello</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Aggiunte -->
+    <div class="modal fade additions-modal" id="additionsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Aggiungi ingredienti</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="additionsList">
+                    <!-- Lista ingredienti disponibili -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                    <button type="button" class="btn btn-primary" id="confirmAdditionsBtn">Conferma</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container principale -->
+    <div class="container py-4">
+        <header class="text-center mb-5">
+            <h1 class="display-4 fw-bold">🍕 Menu Pizze</h1>
+            <p class="lead text-muted">Personalizza la tua pizza preferita</p>
+        </header>
+
+        <div class="category-header">
+            <div class="category-tabs" id="categoryFilters"></div>
+        </div>
+
+        <div id="pizzaSections"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Stato globale
+        let currentPizza = null;
+        let cart = [];
+        let allIngredients = [];
+        let currentModifications = {
+            removed: [],
+            added: []
+        };
+        let selectedAdditions = [];
+
+        // Elementi DOM
+        const cartCounter = document.getElementById('cartCounter');
+        const cartItemsEl = document.getElementById('cartItems');
+        const cartTotalEl = document.getElementById('cartTotal');
+        const copertoCountEl = document.getElementById('copertoCount');
+        const copertoTotalEl = document.getElementById('copertoTotal');
+        const totalWithCopertoEl = document.getElementById('totalWithCoperto');
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const orderNameInput = document.getElementById('orderName');
+        const waiterNumberInput = document.getElementById('waiterNumber');
+        const ingredientListEl = document.getElementById('ingredientList');
+        const showAdditionsBtn = document.getElementById('showAdditionsBtn');
+        const additionsListEl = document.getElementById('additionsList');
+        const confirmAdditionsBtn = document.getElementById('confirmAdditionsBtn');
+
+        // Dati ingredienti con prezzi (puoi caricarli da CSV se preferisci)
+        const ingredientPrices = {
+            "mozzarella": 1.00,
+            "prosciutto": 1.50,
+            "funghi": 0.80,
+            "olive": 0.50,
+            "peperoni": 0.80,
+            "cipolla": 0.50,
+            "salsiccia": 1.50,
+            "rucola": 0.70,
+            "grana": 1.00,
+            "wurstel": 1.20,
+            "patatine": 0.60,
+            "mais": 0.50
+        };
+
+        // Controlla i campi obbligatori
+        function checkOrderFields() {
+            const hasItems = cart.length > 0;
+            const hasName = orderNameInput.value.trim() !== '';
+            const hasWaiterNumber = waiterNumberInput.value.trim() !== '';
+            checkoutBtn.disabled = !(hasItems && hasName && hasWaiterNumber);
+        }
+
+        // Event listeners per i campi obbligatori
+        orderNameInput.addEventListener('input', checkOrderFields);
+        waiterNumberInput.addEventListener('input', checkOrderFields);
+
+        // Funzione per convertire CSV in array di oggetti
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n').filter(line => line.trim() !== '');
+            const headers = lines[0].split(';').map(h => h.trim().toLowerCase());
+            
+            return lines.slice(1).map(line => {
+                const values = line.split(';');
+                return headers.reduce((obj, header, index) => {
+                    obj[header] = values[index]?.trim() || '';
+                    return obj;
+                }, {});
+            });
+        }
+
+        // Funzione per generare il menu da CSV
+        async function loadMenuFromCSV() {
+            try {
+                // Percorso del file CSV (deve essere nella stessa directory)
+                const response = await fetch('menu_pizze.csv');
+                if (!response.ok) throw new Error("Errore nel caricamento del CSV");
+                const csvText = await response.text();
+                
+                // Converti CSV in array di oggetti
+                const menuItems = parseCSV(csvText);
+                
+                // Estrai tutte le categorie uniche
+                const categories = [...new Set(menuItems.map(item => item.categoria))];
+                
+                // Estrai tutti gli ingredienti unici per il menu a tendina
+                allIngredients = Object.keys(ingredientPrices);
+                
+                // Genera i filtri e le sezioni
+                renderCategoryFilters(categories);
+                renderPizzaSections(menuItems, categories);
+                
+            } catch (error) {
+                console.error("Errore:", error);
+                document.getElementById('pizzaSections').innerHTML = `
+                    <div class="alert alert-danger">
+                        Errore nel caricamento del menu. Verifica che:
+                        <ul>
+                            <li>Il file menu_pizze.csv esista</li>
+                            <li>Il formato del CSV sia corretto</li>
+                            <li>La struttura contenga le colonne: nome, prezzo, ingredienti, categoria</li>
+                        </ul>
+                        Dettaglio errore: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Genera i filtri delle categorie
+        function renderCategoryFilters(categories) {
+            const filtersContainer = document.getElementById('categoryFilters');
+            
+            // Filtro "Tutte"
+            const allFilter = document.createElement('div');
+            allFilter.className = 'category-tab active';
+            allFilter.textContent = 'Tutte';
+            allFilter.onclick = () => showAllCategories();
+            filtersContainer.appendChild(allFilter);
+            
+            // Filtri per categoria
+            categories.forEach(category => {
+                const filter = document.createElement('div');
+                filter.className = 'category-tab';
+                filter.textContent = category;
+                filter.onclick = () => filterByCategory(category);
+                filtersContainer.appendChild(filter);
+            });
+        }
+
+        // Genera le sezioni delle pizze
+        function renderPizzaSections(menuItems, categories) {
+            const sectionsContainer = document.getElementById('pizzaSections');
+            sectionsContainer.innerHTML = '';
+            
+            categories.forEach(category => {
+                const categoryPizzas = menuItems.filter(item => item.categoria === category);
+                
+                if (categoryPizzas.length > 0) {
+                    const section = document.createElement('section');
+                    section.className = 'category-section';
+                    section.id = `cat-${category.replace(/\s+/g, '-')}`;
+                    
+                    const title = document.createElement('h2');
+                    title.className = 'category-title';
+                    title.textContent = category;
+                    section.appendChild(title);
+                    
+                    const row = document.createElement('div');
+                    row.className = 'row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4';
+                    
+                    categoryPizzas.forEach(pizza => {
+                        const col = document.createElement('div');
+                        col.className = 'col';
+                        
+                        col.innerHTML = `
+                            <div class="card pizza-card h-100">
+                                <div class="card-body">
+                                    <h3 class="h5 card-title">${pizza.nome}</h3>
+                                    <div class="text-danger fw-bold mb-2">${parseFloat(pizza.prezzo).toFixed(2)}€</div>
+                                    <p class="card-text text-muted">
+                                        ${pizza.ingredienti.split(',').slice(0, 3).join(', ')}${pizza.ingredienti.split(',').length > 3 ? '...' : ''}
+                                    </p>
+                                </div>
+                            </div>
+                        `;
+                        
+                        col.querySelector('.pizza-card').addEventListener('click', () => showPizzaDetails(pizza));
+                        row.appendChild(col);
+                    });
+                    
+                    section.appendChild(row);
+                    sectionsContainer.appendChild(section);
+                }
+            });
+        }
+
+        // Mostra dettagli pizza e gestione ingredienti
+        function showPizzaDetails(pizza) {
+            currentPizza = pizza;
+            currentModifications = { removed: [], added: [] };
+            selectedAdditions = [];
+            
+            document.getElementById('pizzaModalTitle').textContent = pizza.nome;
+            document.getElementById('pizzaModalBaseIngredients').textContent = pizza.ingredienti;
+            document.getElementById('pizzaModalBasePrice').textContent = parseFloat(pizza.prezzo).toFixed(2);
+            document.getElementById('pizzaModalExtraPrice').textContent = '0.00';
+            document.getElementById('pizzaModalTotalPrice').textContent = parseFloat(pizza.prezzo).toFixed(2);
+            document.getElementById('pizzaQuantity').value = 1;
+            
+            // Imposta immagine se presente nel CSV
+            const imgEl = document.getElementById('pizzaModalImage');
+            if (pizza.immagine) {
+                imgEl.src = pizza.immagine;
+                imgEl.style.display = 'block';
+            } else {
+                imgEl.style.display = 'none';
+            }
+            
+            // Prepara la lista degli ingredienti modificabili
+            renderIngredientList(pizza);
+            
+            new bootstrap.Modal(document.getElementById('pizzaModal')).show();
+        }
+
+        // Renderizza la lista degli ingredienti modificabili
+        function renderIngredientList(pizza) {
+            ingredientListEl.innerHTML = '';
+            
+            // Aggiungi titolo sezione
+            const title = document.createElement('h6');
+            title.className = 'mt-3';
+            title.textContent = 'Personalizza ingredienti:';
+            ingredientListEl.appendChild(title);
+            
+            // Ingredienti base della pizza
+            const baseIngredients = pizza.ingredienti.split(',').map(i => i.trim());
+            
+            // Per ogni ingrediente base, crea un elemento con pulsante rimozione
+            baseIngredients.forEach(ingredient => {
+                const ingredientItem = document.createElement('div');
+                ingredientItem.className = 'ingredient-item';
+                
+                const isRemoved = currentModifications.removed.includes(ingredient);
+                
+                ingredientItem.innerHTML = `
+                    <span class="${isRemoved ? 'removed-ingredient' : ''}">${ingredient}</span>
+                    <div class="ingredient-actions">
+                        <button class="btn btn-sm ${isRemoved ? 'btn-success' : 'btn-outline-danger'} toggle-ingredient" data-ingredient="${ingredient}" data-action="${isRemoved ? 'add' : 'remove'}">
+                            ${isRemoved ? 'Aggiungi' : 'Rimuovi'}
+                        </button>
+                    </div>
+                `;
+                
+                ingredientListEl.appendChild(ingredientItem);
+            });
+            
+            // Mostra ingredienti aggiunti se presenti
+            if (currentModifications.added.length > 0) {
+                const addedTitle = document.createElement('h6');
+                addedTitle.className = 'mt-3';
+                addedTitle.textContent = 'Ingredienti aggiunti:';
+                ingredientListEl.appendChild(addedTitle);
+                
+                currentModifications.added.forEach(added => {
+                    const addedItem = document.createElement('div');
+                    addedItem.className = 'ingredient-item added-ingredient';
+                    
+                    addedItem.innerHTML = `
+                        <span>${added.ingredient} (+${added.price.toFixed(2)}€)</span>
+                        <div class="ingredient-actions">
+                            <button class="btn btn-sm btn-outline-danger remove-added" data-ingredient="${added.ingredient}">
+                                Rimuovi
+                            </button>
+                        </div>
+                    `;
+                    
+                    ingredientListEl.appendChild(addedItem);
+                });
+            }
+            
+            // Aggiungi event listeners
+            document.querySelectorAll('.toggle-ingredient').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const ingredient = this.getAttribute('data-ingredient');
+                    const action = this.getAttribute('data-action');
+                    
+                    if (action === 'remove') {
+                        removeIngredient(ingredient);
+                    } else {
+                        addBaseIngredient(ingredient);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.remove-added').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const ingredient = this.getAttribute('data-ingredient');
+                    removeAddedIngredient(ingredient);
+                });
+            });
+            
+            // Aggiorna il pulsante per mostrare le aggiunte
+            showAdditionsBtn.onclick = () => showAdditionsModal(pizza);
+        }
+
+        // Mostra il modal per aggiungere ingredienti
+        function showAdditionsModal(pizza) {
+            additionsListEl.innerHTML = '';
+            selectedAdditions = [...currentModifications.added];
+            
+            // Filtra gli ingredienti già presenti nella pizza o già aggiunti
+            const baseIngredients = pizza.ingredienti.split(',').map(i => i.trim());
+            const availableIngredients = allIngredients.filter(ing => 
+                !baseIngredients.includes(ing)
+            );
+            
+            availableIngredients.forEach(ingredient => {
+                const price = ingredientPrices[ingredient] || 0;
+                const isSelected = selectedAdditions.some(a => a.ingredient === ingredient);
+                
+                const item = document.createElement('div');
+                item.className = 'addition-item';
+                
+                item.innerHTML = `
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" 
+                               id="add-${ingredient}" 
+                               value="${ingredient}" 
+                               ${isSelected ? 'checked' : ''}
+                               data-price="${price}">
+                        <label class="form-check-label" for="add-${ingredient}">
+                            ${ingredient} (+${price.toFixed(2)}€)
+                        </label>
+                    </div>
+                `;
+                
+                additionsListEl.appendChild(item);
+            });
+            
+            // Aggiungi event listener per i checkbox
+            additionsListEl.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const ingredient = this.value;
+                    const price = parseFloat(this.getAttribute('data-price'));
+                    
+                    if (this.checked) {
+                        selectedAdditions.push({ ingredient, price });
+                    } else {
+                        selectedAdditions = selectedAdditions.filter(a => a.ingredient !== ingredient);
+                    }
+                });
+            });
+            
+            // Mostra il modal
+            new bootstrap.Modal(document.getElementById('additionsModal')).show();
+        }
+
+        // Rimuovi ingrediente base
+        function removeIngredient(ingredient) {
+            if (!currentModifications.removed.includes(ingredient)) {
+                currentModifications.removed.push(ingredient);
+                updatePizzaPrice();
+                renderIngredientList(currentPizza);
+            }
+        }
+
+        // Aggiungi ingrediente base (precedentemente rimosso)
+        function addBaseIngredient(ingredient) {
+            currentModifications.removed = currentModifications.removed.filter(i => i !== ingredient);
+            updatePizzaPrice();
+            renderIngredientList(currentPizza);
+        }
+
+        // Conferma aggiunte selezionate
+        confirmAdditionsBtn.onclick = () => {
+            currentModifications.added = [...selectedAdditions];
+            updatePizzaPrice();
+            renderIngredientList(currentPizza);
+            bootstrap.Modal.getInstance(document.getElementById('additionsModal')).hide();
+        };
+
+        // Rimuovi ingrediente aggiunto
+        function removeAddedIngredient(ingredient) {
+            currentModifications.added = currentModifications.added.filter(i => i.ingredient !== ingredient);
+            updatePizzaPrice();
+            renderIngredientList(currentPizza);
+        }
+
+        // Aggiorna prezzo totale nel modal
+        function updatePizzaPrice() {
+            const basePrice = parseFloat(currentPizza.prezzo);
+            let extraPrice = 0;
+            
+            // Calcola costo ingredienti aggiunti
+            currentModifications.added.forEach(ing => {
+                extraPrice += ing.price;
+            });
+            
+            document.getElementById('pizzaModalExtraPrice').textContent = extraPrice.toFixed(2);
+            document.getElementById('pizzaModalTotalPrice').textContent = (basePrice + extraPrice).toFixed(2);
+        }
+
+        // Aggiungi al carrello
+        function addToCart() {
+            const quantity = parseInt(document.getElementById('pizzaQuantity').value) || 1;
+            const basePrice = parseFloat(currentPizza.prezzo);
+            let extraPrice = 0;
+            
+            // Calcola costo ingredienti aggiunti
+            currentModifications.added.forEach(ing => {
+                extraPrice += ing.price;
+            });
+            
+            const totalPrice = basePrice + extraPrice;
+            
+            const existingItemIndex = cart.findIndex(item => 
+                item.id === currentPizza.id && 
+                JSON.stringify(item.removed) === JSON.stringify(currentModifications.removed) &&
+                JSON.stringify(item.added) === JSON.stringify(currentModifications.added)
+            );
+            
+            if (existingItemIndex >= 0) {
+                // Pizza con le stesse modifiche già nel carrello, aumenta quantità
+                cart[existingItemIndex].quantity += quantity;
+                cart[existingItemIndex].total = cart[existingItemIndex].quantity * totalPrice;
+            } else {
+                // Nuova pizza nel carrello
+                cart.push({
+                    id: currentPizza.id,
+                    name: currentPizza.nome,
+                    basePrice: basePrice,
+                    extraPrice: extraPrice,
+                    quantity: quantity,
+                    total: totalPrice * quantity,
+                    baseIngredients: currentPizza.ingredienti,
+                    removed: [...currentModifications.removed],
+                    added: [...currentModifications.added]
+                });
+            }
+            
+            updateCartUI();
+            bootstrap.Modal.getInstance(document.getElementById('pizzaModal')).hide();
+            alert(`${quantity}x ${currentPizza.nome} personalizzata aggiunta al carrello!`);
+        }
+
+        // Aggiorna UI carrello
+        function updateCartUI() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCounter.textContent = totalItems;
+            cartItemsEl.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItemsEl.innerHTML = '<div class="text-center text-muted py-4"><i class="bi bi-cart-x" style="font-size: 2rem;"></i><p class="mt-2">Il tuo carrello è vuoto</p></div>';
+                cartTotalEl.textContent = '0.00';
+                copertoCountEl.textContent = '0';
+                copertoTotalEl.textContent = '0.00';
+                totalWithCopertoEl.textContent = '0.00';
+                checkOrderFields();
+                return;
+            }
+            
+            let grandTotal = 0;
+            let totalPizzas = 0;
+            
+            cart.forEach((item, index) => {
+                grandTotal += item.total;
+                totalPizzas += item.quantity;
+                
+                const itemEl = document.createElement('div');
+                itemEl.className = 'cart-item';
+                
+                // Mostra modifiche agli ingredienti
+                let modificationsHtml = '';
+                if (item.removed.length > 0 || item.added.length > 0) {
+                    modificationsHtml = '<div class="mt-2"><small class="text-muted">';
+                    
+                    if (item.removed.length > 0) {
+                        modificationsHtml += `<span class="text-danger">Rimossi: ${item.removed.join(', ')}</span>`;
+                    }
+                    
+                    if (item.added.length > 0) {
+                        if (item.removed.length > 0) modificationsHtml += '<br>';
+                        modificationsHtml += `<span class="text-success">Aggiunti: ${item.added.map(a => a.ingredient).join(', ')}</span>`;
+                    }
+                    
+                    modificationsHtml += '</small></div>';
+                }
+                
+                itemEl.innerHTML = `
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="mb-1">${item.name}</h6>
+                            <small class="text-muted">${item.quantity}x ${(item.basePrice + item.extraPrice).toFixed(2)}€</small>
+                            ${modificationsHtml}
+                        </div>
+                        <div class="text-end">
+                            <strong>${item.total.toFixed(2)}€</strong>
+                            <button class="btn btn-sm btn-outline-danger ms-2 remove-item" data-index="${index}">✕</button>
+                        </div>
+                    </div>
+                `;
+                cartItemsEl.appendChild(itemEl);
+            });
+            
+            // Calcola coperto (2€ per pizza)
+            const coperto = 2 * totalPizzas;
+            const totalWithCoperto = grandTotal + coperto;
+            
+            cartTotalEl.textContent = grandTotal.toFixed(2);
+            copertoCountEl.textContent = totalPizzas;
+            copertoTotalEl.textContent = coperto.toFixed(2);
+            totalWithCopertoEl.textContent = totalWithCoperto.toFixed(2);
+            
+            document.querySelectorAll('.remove-item').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    cart.splice(parseInt(this.getAttribute('data-index')), 1);
+                    updateCartUI();
+                });
+            });
+            
+            checkOrderFields();
+        }
+
+        // Conferma ordine
+        function checkout() {
+            const orderName = orderNameInput.value.trim();
+            const waiterNumber = waiterNumberInput.value.trim();
+            
+            if (!orderName || !waiterNumber) {
+                alert('Compila tutti i campi obbligatori!');
+                return;
+            }
+            
+            if (cart.length === 0) {
+                alert('Il carrello è vuoto!');
+                return;
+            }
+            
+            const totalPizzas = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const subtotal = cart.reduce((sum, item) => sum + item.total, 0);
+            const coperto = 2 * totalPizzas;
+            const totalWithCoperto = subtotal + coperto;
+            
+            let summary = `ORDINE PER: ${orderName}\n`;
+            summary += `CAMERIERE: ${waiterNumber}\n\n`;
+            summary += "RIEPILOGO ORDINE:\n\n";
+            
+            cart.forEach(item => {
+                summary += `${item.quantity}x ${item.name} - ${(item.basePrice + item.extraPrice).toFixed(2)}€\n`;
+                
+                if (item.removed.length > 0) {
+                    summary += `  Rimossi: ${item.removed.join(', ')}\n`;
+                }
+                
+                if (item.added.length > 0) {
+                    summary += `  Aggiunti: ${item.added.map(a => `${a.ingredient} (+${a.price.toFixed(2)}€)`).join(', ')}\n`;
+                }
+                
+                summary += `  Totale: ${item.total.toFixed(2)}€\n\n`;
+            });
+            
+            summary += `SUBTOTALE: ${subtotal.toFixed(2)}€\n`;
+            summary += `COPERTI (${totalPizzas} × 2.00€): ${coperto.toFixed(2)}€\n`;
+            summary += `\nTOTALE: ${totalWithCoperto.toFixed(2)}€`;
+            
+            alert(summary);
+            
+            // Qui puoi implementare l'invio dell'ordine al server
+            console.log('Ordine confermato:', {
+                orderName,
+                waiterNumber,
+                items: cart,
+                subtotal,
+                coperto,
+                total: totalWithCoperto
+            });
+            
+            // Resetta
+            cart = [];
+            orderNameInput.value = '';
+            waiterNumberInput.value = '';
+            updateCartUI();
+            bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasCart')).hide();
+        }
+
+        // Filtri
+        function showAllCategories() {
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.textContent === 'Tutte');
+            });
+            document.querySelectorAll('.category-section').forEach(section => {
+                section.style.display = 'block';
+            });
+        }
+
+        function filterByCategory(category) {
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.textContent === category);
+            });
+            document.querySelectorAll('.category-section').forEach(section => {
+                section.style.display = section.id === `cat-${category.replace(/\s+/g, '-')}` ? 'block' : 'none';
+            });
+        }
+
+        // Event listeners
+        addToCartBtn.addEventListener('click', addToCart);
+        checkoutBtn.addEventListener('click', checkout);
+
+        // Inizializzazione
+        document.addEventListener('DOMContentLoaded', () => {
+            loadMenuFromCSV();
+            updateCartUI();
+        });
+    </script>
+</body>
+</html>

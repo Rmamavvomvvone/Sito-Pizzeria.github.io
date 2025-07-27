@@ -1,0 +1,92 @@
+Categoria;Nome;Prezzo;Allergeni;Ingredienti
+PIZZE SPECIALI;BENO & DENY;8.50;1,7;impasto classico, pomodoro italiano, fiordilatte, aglio, origano
+PIZZE SPECIALI;DELICATA;9.50;1,7,12;impasto classico, fiordilatte, datterini speziati, olive taggiasche, capperi
+PIZZE SPECIALI;NEW;9.50;1,7,12;impasto classico, fiordilatte, pancetta, friarielli, datterini speziati
+PIZZE SPECIALI;SPECIALE;9.50;1,7;impasto classico, fiordilatte, porchetta, grana, cipolla o patate al forno
+PIZZE SPECIALI;BRUSCHETTA;9.00;1,7,12;impasto schiacciata, olio, sale, rosmarino, cipolla di tropea, datterini, stracciatella/bufala, basilico
+PIZZE SPECIALI;PIZZA DI MAMMA;10.50;1,7;impasto classico, bordo farcito mozzarella e salsiccia, pomodoro italiano, mozzarella, cipolla di tropea/rossa
+PIZZE SPECIALI;MESSICANA;10.50;1,7;impasto classico, pomodoro italiano, mozzarella, fagioli piccanti, salsiccia, peperone, cipolla, guacamole (opzionale)
+PIZZE SPECIALI;TOMINO;9.50;1,7,12;impasto schiacciata, olio evo, sale, rosmarino, verdure grigliate, cipolla, funghi porcini, pomodorini, tomino
+PIZZE SPECIALI;NATALE;10.50;1,7,8;impasto schiacciata, salsa di pistacchio, mortadella, stracciatella/burrata
+PIZZE SPECIALI;MIA;10.50;1,4,7,12;impasto classico, pomodoro italiano, tomino piccante, acciuga del cantabrico, datterini speziati, origano, aglio
+PIZZE SPECIALI;HOLLYWOOD;10.50;1,7,12;impasto classico, bufala/fiordilatte, funghi freschi, datterini speziati/pomodorini gialli in salsa agrodolce
+PIZZE SPECIALI;SICILIANA;10.50;1,7,12;impasto classico, fiordilatte, salsiccia, taleggio, melanzane, datterini speziati
+PIZZE SPECIALI;REGINA DEL SUD;11.50;1,7,8,12;impasto schiacciata, salsa di pistacchio, datterini speziati/crema pomodorino giallo, crudo di Parma, stracciatella/burrata
+PIZZE SPECIALI;MALBORGHETTO;11.00;1,7;impasto al carbone, fiordilatte, mortadella, radicchio, taleggio
+PIZZE SPECIALI;FRANCOLINO;11.00;1,3,7;impasto classico, pomodoro, mozzarella, pancetta, uovo, pepe, scaglie di grana
+PIZZE SPECIALI;PONTEGRADELLA;11.00;1,3,7;impasto classico, pomodoro, mozzarella, asparagi, scaglie di grana, uovo, crema di tartufo
+PIZZE SPECIALI;MIC BON;13.50;;impasto classico, crema di porro, pancetta, datterini speziati, grana, aceto balsamico
+PIZZE SPECIALI;PULLED PORK;13.50;1,7;impasto classico, pomodoro, scamorza, patate al rosmarino, pulled pork, cipolla caramellata, salsa yogurt
+PIZZE SPECIALI;REGINA MADRE;13.50;1,7;impasto classico, crema di carciofi, radicchio, scamorza, zucchine fritte/grigliate, scaglie di grana
+PIZZE SPECIALI;TARALLINA;13.50;1,4,7;impasto classico, scamorza affumicata, acciughe del cantabrico, aglio, prezzemolo, taralli sbriciolati
+PIZZE SPECIALI;PORRO;13.50;1,7,12;impasto classico, crema di porro, salsiccia, fiordilatte, datterini speziati, grana, glassa di aceto balsamico
+PIZZE SPECIALI;CUDDURUNI;13.50;1,4,12;impasto schiacciata, datterini speziati, acciughe del cantabrico, olive taggiasche/leccino, tarallo sbriciolato, grana, frutti di cappero
+PIZZE SPECIALI;PIZZA DI PAPÀ;13.50;1,4,7;impasto classico, pomodoro italiano, aglio, origano, olio evo, mousse di mascarpone e acciughe
+PIZZE SPECIALI;BELLA ITALIA;13.50;1,7,12;impasto classico, pomodoro italiano, crudo di Parma 24 mesi, burrata, datterini speziati, pesto genovese
+PIZZE SPECIALI;CACIO E PEPE;13.50;1,7;impasto classico, fiordilatte, cacio e pepe
+PIZZE SPECIALI;Z900;13.50;1,7;impasto classico, fiordilatte, crema di porro, pancetta, olive taggiasche/leccino, tarallo sbriciolato, grana
+PIZZE SPECIALI;FUTTITINNI;14.00;1,5,7,4,2;impasto schiacciata, salsa di pistacchio, carpaccio di pesce spada, stracciatella/burrata
+PIZZE SPECIALI;PANIGALE;14.00;1,7;impasto classico, pomodoro italiano, ragù di carne, melanzane fritte, fiordilatte, grana
+PANUOZZI GOURMET;N1;10.00;1,7;impasto panuozzo, zucchine fritte, scamorza affumicata, prosciutto cotto, grana
+PANUOZZI GOURMET;N2;10.00;1,7,12;impasto panuozzo, bufala, melanzane fritte, friarielli, scamorza
+PANUOZZI GOURMET;N3;10.00;1,7,12;impasto panuozzo, friarielli, scamorza, pancetta, datterini speziati, cheddar
+PANUOZZI GOURMET;N4;10.00;1,4,7,12;impasto panuozzo, fiordilatte, datterini, capperi, olive, acciughe, basilico
+PANUOZZI GOURMET;N5;10.00;1,7,12;impasto panuozzo, datterini speziati, zucchine fritte, crudo di Parma
+PANUOZZI GOURMET;N6;10.00;1,7,12;impasto panuozzo, fiordilatte, tonno, cipolla di tropea, olive leccino, datterini, basilico
+PANUOZZI GOURMET;N7;13.00;1,7,12;impasto panuozzo, radicchio/rucola, pulled pork, salsa BBQ, cheddar, cipolla caramellata
+DIET PIZZA;N1;13.50;1,4,7;impasto proteico, pomodoro, mozzarella, ricotta, rucola, salmone
+DIET PIZZA;N3;13.00;1,3,7;impasto proteico, pomodoro, mozzarella, uovo, bresaola, grana
+DIET PIZZA;N4;10.00;1,12;impasto proteico, pomodoro, carciofi, grana
+DIET PIZZA;N5;11.50;1;impasto proteico, pomodoro, crudo di Parma, rucola, grana
+DIET PIZZA;N6;10.50;1,12;impasto proteico, zucchine, melanzane, cipolla, funghi, pomodorini, olio tartufato
+DIET PIZZA;N7;10.50;1,7,8;impasto proteico, pomodoro, ricotta, rucola, noci
+DIET PIZZA;N8;10.50;1,7;impasto proteico, pomodoro, rucola, bresaola, ricotta
+DIET PIZZA;N9;12.50;1,3;impasto proteico, pomodoro, asparagi, funghi, uovo, grana
+DIET PIZZA;N10;12.50;1,4,8;impasto proteico, pomodoro, salmone, rucola, noci
+INSALATE A PIZZA;N.58;9.50;1,7,12;impasto schiacciata, olio, sale, rucola, pomodorini, cipolla di tropea, bufala
+INSALATE A PIZZA;N.59;10.50;1,4,7,12;impasto schiacciata, radicchio rosso, tonno, olive leccino, capperi
+INSALATE A PIZZA;N.60;9.50;1,7,12;impasto schiacciata, bresaola, bufala, olive leccino, capperi
+INSALATE A PIZZA;N.61;10.50;1,4,7;impasto schiacciata, rucola, radicchio, bufala, tonno, funghi freschi
+INSALATE A PIZZA;N.62;8.50;1,7,12;impasto schiacciata, fiordilatte, pomodorini, capperi, olive
+INSALATE A PIZZA;N.63;10.50;1,4,7,12;impasto schiacciata, fiordilatte, tonno, olive, capperi, rucola, radicchio
+CALZONI;TRADIZIONALE;8.50;1,7,12;impasto calzone, mozzarella, prosciutto cotto, funghi
+CALZONI;PIZZAIOLO;10.00;1,7;impasto calzone, mozzarella, patate fritte, mascarpone, salame piccante
+CALZONI;BOMBA;9.00;1,7;impasto calzone, mozzarella, speck, scamorza
+CALZONI;SFIZIOSO;9.50;1,7;impasto calzone, mozzarella, stracchino, radicchio, speck
+CALZONI;MEDITERRANEO;9.50;1,4,7,12;impasto calzone, mozzarella, pomodorini, olive nere, capperi, tonno
+CALZONI;VEGETARIANO;10.00;1,7,12;impasto calzone, mozzarella, friarielli, petali di grana
+PIZZE DI STAGIONE;GENNAIO;13.50;1,7,12;impasto classico, crema di carciofi, carciofi alla romana, fiordilatte, guanciale, olio tartufato, basilico
+PIZZE DI STAGIONE;FEBBRAIO;10.00;1,7;impasto classico, fiordilatte, ricotta, salame piccante
+PIZZE DI STAGIONE;MARZO;10.00;1,7,12;impasto classico, pomodoro italiano, frutti di cappero, pomodorini speziati, bufala
+PIZZE DI STAGIONE;APRILE;10.00;1,4,7,12;impasto classico, pomodoro italiano, mozzarella, tonno, cipolla di tropea, datterini speziati, rucola
+PIZZE DI STAGIONE;MAGGIO;10.00;1,7,12;impasto classico, fiordilatte, pomodorini speziati, porchetta
+PIZZE DI STAGIONE;GIUGNO;10.00;1,7,12;impasto classico, fiordilatte, friarielli, acciughe cantabrico, olive, capperi, scamorza
+PIZZE DI STAGIONE;LUGLIO;10.00;1,7,12;impasto classico, pomodoro italiano, datterini speziati, fiordilatte, crudo di Parma 24 mesi
+PIZZE DI STAGIONE;AGOSTO;10.00;1,7;impasto classico, stracchino, brie, scamorza affumicata, grana, miele
+PIZZE DI STAGIONE;SETTEMBRE;10.00;1,7,12;impasto classico, fiordilatte, speck, funghi porcini, mascarpone
+PIZZE DI STAGIONE;OTTOBRE;10.00;1,7,12;impasto classico, fiordilatte, funghi porcini, pera, gorgonzola
+PIZZE DI STAGIONE;NOVEMBRE;10.00;1,7,8,12;impasto classico, crema di zucca, fiordilatte, gorgonzola, grana, noci
+PIZZE DI STAGIONE;DICEMBRE;10.00;1,7,12;impasto classico, crema di tartufo, fiordilatte/bufala, crudo di Parma 24 mesi
+PIZZE CLASSICHE;BUFALA;7.50;1,7;impasto classico, pomodoro italiano, bufala DOP
+PIZZE CLASSICHE;BRESAOLA COMPLETA;9.50;1,7;impasto classico, pomodoro italiano, mozzarella, bresaola, rucola, grana
+PIZZE CLASSICHE;BRESAOLONA;9.50;1,7,12;impasto schiacciata, olio, sale, rosmarino, bresaola, fiordilatte, datterini
+PIZZE CLASSICHE;CAPRESE;9.00;1,7,12;impasto classico, pomodoro italiano, mozzarella, pomodorini speziati, basilico
+PIZZE CLASSICHE;CAPRICCIOSA;9.50;1,7,12;impasto classico, pomodoro italiano, mozzarella, prosciutto cotto, funghi trifolati, carciofini, salsiccia
+PIZZE CLASSICHE;CRUDO STRACCHINO E RUCOLA;10.00;1,7;impasto classico, pomodoro italiano, mozzarella, crudo di Parma 24 mesi, stracchino, rucola
+PIZZE CLASSICHE;FRIARIELLI E SALSICCIA;9.00;1,7,12;impasto classico, mozzarella, friarielli, salsiccia, scaglie di grana
+PIZZE CLASSICHE;FUNGHI MISTI;9.50;1,7,12;impasto classico, pomodoro italiano, mozzarella, funghi freschi, funghi porcini
+PIZZE CLASSICHE;GORGONZOLA E SPECK;8.50;1,7;impasto classico, pomodoro italiano, mozzarella, gorgonzola, speck
+PIZZE CLASSICHE;LA VERA PIZZA;7.50;1,7;impasto classico, pomodoro italiano, fiordilatte, basilico
+PIZZE CLASSICHE;MARGHERITA;6.00;1,7;impasto classico, pomodoro italiano, mozzarella
+PIZZE CLASSICHE;MARINARA;5.00;1;impasto classico, pomodoro italiano, origano, aglio, olio
+PIZZE CLASSICHE;NAPOLI;8.00;1,4,7;impasto classico, pomodoro italiano, mozzarella, acciuga del cantabrico, origano
+PIZZE CLASSICHE;PARMIGIANA;8.50;1,7;impasto classico, pomodoro italiano, mozzarella, melanzane, scaglie di grana
+PIZZE CLASSICHE;PATATE FRITTE E WURSTEL;8.50;1,7;impasto classico, pomodoro italiano, mozzarella, wurstel, patate stick
+PIZZE CLASSICHE;PORCINI E RADICCHIO;9.00;1,7,12;impasto classico, pomodoro italiano, mozzarella, porcini, radicchio
+PIZZE CLASSICHE;PROSCIUTTO COTTO E FUNGHI;8.50;1,7,12;impasto classico, pomodoro italiano, mozzarella, prosciutto cotto, funghi trifolati
+PIZZE CLASSICHE;QUATTRO FORMAGGI;9.50;1,7;impasto classico, pomodoro italiano, mozzarella, formaggi misti
+PIZZE CLASSICHE;ROMANA;9.00;1,7,4;impasto classico, pomodoro italiano, mozzarella, acciuga del cantabrico, cappero, origano
+PIZZE CLASSICHE;SALAMINO E SCAMORZA;8.50;1,7;impasto classico, pomodoro italiano, mozzarella, salamino, scamorza
+PIZZE CLASSICHE;SPECK E PORCINI;9.00;1,7,12;impasto classico, pomodoro italiano, mozzarella, speck, funghi porcini
+PIZZE CLASSICHE;TONNO E CIPOLLA;8.50;1,4,7;impasto classico, pomodoro italiano, mozzarella, cipolla di tropea (stagionale), tonno
+PIZZE CLASSICHE;VEGETARIANA;9.50;1,7;impasto classico, pomodoro italiano, mozzarella, melanzane grigliate, zucchine grigliate, peperoni grigliati
