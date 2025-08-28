@@ -27,13 +27,13 @@ PIZZE SPECIALI;CACIO E PEPE;13.50;1,7;impasto classico, fiordilatte, cacio e pep
 PIZZE SPECIALI;Z900;13.50;1,7;impasto classico, fiordilatte, crema di porro, pancetta, olive taggiasche/leccino, tarallo sbriciolato, grana
 PIZZE SPECIALI;FUTTITINNI;14.00;1,5,7,4,2;impasto schiacciata, salsa di pistacchio, carpaccio di pesce spada, stracciatella/burrata
 PIZZE SPECIALI;PANIGALE;14.00;1,7;impasto classico, pomodoro italiano, ragù di carne, melanzane fritte, fiordilatte, grana
-PANUOZZI GOURMET;N1;10.00;1,7;impasto panuozzo, zucchine fritte, scamorza affumicata, prosciutto cotto, grana
-PANUOZZI GOURMET;N2;10.00;1,7,12;impasto panuozzo, bufala, melanzane fritte, friarielli, scamorza
-PANUOZZI GOURMET;N3;10.00;1,7,12;impasto panuozzo, friarielli, scamorza, pancetta, datterini speziati, cheddar
-PANUOZZI GOURMET;N4;10.00;1,4,7,12;impasto panuozzo, fiordilatte, datterini, capperi, olive, acciughe, basilico
-PANUOZZI GOURMET;N5;10.00;1,7,12;impasto panuozzo, datterini speziati, zucchine fritte, crudo di Parma
-PANUOZZI GOURMET;N6;10.00;1,7,12;impasto panuozzo, fiordilatte, tonno, cipolla di tropea, olive leccino, datterini, basilico
-PANUOZZI GOURMET;N7;13.00;1,7,12;impasto panuozzo, radicchio/rucola, pulled pork, salsa BBQ, cheddar, cipolla caramellata
+PANUOZZI GOURMET;PANUOZZO 1;10.00;1,7;impasto panuozzo, zucchine fritte, scamorza affumicata, prosciutto cotto, grana
+PANUOZZI GOURMET;PANUOZZO 2;10.00;1,7,12;impasto panuozzo, bufala, melanzane fritte, friarielli, scamorza
+PANUOZZI GOURMET;PANUOZZO 3;10.00;1,7,12;impasto panuozzo, friarielli, scamorza, pancetta, datterini speziati, cheddar
+PANUOZZI GOURMET;PANUOZZO 4;10.00;1,4,7,12;impasto panuozzo, fiordilatte, datterini, capperi, olive, acciughe, basilico
+PANUOZZI GOURMET;PANUOZZO 5;10.00;1,7,12;impasto panuozzo, datterini speziati, zucchine fritte, crudo di Parma
+PANUOZZI GOURMET;PANUOZZO 6;10.00;1,7,12;impasto panuozzo, fiordilatte, tonno, cipolla di tropea, olive leccino, datterini, basilico
+PANUOZZI GOURMET;PANUOZZO 7;13.00;1,7,12;impasto panuozzo, radicchio/rucola, pulled pork, salsa BBQ, cheddar, cipolla caramellata
 DIET PIZZA;DIET 1;13.50;1,4,7;impasto proteico, pomodoro, mozzarella, ricotta, rucola, salmone
 DIET PIZZA;DIET 3;13.00;1,3,7;impasto proteico, pomodoro, mozzarella, uovo, bresaola, grana
 DIET PIZZA;DIET 4;10.00;1,12;impasto proteico, pomodoro, carciofi, grana
@@ -94,3 +94,4 @@ PIZZE CLASSICHE;VEGETARIANA;9.50;1,7;impasto classico, pomodoro italiano, mozzar
 
 
 PIZZE CLASSICHE;VEGETARIANA;9.50;1,7;impasto classico, pomodoro italiano, mozzarella, melanzane grigliate, zucchine grigliate, peperoni grigliati
+
