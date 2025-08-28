@@ -34,15 +34,15 @@ PANUOZZI GOURMET;N4;10.00;1,4,7,12;impasto panuozzo, fiordilatte, datterini, cap
 PANUOZZI GOURMET;N5;10.00;1,7,12;impasto panuozzo, datterini speziati, zucchine fritte, crudo di Parma
 PANUOZZI GOURMET;N6;10.00;1,7,12;impasto panuozzo, fiordilatte, tonno, cipolla di tropea, olive leccino, datterini, basilico
 PANUOZZI GOURMET;N7;13.00;1,7,12;impasto panuozzo, radicchio/rucola, pulled pork, salsa BBQ, cheddar, cipolla caramellata
-DIET PIZZA;N1;13.50;1,4,7;impasto proteico, pomodoro, mozzarella, ricotta, rucola, salmone
-DIET PIZZA;N3;13.00;1,3,7;impasto proteico, pomodoro, mozzarella, uovo, bresaola, grana
-DIET PIZZA;N4;10.00;1,12;impasto proteico, pomodoro, carciofi, grana
-DIET PIZZA;N5;11.50;1;impasto proteico, pomodoro, crudo di Parma, rucola, grana
-DIET PIZZA;N6;10.50;1,12;impasto proteico, zucchine, melanzane, cipolla, funghi, pomodorini, olio tartufato
-DIET PIZZA;N7;10.50;1,7,8;impasto proteico, pomodoro, ricotta, rucola, noci
-DIET PIZZA;N8;10.50;1,7;impasto proteico, pomodoro, rucola, bresaola, ricotta
-DIET PIZZA;N9;12.50;1,3;impasto proteico, pomodoro, asparagi, funghi, uovo, grana
-DIET PIZZA;N10;12.50;1,4,8;impasto proteico, pomodoro, salmone, rucola, noci
+DIET PIZZA;DIET 1;13.50;1,4,7;impasto proteico, pomodoro, mozzarella, ricotta, rucola, salmone
+DIET PIZZA;DIET 3;13.00;1,3,7;impasto proteico, pomodoro, mozzarella, uovo, bresaola, grana
+DIET PIZZA;DIET 4;10.00;1,12;impasto proteico, pomodoro, carciofi, grana
+DIET PIZZA;DIET 5;11.50;1;impasto proteico, pomodoro, crudo di Parma, rucola, grana
+DIET PIZZA;DIET 6;10.50;1,12;impasto proteico, zucchine, melanzane, cipolla, funghi, pomodorini, olio tartufato
+DIET PIZZA;DIET 7;10.50;1,7,8;impasto proteico, pomodoro, ricotta, rucola, noci
+DIET PIZZA;DIET 8;10.50;1,7;impasto proteico, pomodoro, rucola, bresaola, ricotta
+DIET PIZZA;DIET 9;12.50;1,3;impasto proteico, pomodoro, asparagi, funghi, uovo, grana
+DIET PIZZA;DIET 10;12.50;1,4,8;impasto proteico, pomodoro, salmone, rucola, noci
 INSALATE A PIZZA;N.58;9.50;1,7,12;impasto schiacciata, olio, sale, rucola, pomodorini, cipolla di tropea, bufala
 INSALATE A PIZZA;N.59;10.50;1,4,7,12;impasto schiacciata, radicchio rosso, tonno, olive leccino, capperi
 INSALATE A PIZZA;N.60;9.50;1,7,12;impasto schiacciata, bresaola, bufala, olive leccino, capperi
@@ -89,4 +89,8 @@ PIZZE CLASSICHE;ROMANA;9.00;1,7,4;impasto classico, pomodoro italiano, mozzarell
 PIZZE CLASSICHE;SALAMINO E SCAMORZA;8.50;1,7;impasto classico, pomodoro italiano, mozzarella, salamino, scamorza
 PIZZE CLASSICHE;SPECK E PORCINI;9.00;1,7,12;impasto classico, pomodoro italiano, mozzarella, speck, funghi porcini
 PIZZE CLASSICHE;TONNO E CIPOLLA;8.50;1,4,7;impasto classico, pomodoro italiano, mozzarella, cipolla di tropea (stagionale), tonno
+PIZZE CLASSICHE;VEGETARIANA;9.50;1,7;impasto classico, pomodoro italiano, mozzarella, melanzane grigliate, zucchine grigliate, peperoni grigliati
+
+
+
 PIZZE CLASSICHE;VEGETARIANA;9.50;1,7;impasto classico, pomodoro italiano, mozzarella, melanzane grigliate, zucchine grigliate, peperoni grigliati
