@@ -329,9 +329,9 @@
         }
         .allergens-button {
             position: fixed;
-            bottom: 100px;
+            bottom: 180px;  /* Modificato per posizionarlo sopra il carrello */
             right: 24px;
-            z-index: 1050;
+            z-index: 1060;  /* Aumentato per essere sopra altri elementi */
             width: 60px;
             height: 60px;
             border-radius: 50%;
@@ -351,7 +351,7 @@
     </style>
 </head>
 <body>
-    <!-- Pulsante allergeni fisso -->
+    <!-- Pulsante allergeni fisso - POSIZIONATO SOPRA IL CARRELLO -->
     <div class="allergens-button" data-bs-toggle="modal" data-bs-target="#allergensModal">
         <i class="bi bi-exclamation-triangle"></i>
     </div>
@@ -915,7 +915,7 @@
             // Ingredienti base della pizza
             const baseIngredients = pizza.ingredienti.split(',').map(i => i.trim());
             
-            // Per ogni ingrediente base, crea un elemento con pulsante rimozione
+            // Per ogni ingrediente base, crea un elemento pulsante rimozione
             baseIngredients.forEach(ingredient => {
                 const ingredientItem = document.createElement('div');
                 ingredientItem.className = 'ingredient-item';
