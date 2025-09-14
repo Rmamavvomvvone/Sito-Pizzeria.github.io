@@ -479,6 +479,31 @@
             });
         }
 
+        // Carica aggiunte da Firestore (collezione 'Add')
+        async function loadAdditionsFromFirestore() {
+            try {
+                showFirebaseStatus('Carico aggiunte...', 'loading');
+                const snap = await db.collection('Add').get();
+                const additions = [];
+                snap.forEach(doc => {
+                    const d = doc.data() || {};
+                    const usable = d.usable === true || (typeof d.usable === 'string' && d.usable.toLowerCase() === 'true');
+                    if (!usable) return;
+                    const name = (d.item || doc.id || '').toString().trim();
+                    const priceNum = parseFloat(d.price);
+                    const price = isNaN(priceNum) ? 0 : priceNum;
+                    if (name) additions.push({ ingredient: name, price });
+                });
+                additions.sort((a, b) => a.ingredient.localeCompare(b.ingredient, 'it', { sensitivity: 'base' }));
+                window.__allAdditions = additions;
+                showFirebaseStatus(`Aggiunte caricate: ${additions.length}`, 'success');
+            } catch (e) {
+                console.error('Errore caricamento aggiunte:', e);
+                showFirebaseStatus('Errore caricamento aggiunte: ' + e.message, 'error');
+                window.__allAdditions = [];
+            }
+        }
+
         // Funzione per generare il menu da CSV
         async function loadMenuFromCSV() {
             try {
@@ -502,7 +527,8 @@
                 const categories = [...new Set(menuItems.map(item => item.categoria))];
                 
                 // Estrai tutti gli ingredienti unici per il menu a tendina
-                allIngredients = Object.keys(ingredientPrices);
+                // Sostituito: le aggiunte arrivano da Firestore 'Add'
+                await loadAdditionsFromFirestore();
                 
                 // Genera i filtri e le sezioni
                 renderCategoryFilters(categories);
@@ -708,12 +734,11 @@
             
             // Filtra gli ingredienti già presenti nella pizza o già aggiunti
             const baseIngredients = pizza.ingredienti.split(',').map(i => i.trim());
-            const availableIngredients = allIngredients.filter(ing => 
-                !baseIngredients.includes(ing)
-            );
+            const availableAdditions = (window.__allAdditions || []).filter(a => !baseIngredients.includes(a.ingredient));
             
-            availableIngredients.forEach(ingredient => {
-                const price = ingredientPrices[ingredient] || 0;
+            availableAdditions.forEach(add => {
+                const ingredient = add.ingredient;
+                const price = add.price || 0;
                 const isSelected = selectedAdditions.some(a => a.ingredient === ingredient);
                 
                 const item = document.createElement('div');
@@ -722,11 +747,11 @@
                 item.innerHTML = `
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" 
-                               id="add-${ingredient}" 
+                               id="add-${ingredient.replace(/[^a-zA-Z0-9_-]/g, '')}" 
                                value="${ingredient}" 
                                ${isSelected ? 'checked' : ''}
                                data-price="${price}">
-                        <label class="form-check-label" for="add-${ingredient}">
+                        <label class="form-check-label" for="add-${ingredient.replace(/[^a-zA-Z0-9_-]/g, '')}">
                             ${ingredient} (+${price.toFixed(2)}€)
                         </label>
                     </div>
@@ -793,6 +818,13 @@
             currentModifications.added.forEach(ing => {
                 extraPrice += ing.price;
             });
+
+            // Sincronizza con il DB: evita ingredienti non più presenti (opzionale)
+            if (window.__allAdditions) {
+                currentModifications.added = currentModifications.added.filter(a => 
+                    window.__allAdditions.some(dbA => dbA.ingredient === a.ingredient)
+                );
+            }
             
             document.getElementById('pizzaModalExtraPrice').textContent = extraPrice.toFixed(2);
             document.getElementById('pizzaModalTotalPrice').textContent = (basePrice + extraPrice).toFixed(2);
