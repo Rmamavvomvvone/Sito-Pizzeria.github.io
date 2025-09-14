@@ -91,6 +91,9 @@ PIZZE CLASSICHE;SALAMINO E SCAMORZA;8.50;1,7;impasto classico, pomodoro italiano
 PIZZE CLASSICHE;SPECK E PORCINI;9.00;1,7,12;impasto classico, pomodoro italiano, mozzarella, speck, funghi porcini
 PIZZE CLASSICHE;TONNO E CIPOLLA;8.50;1,4,7;impasto classico, pomodoro italiano, mozzarella, cipolla di tropea (stagionale), tonno
 PIZZE CLASSICHE;VEGETARIANA;9.50;1,7;impasto classico, pomodoro italiano, mozzarella, melanzane grigliate, zucchine grigliate, peperoni grigliati
-
-
+PIZZE SENZA GLUTINE;FRIARIELLI E SALSICCIA;11.50;7,12;impasto senza glutine, mozzarella, friarielli, salsiccia, scaglie di grana
+PIZZE SENZA GLUTINE;VEGETARIANA;12.00;7;impasto senza glutine, pomodoro italiano, mozzarella, melanzane grigliate, zucchine grigliate, peperoni grigliati
+PIZZE SENZA GLUTINE;TONNO E CIPOLLA;11.50;4,7;impasto senza glutine, pomodoro italiano, mozzarella, cipolla di tropea (stagionale), tonno
+PIZZE SENZA GLUTINE;SALAMINO E SCAMORZA;11.00;7;impasto senza glutine, pomodoro italiano, mozzarella, salamino, scamorza
+PIZZE SENZA GLUTINE;ROMANA;11.50;7,4;impasto senza glutine, pomodoro italiano, mozzarella, acciuga del cantabrico, cappero, origano
 
