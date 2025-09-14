@@ -27,6 +27,7 @@ PIZZE SPECIALI;CACIO E PEPE;13.50;1,7;impasto classico, fiordilatte, cacio e pep
 PIZZE SPECIALI;Z900;13.50;1,7;impasto classico, fiordilatte, crema di porro, pancetta, olive taggiasche/leccino, tarallo sbriciolato, grana
 PIZZE SPECIALI;FUTTITINNI;14.00;1,5,7,4,2;impasto schiacciata, salsa di pistacchio, carpaccio di pesce spada, stracciatella/burrata
 PIZZE SPECIALI;PANIGALE;14.00;1,7;impasto classico, pomodoro italiano, ragù di carne, melanzane fritte, fiordilatte, grana
+PIZZE SPECIALI;TOM_TOM;14.00;1,7;impasto classico, pomodoro italiano, mozzarella, cipolla,acciuga del cantabrico, capperi, olive, basilico fresco
 PANUOZZI GOURMET;PANUOZZO 1;10.00;1,7;impasto panuozzo, zucchine fritte, scamorza affumicata, prosciutto cotto, grana
 PANUOZZI GOURMET;PANUOZZO 2;10.00;1,7,12;impasto panuozzo, bufala, melanzane fritte, friarielli, scamorza
 PANUOZZI GOURMET;PANUOZZO 3;10.00;1,7,12;impasto panuozzo, friarielli, scamorza, pancetta, datterini speziati, cheddar
@@ -92,6 +93,4 @@ PIZZE CLASSICHE;TONNO E CIPOLLA;8.50;1,4,7;impasto classico, pomodoro italiano, 
 PIZZE CLASSICHE;VEGETARIANA;9.50;1,7;impasto classico, pomodoro italiano, mozzarella, melanzane grigliate, zucchine grigliate, peperoni grigliati
 
 
-
-PIZZE CLASSICHE;VEGETARIANA;9.50;1,7;impasto classico, pomodoro italiano, mozzarella, melanzane grigliate, zucchine grigliate, peperoni grigliati
 
