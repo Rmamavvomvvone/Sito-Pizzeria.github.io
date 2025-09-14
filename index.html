@@ -261,9 +261,101 @@
         @keyframes spinner-border {
             to { transform: rotate(360deg); }
         }
+        
+        /* Nuovi stili per allergeni */
+        .allergen-warning {
+            background-color: rgba(255, 0, 0, 0.1) !important;
+            border: 1px solid rgba(255, 0, 0, 0.3) !important;
+        }
+        .allergen-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #ff4444;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .allergen-controls {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #e3e9f7;
+        }
+        .allergen-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            margin: 3px;
+            border-radius: 12px;
+            background-color: #e9ecef;
+            font-size: 0.85rem;
+        }
+        .allergen-list {
+            margin-top: 10px;
+        }
+        .allergen-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-weight: bold;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        .allergen-btn.selected {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 3px #ffc107;
+        }
+        .selected-allergens {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+        }
+        .allergen-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            margin: 2px;
+            border-radius: 10px;
+            background-color: #f8d7da;
+            color: #721c24;
+            font-size: 0.75rem;
+        }
+        .allergens-button {
+            position: fixed;
+            bottom: 100px;
+            right: 24px;
+            z-index: 1050;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .allergens-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 24px rgba(220, 53, 69, 0.4);
+        }
     </style>
 </head>
 <body>
+    <!-- Pulsante allergeni fisso -->
+    <div class="allergens-button" data-bs-toggle="modal" data-bs-target="#allergensModal">
+        <i class="bi bi-exclamation-triangle"></i>
+    </div>
+
     <!-- Carrello fisso -->
     <div class="cart-badge" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart">
         <i class="bi bi-cart3"></i>
@@ -315,6 +407,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <img src="" id="pizzaModalImage" class="img-fluid pizza-modal-img mb-3" alt="Pizza">
+                            <div id="pizzaAllergens" class="allergen-list"></div>
                         </div>
                         <div class="col-md-6">
                             <h6>Ingredienti base:</h6>
@@ -366,6 +459,68 @@
         </div>
     </div>
 
+    <!-- Modal Allergeni -->
+    <div class="modal fade" id="allergensModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Gestione Allergeni</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> Seleziona i numeri corrispondenti ai tuoi allergeni. Le pizze contenenti questi allergeni saranno evidenziate in rosso.
+                    </div>
+                    
+                    <h5 class="mb-3">Seleziona i tuoi allergeni:</h5>
+                    <div class="d-flex flex-wrap justify-content-center mb-4">
+                        <button class="btn btn-primary allergen-btn" data-allergen="1">1</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="2">2</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="3">3</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="4">4</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="5">5</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="6">6</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="7">7</button>
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        <button class="btn btn-success me-2" id="applyAllergensBtn">Applica selezione</button>
+                        <button class="btn btn-outline-secondary" id="clearAllergensBtn">Cancella tutto</button>
+                    </div>
+                    
+                    <div class="selected-allergens">
+                        <h5><i class="bi bi-check2-circle"></i> Allergeni selezionati:</h5>
+                        <div id="selectedAllergensList">Nessun allergene selezionato</div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h5 class="mb-3">Legenda allergeni:</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-group">
+                                <li class="list-group-item">1 - Glutine (cereali, frumento, segale, orzo, avena)</li>
+                                <li class="list-group-item">2 - Crostacei e derivati</li>
+                                <li class="list-group-item">3 - Uova e derivati</li>
+                                <li class="list-group-item">4 - Pesce e derivati</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-group">
+                                <li class="list-group-item">5 - Arachidi e derivati</li>
+                                <li class="list-group-item">6 - Soia e derivati</li>
+                                <li class="list-group-item">7 - Latte e derivati (incluso lattosio)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Container principale -->
     <div class="container py-4">
         <header class="text-center mb-5">
@@ -406,6 +561,8 @@
             added: []
         };
         let selectedAdditions = [];
+        let userAllergens = [];
+        let allergenMapping = {};
 
         // Elementi DOM
         const cartCounter = document.getElementById('cartCounter');
@@ -423,22 +580,83 @@
         const additionsListEl = document.getElementById('additionsList');
         const confirmAdditionsBtn = document.getElementById('confirmAdditionsBtn');
         const firebaseStatusEl = document.getElementById('firebaseStatus');
+        const applyAllergensBtn = document.getElementById('applyAllergensBtn');
+        const clearAllergensBtn = document.getElementById('clearAllergensBtn');
+        const selectedAllergensList = document.getElementById('selectedAllergensList');
 
-        // Dati ingredienti con prezzi
-        const ingredientPrices = {
-            "mozzarella": 1.00,
-            "prosciutto": 1.50,
-            "funghi": 0.80,
-            "olive": 0.50,
-            "peperoni": 0.80,
-            "cipolla": 0.50,
-            "salsiccia": 1.50,
-            "rucola": 0.70,
-            "grana": 1.00,
-            "wurstel": 1.20,
-            "patatine": 0.60,
-            "mais": 0.50
-        };
+        // Dati delle pizze con relativi allergeni
+        const pizzaMenu = [
+            {
+                name: "Margherita",
+                ingredients: "Pomodoro, mozzarella, basilico",
+                price: 6.50,
+                allergens: [1, 7], // Glutine, Latte
+                categoria: "Classiche"
+            },
+            {
+                name: "Marinara",
+                ingredients: "Pomodoro, aglio, origano",
+                price: 5.00,
+                allergens: [1], // Glutine
+                categoria: "Classiche"
+            },
+            {
+                name: "Diavola",
+                ingredients: "Pomodoro, mozzarella, salame piccante",
+                price: 8.00,
+                allergens: [1, 7], // Glutine, Latte
+                categoria: "Classiche"
+            },
+            {
+                name: "Quattro Stagioni",
+                ingredients: "Pomodoro, mozzarella, funghi, prosciutto, carciofi, olive",
+                price: 9.50,
+                allergens: [1, 7], // Glutine, Latte
+                categoria: "Speciali"
+            },
+            {
+                name: "Capricciosa",
+                ingredients: "Pomodoro, mozzarella, funghi, prosciutto, carciofi, olive",
+                price: 9.00,
+                allergens: [1, 3, 7], // Glutine, Uova, Latte
+                categoria: "Speciali"
+            },
+            {
+                name: "Quattro Formaggi",
+                ingredients: "Mozzarella, gorgonzola, parmigiano, fontina",
+                price: 10.00,
+                allergens: [1, 7], // Glutine, Latte
+                categoria: "Formaggi"
+            },
+            {
+                name: "Ortolana",
+                ingredients: "Pomodoro, mozzarella, melanzane, zucchine, peperoni",
+                price: 8.50,
+                allergens: [1, 7], // Glutine, Latte
+                categoria: "Vegetariane"
+            },
+            {
+                name: "Tonno e Cipolla",
+                ingredients: "Pomodoro, mozzarella, tonno, cipolla",
+                price: 9.00,
+                allergens: [1, 4, 7], // Glutine, Pesce, Latte
+                categoria: "Di Mare"
+            },
+            {
+                name: "Siciliana",
+                ingredients: "Pomodoro, mozzarella, acciughe, olive, capperi",
+                price: 9.50,
+                allergens: [1, 4, 7], // Glutine, Pesce, Latte
+                categoria: "Di Mare"
+            },
+            {
+                name: "Bianca con Ricotta",
+                ingredients: "Mozzarella, ricotta, salsiccia",
+                price: 10.50,
+                allergens: [1, 7], // Glutine, Latte
+                categoria: "Speciali"
+            }
+        ];
 
         // Funzione per mostrare lo stato di Firebase
         function showFirebaseStatus(message, type) {
@@ -596,14 +814,20 @@
                         const col = document.createElement('div');
                         col.className = 'col';
                         
+                        // Trova informazioni allergeni per questa pizza
+                        const pizzaInfo = pizzaMenu.find(p => p.name === pizza.nome) || {};
+                        const allergens = pizzaInfo.allergens || [];
+                        
                         col.innerHTML = `
-                            <div class="card pizza-card h-100">
+                            <div class="card pizza-card h-100" data-pizza-name="${pizza.nome}">
+                                ${allergens.length > 0 ? `<div class="allergen-indicator">${allergens.length}</div>` : ''}
                                 <div class="card-body">
                                     <h3 class="h5 card-title">${pizza.nome}</h3>
                                     <div class="text-danger fw-bold mb-2">${parseFloat(pizza.prezzo).toFixed(2)}€</div>
                                     <p class="card-text text-muted">
                                         ${pizza.ingredienti.split(',').slice(0, 3).join(', ')}${pizza.ingredienti.split(',').length > 3 ? '...' : ''}
                                     </p>
+                                    ${allergens.length > 0 ? `<div class="allergen-badges">${getAllergenBadges(allergens)}</div>` : ''}
                                 </div>
                             </div>
                         `;
@@ -616,6 +840,19 @@
                     sectionsContainer.appendChild(section);
                 }
             });
+            
+            // Applica l'evidenziazione allergeni dopo aver renderizzato le pizze
+            highlightPizzasWithAllergens();
+        }
+
+        // Genera i badge degli allergeni
+        function getAllergenBadges(allergens) {
+            if (allergens.length === 0) return '';
+            
+            return allergens
+                .sort((a, b) => a - b)
+                .map(a => `<span class="allergen-badge">${a}</span>`)
+                .join('');
         }
 
         // Mostra dettagli pizza e gestione ingredienti
@@ -638,6 +875,25 @@
                 imgEl.style.display = 'block';
             } else {
                 imgEl.style.display = 'none';
+            }
+            
+            // Mostra allergeni della pizza
+            const pizzaInfo = pizzaMenu.find(p => p.name === pizza.nome) || {};
+            const allergens = pizzaInfo.allergens || [];
+            const allergensEl = document.getElementById('pizzaAllergens');
+            
+            if (allergens.length > 0) {
+                allergensEl.innerHTML = `
+                    <div class="alert alert-warning">
+                        <strong>Allergeni:</strong> ${allergens.sort((a, b) => a - b).join(', ')}
+                    </div>
+                `;
+            } else {
+                allergensEl.innerHTML = `
+                    <div class="alert alert-success">
+                        Questa pizza non contiene allergeni comuni
+                    </div>
+                `;
             }
             
             // Prepara la lista degli ingredienti modificabili
@@ -892,7 +1148,7 @@
             let grandTotal = 0;
             let totalPizzas = 0;
             
-            cart.forEach((item, index) => {
+            cart.forEach((item, index) {
                 grandTotal += item.total;
                 totalPizzas += item.quantity;
                 
@@ -1052,15 +1308,85 @@
             });
         }
 
+        // Aggiorna la lista degli allergeni selezionati
+        function updateSelectedAllergensList() {
+            if (userAllergens.length === 0) {
+                selectedAllergensList.innerHTML = 'Nessun allergene selezionato';
+                return;
+            }
+            
+            selectedAllergensList.innerHTML = userAllergens
+                .sort((a, b) => a - b)
+                .map(a => `<span class="badge bg-danger me-1">${a}</span>`)
+                .join(' ');
+        }
+
+        // Evidenzia le pizze che contengono allergeni selezionati
+        function highlightPizzasWithAllergens() {
+            const pizzaCards = document.querySelectorAll('.pizza-card');
+            
+            pizzaCards.forEach(card => {
+                card.classList.remove('allergen-warning');
+                
+                const pizzaName = card.getAttribute('data-pizza-name');
+                const pizza = pizzaMenu.find(p => p.name === pizzaName);
+                
+                if (!pizza || !pizza.allergens) return;
+                
+                // Controlla se la pizza contiene allergeni selezionati
+                const hasAllergen = userAllergens.some(allergen => 
+                    pizza.allergens.includes(allergen)
+                );
+                
+                if (hasAllergen) {
+                    card.classList.add('allergen-warning');
+                }
+            });
+        }
+
+        // Inizializzazione
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMenuFromCSV();
+            updateCartUI();
+            
+            // Setup per i pulsanti allergeni
+            document.querySelectorAll('.allergen-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                    const allergen = parseInt(this.getAttribute('data-allergen'));
+                    
+                    if (this.classList.contains('selected')) {
+                        if (!userAllergens.includes(allergen)) {
+                            userAllergens.push(allergen);
+                        }
+                    } else {
+                        userAllergens = userAllergens.filter(a => a !== allergen);
+                    }
+                    
+                    updateSelectedAllergensList();
+                });
+            });
+            
+            // Applica la selezione allergeni
+            applyAllergensBtn.addEventListener('click', function() {
+                highlightPizzasWithAllergens();
+                bootstrap.Modal.getInstance(document.getElementById('allergensModal')).hide();
+            });
+            
+            // Cancella la selezione allergeni
+            clearAllergensBtn.addEventListener('click', function() {
+                userAllergens = [];
+                document.querySelectorAll('.allergen-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                updateSelectedAllergensList();
+                highlightPizzasWithAllergens();
+            });
+        });
+
         // Event listeners
         addToCartBtn.addEventListener('click', addToCart);
         checkoutBtn.addEventListener('click', checkout);
-
-        // Inizializzazione
-        document.addEventListener('DOMContentLoaded', () => {
-            loadMenuFromCSV();
-            updateCartUI();
-        });
     </script>
 </body>
 </html>
