@@ -264,8 +264,8 @@
         
         /* Nuovi stili per allergeni */
         .allergen-warning {
-            background-color: rgba(255, 0, 0, 0.1) !important;
-            border: 1px solid rgba(255, 0, 0, 0.3) !important;
+            background-color: rgba(255, 255, 0, 0.2) !important;
+            border: 1px solid rgba(255, 193, 7, 0.5) !important;
         }
         .allergen-indicator {
             position: absolute;
@@ -481,6 +481,12 @@
                         <button class="btn btn-primary allergen-btn" data-allergen="5">5</button>
                         <button class="btn btn-primary allergen-btn" data-allergen="6">6</button>
                         <button class="btn btn-primary allergen-btn" data-allergen="7">7</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="8">8</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="9">9</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="10">10</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="11">11</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="12">12</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="13">13</button>
                     </div>
                     
                     <div class="text-center mb-4">
@@ -503,13 +509,19 @@
                                 <li class="list-group-item">2 - Crostacei e derivati</li>
                                 <li class="list-group-item">3 - Uova e derivati</li>
                                 <li class="list-group-item">4 - Pesce e derivati</li>
+                                <li class="list-group-item">5 - Arachidi e derivati</li>
+                                <li class="list-group-item">6 - Soia e derivati</li>
+                                <li class="list-group-item">7 - Latte e derivati (incluso lattosio)</li>
                             </ul>
                         </div>
                         <div class="col-md-6">
                             <ul class="list-group">
-                                <li class="list-group-item">5 - Arachidi e derivati</li>
-                                <li class="list-group-item">6 - Soia e derivati</li>
-                                <li class="list-group-item">7 - Latte e derivati (incluso lattosio)</li>
+                                <li class="list-group-item">8 - Frutta a guscio (mandorle, nocciole, noci, ecc.)</li>
+                                <li class="list-group-item">9 - Sedano e derivati</li>
+                                <li class="list-group-item">10 - Senape e derivati</li>
+                                <li class="list-group-item">11 - Semi di sesamo e derivati</li>
+                                <li class="list-group-item">12 - Anidride solforosa e solfiti</li>
+                                <li class="list-group-item">13 - Lupini e derivati</li>
                             </ul>
                         </div>
                     </div>
@@ -747,6 +759,9 @@
                 // Estrai tutti gli ingredienti unici per il menu a tendina
                 await loadAdditionsFromFirestore();
                 
+                // Salva menuItems globalmente per uso in altre funzioni
+                window.menuItems = menuItems;
+
                 // Genera i filtri e le sezioni
                 renderCategoryFilters(categories);
                 renderPizzaSections(menuItems, categories);
@@ -814,8 +829,8 @@
                         col.className = 'col';
                         
                         // Trova informazioni allergeni per questa pizza
-                        const pizzaInfo = pizzaMenu.find(p => p.name === pizza.nome) || {};
-                        const allergens = pizzaInfo.allergens || [];
+                        const pizzaInfo = window.menuItems.find(p => p.nome === pizza.nome) || {};
+                        const allergens = pizzaInfo.allergeni ? pizzaInfo.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
                         
                         col.innerHTML = `
                             <div class="card pizza-card h-100" data-pizza-name="${pizza.nome}">
@@ -877,10 +892,10 @@
             }
             
             // Mostra allergeni della pizza
-            const pizzaInfo = pizzaMenu.find(p => p.name === pizza.nome) || {};
-            const allergens = pizzaInfo.allergens || [];
+            const pizzaInfo = window.menuItems.find(p => p.nome === pizza.nome) || {};
+            const allergens = pizzaInfo.allergeni ? pizzaInfo.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
             const allergensEl = document.getElementById('pizzaAllergens');
-            
+
             if (allergens.length > 0) {
                 allergensEl.innerHTML = `
                     <div class="alert alert-warning">
@@ -1323,20 +1338,23 @@
         // Evidenzia le pizze che contengono allergeni selezionati
         function highlightPizzasWithAllergens() {
             const pizzaCards = document.querySelectorAll('.pizza-card');
-            
+
             pizzaCards.forEach(card => {
                 card.classList.remove('allergen-warning');
-                
+
                 const pizzaName = card.getAttribute('data-pizza-name');
-                const pizza = pizzaMenu.find(p => p.name === pizzaName);
-                
-                if (!pizza || !pizza.allergens) return;
-                
+                const pizza = window.menuItems.find(p => p.nome === pizzaName);
+
+                if (!pizza) return;
+
+                // Parse allergens from CSV data
+                const allergens = pizza.allergeni ? pizza.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
+
                 // Controlla se la pizza contiene allergeni selezionati
-                const hasAllergen = userAllergens.some(allergen => 
-                    pizza.allergens.includes(allergen)
+                const hasAllergen = userAllergens.some(allergen =>
+                    allergens.includes(allergen)
                 );
-                
+
                 if (hasAllergen) {
                     card.classList.add('allergen-warning');
                 }
