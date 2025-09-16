@@ -718,11 +718,10 @@
                 snap.forEach(doc => {
                     const d = doc.data() || {};
                     const usable = d.usable === true || (typeof d.usable === 'string' && d.usable.toLowerCase() === 'true');
-                    if (!usable) return;
                     const name = (d.item || doc.id || '').toString().trim();
                     const priceNum = parseFloat(d.price);
                     const price = isNaN(priceNum) ? 0 : priceNum;
-                    if (name) additions.push({ ingredient: name, price });
+                    if (name) additions.push({ ingredient: name, price, usable });
                 });
                 additions.sort((a, b) => a.ingredient.localeCompare(b.ingredient, 'it', { sensitivity: 'base' }));
                 window.__allAdditions = additions;
@@ -828,9 +827,8 @@
                         const col = document.createElement('div');
                         col.className = 'col';
                         
-                        // Trova informazioni allergeni per questa pizza
-                        const pizzaInfo = window.menuItems.find(p => p.nome === pizza.nome) || {};
-                        const allergens = pizzaInfo.allergeni ? pizzaInfo.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
+                        // Allergeni direttamente dalla pizza corrente
+                        const allergens = pizza.allergeni ? pizza.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
                         
                         col.innerHTML = `
                             <div class="card pizza-card h-100" data-pizza-name="${pizza.nome}">
@@ -892,8 +890,7 @@
             }
             
             // Mostra allergeni della pizza
-            const pizzaInfo = window.menuItems.find(p => p.nome === pizza.nome) || {};
-            const allergens = pizzaInfo.allergeni ? pizzaInfo.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
+            const allergens = pizza.allergeni ? pizza.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
             const allergensEl = document.getElementById('pizzaAllergens');
 
             if (allergens.length > 0) {
@@ -1004,7 +1001,11 @@
             
             // Filtra gli ingredienti già presenti nella pizza o già aggiunti
             const baseIngredients = pizza.ingredienti.split(',').map(i => i.trim());
-            const availableAdditions = (window.__allAdditions || []).filter(a => !baseIngredients.includes(a.ingredient));
+            // Se la pizza è la BASE (SG), consenti solo ingredienti usable
+            const isGlutenFreeBase = (typeof pizza.nome === 'string') && (pizza.nome.trim().toLowerCase() === 'base');
+            const availableAdditions = (window.__allAdditions || [])
+                .filter(a => !baseIngredients.includes(a.ingredient))
+                .filter(a => !isGlutenFreeBase || a.usable === true);
             
             availableAdditions.forEach(add => {
                 const ingredient = add.ingredient;
@@ -1066,7 +1067,13 @@
 
         // Conferma aggiunte selezionate
         confirmAdditionsBtn.onclick = () => {
-            currentModifications.added = [...selectedAdditions];
+            const isGlutenFreeBase = (typeof currentPizza.nome === 'string') && (currentPizza.nome.trim().toLowerCase() === 'base');
+            let additions = [...selectedAdditions];
+            if (isGlutenFreeBase) {
+                const dbAdds = window.__allAdditions || [];
+                additions = additions.filter(a => dbAdds.some(dbA => dbA.ingredient === a.ingredient && dbA.usable === true));
+            }
+            currentModifications.added = additions;
             updatePizzaPrice();
             renderIngredientList(currentPizza);
             bootstrap.Modal.getInstance(document.getElementById('additionsModal')).hide();
