@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Menu Pizze Personalizzabili</title>
+    <link rel="icon" href="data:,">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <!-- Aggiungi Firebase SDK -->
@@ -264,23 +265,41 @@
         
         /* Nuovi stili per allergeni */
         .allergen-warning {
-            background-color: rgba(255, 255, 0, 0.2) !important;
-            border: 1px solid rgba(255, 193, 7, 0.5) !important;
+            background-color: rgba(255, 0, 0, 0.15) !important;
+            border: 2px solid #ff0000 !important;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3) !important;
         }
         .allergen-indicator {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 20px;
-            height: 20px;
+            top: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
-            background-color: #ff4444;
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
+            box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
+            border: 2px solid #ffffff;
+            z-index: 10;
+            animation: pulse-red 2s infinite;
+        }
+        
+        @keyframes pulse-red {
+            0% {
+                box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
+            }
+            50% {
+                box-shadow: 0 2px 12px rgba(255, 0, 0, 0.7);
+                transform: scale(1.05);
+            }
+            100% {
+                box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
+            }
         }
         .allergen-controls {
             background-color: #f8f9fa;
@@ -347,6 +366,43 @@
         .allergens-button:hover {
             transform: scale(1.1);
             box-shadow: 0 6px 24px rgba(220, 53, 69, 0.4);
+        }
+        
+        /* Stili per la sezione impasti */
+        .dough-section {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #e3e9f7;
+        }
+        .dough-option {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .dough-option:hover {
+            background-color: #e9ecef;
+        }
+        .dough-option.selected {
+            background-color: #e3f2fd;
+            border-color: #0d6efd;
+        }
+        .dough-option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .dough-price {
+            margin-left: auto;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .dough-price.extra {
+            color: #dc3545;
         }
     </style>
 </head>
@@ -416,6 +472,33 @@
                             <div class="mt-3">
                                 <label for="pizzaQuantity" class="form-label">Quantità:</label>
                                 <input type="number" min="1" value="1" class="form-control" id="pizzaQuantity">
+                            </div>
+                            
+                            <!-- Sezione selezione impasti -->
+                            <div class="dough-section mt-3">
+                                <h6 class="mb-3"><i class="bi bi-circle"></i> Scegli il tipo di impasto:</h6>
+                                <div id="doughOptions">
+                                    <div class="dough-option selected" data-dough="normale" data-price="0">
+                                        <input type="radio" name="doughType" value="normale" checked>
+                                        <span>Impasto Normale (preselezionato)</span>
+                                        <span class="dough-price">Incluso</span>
+                                    </div>
+                                    <div class="dough-option" data-dough="proteico" data-price="2.00">
+                                        <input type="radio" name="doughType" value="proteico">
+                                        <span>Impasto Proteico</span>
+                                        <span class="dough-price extra">+2.00€</span>
+                                    </div>
+                                    <div class="dough-option" data-dough="carbone" data-price="2.00">
+                                        <input type="radio" name="doughType" value="carbone">
+                                        <span>Impasto al Carbone</span>
+                                        <span class="dough-price extra">+2.00€</span>
+                                    </div>
+                                    <div class="dough-option" data-dough="tirato" data-price="2.00">
+                                        <input type="radio" name="doughType" value="tirato">
+                                        <span>Impasto Tirato (36 cm)</span>
+                                        <span class="dough-price extra">+2.00€</span>
+                                    </div>
+                                </div>
                             </div>
                             
                             <div class="ingredient-list" id="ingredientList">
@@ -574,6 +657,10 @@
         };
         let selectedAdditions = [];
         let userAllergens = [];
+        let selectedDough = {
+            type: 'normale',
+            price: 0
+        };
 
         // Elementi DOM
         const cartCounter = document.getElementById('cartCounter');
@@ -737,7 +824,7 @@
         async function loadMenuFromCSV() {
             try {
                 // Percorso del file CSV
-                const response = await fetch('https://raw.githubusercontent.com/Rmamavvomvvone/Sito-Pizzeria/main/menu_pizze.csv');
+                const response = await fetch('./menu_pizze.csv');
                 if (!response.ok) throw new Error("Errore nel caricamento del CSV");
                 const csvText = await response.text();
                 
@@ -831,7 +918,7 @@
                         const allergens = pizza.allergeni ? pizza.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
                         
                         col.innerHTML = `
-                            <div class="card pizza-card h-100" data-pizza-name="${pizza.nome}">
+                            <div class="card pizza-card h-100 ${allergens.length > 0 ? 'allergen-warning' : ''}" data-pizza-name="${pizza.nome}">
                                 ${allergens.length > 0 ? `<div class="allergen-indicator">${allergens.length}</div>` : ''}
                                 <div class="card-body">
                                     <h3 class="h5 card-title">${pizza.nome}</h3>
@@ -873,12 +960,54 @@
             currentModifications = { removed: [], added: [] };
             selectedAdditions = [];
             
+            // Determina l'impasto originale della pizza
+            const originalIngredients = pizza.ingredienti.split(',').map(i => i.trim());
+            const originalDough = originalIngredients.find(ingredient => 
+                ingredient.toLowerCase().startsWith('impasto')
+            );
+            
+            // Mappa l'impasto originale al tipo corretto
+            let defaultDoughType = 'normale';
+            if (originalDough) {
+                if (originalDough.toLowerCase().includes('proteico')) {
+                    defaultDoughType = 'proteico';
+                } else if (originalDough.toLowerCase().includes('carbone')) {
+                    defaultDoughType = 'carbone';
+                } else if (originalDough.toLowerCase().includes('tirato')) {
+                    defaultDoughType = 'tirato';
+                }
+            }
+            
+            // Reset selezione impasto con il tipo originale
+            // Il prezzo è 0 per l'impasto originale della pizza
+            selectedDough = {
+                type: defaultDoughType,
+                price: 0,
+                originalType: defaultDoughType // Salva il tipo originale per calcoli futuri
+            };
+            
             document.getElementById('pizzaModalTitle').textContent = pizza.nome;
-            document.getElementById('pizzaModalBaseIngredients').textContent = pizza.ingredienti;
             document.getElementById('pizzaModalBasePrice').textContent = parseFloat(pizza.prezzo).toFixed(2);
             document.getElementById('pizzaModalExtraPrice').textContent = '0.00';
             document.getElementById('pizzaModalTotalPrice').textContent = parseFloat(pizza.prezzo).toFixed(2);
             document.getElementById('pizzaQuantity').value = 1;
+            
+            // Reset selezione impasto nel DOM
+            resetDoughSelection();
+            
+            // Aggiorna la visualizzazione degli ingredienti con l'impasto selezionato
+            updateIngredientsDisplay();
+            
+            // Aggiorna la visualizzazione dei prezzi degli impasti
+            updateDoughPricesDisplay();
+            
+            // Nascondi la sezione impasti per le pizze senza glutine
+            const doughSection = document.querySelector('.dough-section');
+            if (pizza.categoria === 'PIZZA SENZA GLUTINE') {
+                doughSection.style.display = 'none';
+            } else {
+                doughSection.style.display = 'block';
+            }
             
             // Imposta immagine se presente nel CSV
             const imgEl = document.getElementById('pizzaModalImage');
@@ -913,6 +1042,126 @@
             new bootstrap.Modal(document.getElementById('pizzaModal')).show();
         }
 
+        // Funzioni per gestire la selezione degli impasti
+        function resetDoughSelection() {
+            // Reset visual selection
+            document.querySelectorAll('.dough-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Select the correct option based on selectedDough.type
+            const correctOption = document.querySelector(`.dough-option[data-dough="${selectedDough.type}"]`);
+            if (correctOption) {
+                correctOption.classList.add('selected');
+                correctOption.querySelector('input[type="radio"]').checked = true;
+            }
+        }
+
+        function setupDoughEventListeners() {
+            document.querySelectorAll('.dough-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selection from all options
+                    document.querySelectorAll('.dough-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selection to clicked option
+                    this.classList.add('selected');
+                    
+                    // Update radio button
+                    const radio = this.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                    
+                    // Update selected dough data
+                    const newDoughType = this.dataset.dough;
+                    const newDoughPrice = parseFloat(this.dataset.price);
+                    
+                    // Calcola il prezzo: 0 se è l'impasto originale, altrimenti il prezzo dell'impasto
+                    let finalPrice = 0;
+                    if (selectedDough.originalType !== newDoughType) {
+                        finalPrice = newDoughPrice;
+                    }
+                    
+                    selectedDough = {
+                        type: newDoughType,
+                        price: finalPrice,
+                        originalType: selectedDough.originalType // Mantieni il tipo originale
+                    };
+                    
+                    // Update ingredients display with new dough
+                    updateIngredientsDisplay();
+                    
+                    // Update total price
+                    updatePizzaPrice();
+                });
+            });
+        }
+
+        // Aggiorna la visualizzazione degli ingredienti base con l'impasto selezionato
+        function updateIngredientsDisplay() {
+            if (!currentPizza) return;
+            
+            // Ottieni gli ingredienti originali
+            const originalIngredients = currentPizza.ingredienti.split(',').map(i => i.trim());
+            
+            // Trova l'impasto originale
+            const originalDoughIndex = originalIngredients.findIndex(ingredient => 
+                ingredient.toLowerCase().startsWith('impasto')
+            );
+            
+            // Crea la nuova lista di ingredienti
+            let updatedIngredients = [...originalIngredients];
+            
+            // Mappa dei tipi di impasto
+            const doughTypeMap = {
+                'normale': 'impasto classico',
+                'proteico': 'impasto proteico', 
+                'carbone': 'impasto al carbone',
+                'tirato': 'impasto tirato'
+            };
+            
+            // Sostituisci l'impasto se trovato
+            if (originalDoughIndex !== -1) {
+                updatedIngredients[originalDoughIndex] = doughTypeMap[selectedDough.type] || 'impasto classico';
+            } else {
+                // Se non c'è un impasto negli ingredienti, aggiungilo all'inizio
+                updatedIngredients.unshift(doughTypeMap[selectedDough.type] || 'impasto classico');
+            }
+            
+            // Aggiorna la visualizzazione
+            document.getElementById('pizzaModalBaseIngredients').textContent = updatedIngredients.join(', ');
+        }
+
+        // Aggiorna la visualizzazione dei prezzi degli impasti
+        function updateDoughPricesDisplay() {
+            if (!selectedDough.originalType) return;
+            
+            // Mappa dei prezzi degli impasti
+            const doughPrices = {
+                'normale': 0,
+                'proteico': 2.00,
+                'carbone': 2.00,
+                'tirato': 2.00
+            };
+            
+            // Aggiorna ogni opzione di impasto
+            document.querySelectorAll('.dough-option').forEach(option => {
+                const doughType = option.dataset.dough;
+                const priceElement = option.querySelector('.dough-price');
+                
+                if (doughType === selectedDough.originalType) {
+                    // Impasto originale - mostra "Incluso"
+                    priceElement.textContent = 'Incluso';
+                    priceElement.classList.remove('extra');
+                } else {
+                    // Altri impasti - mostra il prezzo
+                    const price = doughPrices[doughType] || 0;
+                    priceElement.textContent = `+${price.toFixed(2)}€`;
+                    priceElement.classList.add('extra');
+                }
+            });
+        }
+
         // Renderizza la lista degli ingredienti modificabili
         function renderIngredientList(pizza) {
             ingredientListEl.innerHTML = '';
@@ -923,8 +1172,10 @@
             title.textContent = 'Personalizza ingredienti:';
             ingredientListEl.appendChild(title);
             
-            // Ingredienti base della pizza
-            const baseIngredients = pizza.ingredienti.split(',').map(i => i.trim());
+            // Ingredienti base della pizza (esclusi gli impasti)
+            const baseIngredients = pizza.ingredienti.split(',')
+                .map(i => i.trim())
+                .filter(ingredient => !ingredient.toLowerCase().startsWith('impasto'));
             
             // Per ogni ingrediente base, crea un elemento con pulsante rimozione
             baseIngredients.forEach(ingredient => {
@@ -1095,6 +1346,9 @@
             currentModifications.added.forEach(ing => {
                 extraPrice += ing.price;
             });
+            
+            // Aggiungi costo impasto
+            extraPrice += selectedDough.price;
 
             // Sincronizza con il DB: evita ingredienti non più presenti (opzionale)
             if (window.__allAdditions) {
@@ -1118,12 +1372,16 @@
                 extraPrice += ing.price;
             });
             
+            // Aggiungi costo impasto
+            extraPrice += selectedDough.price;
+            
             const totalPrice = basePrice + extraPrice;
             
             const existingItemIndex = cart.findIndex(item => 
                 item.id === currentPizza.id && 
                 JSON.stringify(item.removed) === JSON.stringify(currentModifications.removed) &&
-                JSON.stringify(item.added) === JSON.stringify(currentModifications.added)
+                JSON.stringify(item.added) === JSON.stringify(currentModifications.added) &&
+                JSON.stringify(item.dough) === JSON.stringify(selectedDough)
             );
             
             if (existingItemIndex >= 0) {
@@ -1141,7 +1399,8 @@
                     total: totalPrice * quantity,
                     baseIngredients: currentPizza.ingredienti,
                     removed: [...currentModifications.removed],
-                    added: [...currentModifications.added]
+                    added: [...currentModifications.added],
+                    dough: {...selectedDough}
                 });
             }
             
@@ -1176,17 +1435,35 @@
                 const itemEl = document.createElement('div');
                 itemEl.className = 'cart-item';
                 
-                // Mostra modifiche agli ingredienti
+                // Assicurati che l'item abbia la proprietà dough (compatibilità con carrelli esistenti)
+                if (!item.dough) {
+                    item.dough = { type: 'normale', price: 0 };
+                }
+                
+                // Mostra modifiche agli ingredienti e impasto
                 let modificationsHtml = '';
-                if (item.removed.length > 0 || item.added.length > 0) {
+                const hasModifications = item.removed.length > 0 || item.added.length > 0 || (item.dough && item.dough.type !== 'normale');
+                
+                if (hasModifications) {
                     modificationsHtml = '<div class="mt-2"><small class="text-muted">';
                     
+                    // Mostra impasto se diverso da normale
+                    if (item.dough && item.dough.type !== 'normale') {
+                        const doughNames = {
+                            'proteico': 'Impasto Proteico',
+                            'carbone': 'Impasto al Carbone',
+                            'tirato': 'Impasto Tirato'
+                        };
+                        modificationsHtml += `<span class="text-primary"><i class="bi bi-circle"></i> ${doughNames[item.dough.type] || item.dough.type}</span>`;
+                    }
+                    
                     if (item.removed.length > 0) {
+                        if (item.dough && item.dough.type !== 'normale') modificationsHtml += '<br>';
                         modificationsHtml += `<span class="text-danger">Rimossi: ${item.removed.join(', ')}</span>`;
                     }
                     
                     if (item.added.length > 0) {
-                        if (item.removed.length > 0) modificationsHtml += '<br>';
+                        if (item.removed.length > 0 || (item.dough && item.dough.type !== 'normale')) modificationsHtml += '<br>';
                         modificationsHtml += `<span class="text-success">Aggiunti: ${item.added.map(a => a.ingredient).join(', ')}</span>`;
                     }
                     
@@ -1266,6 +1543,16 @@
             // Prepara SOLO i dati essenziali per Firebase
             const pizzeOrdinate = cart.map(item => {
                 let nomeCompleto = item.name;
+                
+                // Aggiungi impasto se diverso da normale
+                if (item.dough && item.dough.type !== 'normale') {
+                    const doughNames = {
+                        'proteico': 'Impasto Proteico',
+                        'carbone': 'Impasto al Carbone',
+                        'tirato': 'Impasto Tirato'
+                    };
+                    nomeCompleto += ` - ${doughNames[item.dough.type] || item.dough.type}`;
+                }
                 
                 // Aggiungi modifiche al nome se presenti
                 if (item.removed.length > 0 || item.added.length > 0) {
@@ -1372,6 +1659,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadMenuFromCSV();
             updateCartUI();
+            
+            // Setup event listeners per gli impasti
+            setupDoughEventListeners();
             
             // Setup per i pulsanti allergeni
             document.querySelectorAll('.allergen-btn').forEach(btn => {
