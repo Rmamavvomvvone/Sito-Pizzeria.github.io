@@ -348,7 +348,7 @@
         }
         .allergens-button {
             position: fixed;
-            bottom: 180px;  /* Modificato per posizionarlo sopra il carrello */
+            bottom: 176px;  /* Posizionato sopra il pulsante bevande */
             right: 24px;
             z-index: 1060;  /* Aumentato per essere sopra altri elementi */
             width: 60px;
@@ -362,7 +362,6 @@
             box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
             cursor: pointer;
             transition: all 0.3s;
-            text-align:center;
         }
         .allergens-button:hover {
             transform: scale(1.1);
@@ -405,9 +404,114 @@
         .dough-price.extra {
             color: #dc3545;
         }
+        
+        /* Animazioni per notifiche */
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+        
+        /* Pulsante bevande fisso */
+        .beverages-button {
+            position: fixed;
+            bottom: 100px;
+            right: 24px;
+            z-index: 1060;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(23, 162, 184, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+        .beverages-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 24px rgba(23, 162, 184, 0.4);
+        }
+        .beverages-button i {
+            font-size: 1.5rem;
+        }
+        
+        /* Offcanvas bevande */
+        .offcanvas-beverages {
+            width: 380px;
+            background: linear-gradient(120deg, #fff 80%, #e3f2fd 100%);
+        }
+        .beverage-item {
+            background: white;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .beverage-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 4px 12px rgba(23, 162, 184, 0.2);
+            border-color: #17a2b8;
+        }
+        .beverage-item.allergen-warning {
+            background-color: rgba(255, 0, 0, 0.05);
+            border-color: #ff000033;
+        }
+        .beverage-category-header {
+            background: linear-gradient(90deg, #17a2b8 0%, #138496 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 15px 0 10px 0;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .beverage-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: #212529;
+        }
+        .beverage-price {
+            color: #dc3545;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .beverage-description {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-top: 4px;
+        }
     </style>
 </head>
 <body>
+    <!-- Pulsante bevande fisso -->
+    <button class="beverages-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBeverages" title="Menu Bevande">
+        <i class="bi bi-cup-straw"></i>
+    </button>
+
     <!-- Pulsante allergeni fisso - POSIZIONATO SOPRA IL CARRELLO -->
     <div class="allergens-button" data-bs-toggle="modal" data-bs-target="#allergensModal">
         <i class="bi bi-exclamation-triangle"></i>
@@ -448,6 +552,22 @@
                 </div>
                 <h5 class="total-with-coperto mt-2">Totale con coperto: <span id="totalWithCoperto">0.00</span>€</h5>
                 <button class="btn btn-success w-100 mt-3" id="checkoutBtn" disabled>Conferma ordine</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offcanvas Bevande -->
+    <div class="offcanvas offcanvas-end offcanvas-beverages" tabindex="-1" id="offcanvasBeverages">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title"><i class="bi bi-cup-straw"></i> Menu Bevande</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div id="beveragesContent">
+                <div class="text-center text-muted py-4">
+                    <i class="bi bi-hourglass-split" style="font-size: 2rem;"></i>
+                    <p class="mt-2">Caricamento bevande...</p>
+                </div>
             </div>
         </div>
     </div>
@@ -821,37 +941,100 @@
             }
         }
 
-        // Funzione per generare il menu da CSV
-        async function loadMenuFromCSV() {
+        // Funzione per caricare le bevande da CSV (prima da GitHub, poi locale)
+        async function loadBeveragesFromCSV() {
+            const githubUrl = 'https://raw.githubusercontent.com/Rmamavvomvvone/Sito-Pizzeria.github.io/main/birre.csv';
+            const localUrl = './birre.csv';
+            
             try {
-                // Percorso del file CSV
-                const response = await fetch('./menu_pizze.csv');
-                if (!response.ok) throw new Error("Errore nel caricamento del CSV");
+                // Prova prima a caricare da GitHub
+                console.log('Tentativo di caricamento bevande da GitHub...');
+                let response = await fetch(githubUrl);
+                
+                if (!response.ok) {
+                    // Se GitHub fallisce, prova in locale
+                    console.warn('GitHub non disponibile, provo caricamento locale...');
+                    response = await fetch(localUrl);
+                    
+                    if (!response.ok) {
+                        console.warn("File birre.csv non trovato né su GitHub né in locale");
+                        return [];
+                    }
+                    console.log('Bevande caricate da file locale');
+                } else {
+                    console.log('Bevande caricate da GitHub');
+                }
+                
                 const csvText = await response.text();
+                const beverages = parseCSV(csvText);
                 
-                // Converti CSV in array di oggetti
-                const menuItems = parseCSV(csvText);
-                
-                // Assicurati che ogni pizza abbia un id univoco
-                menuItems.forEach((item, idx) => {
+                // Assicurati che ogni bevanda abbia un id univoco e il flag isBeverage
+                beverages.forEach((item, idx) => {
                     if (!item.id || item.id === '') {
-                        // Usa nome + categoria + indice come id univoco
-                        item.id = `${item.nome}_${item.categoria}_${idx}`;
+                        item.id = `beverage_${item.nome}_${item.categoria}_${idx}`;
+                    }
+                    item.isBeverage = true; // Flag per identificare le bevande
+                    // Per le bevande, normalizza descrizione/ingredienti
+                    if (!item.descrizione && item.ingredienti) {
+                        item.descrizione = item.ingredienti;
+                    }
+                    if (!item.ingredienti && item.descrizione) {
+                        item.ingredienti = item.descrizione;
+                    }
+                    // Se non c'è né descrizione né ingredienti, usa una stringa vuota
+                    if (!item.descrizione) {
+                        item.descrizione = '';
+                    }
+                    if (!item.ingredienti) {
+                        item.ingredienti = '';
                     }
                 });
                 
-                // Estrai tutte le categorie uniche
-                const categories = [...new Set(menuItems.map(item => item.categoria))];
+                console.log(`Caricate ${beverages.length} bevande`);
+                return beverages;
+            } catch (error) {
+                console.warn("Errore nel caricamento delle bevande:", error);
+                return [];
+            }
+        }
+
+        // Funzione per generare il menu da CSV
+        async function loadMenuFromCSV() {
+            try {
+                // Carica pizze
+                const pizzeResponse = await fetch('./menu_pizze.csv');
+                if (!pizzeResponse.ok) throw new Error("Errore nel caricamento del CSV delle pizze");
+                const pizzeText = await pizzeResponse.text();
+                const pizzeItems = parseCSV(pizzeText);
+                
+                // Assicurati che ogni pizza abbia un id univoco
+                pizzeItems.forEach((item, idx) => {
+                    if (!item.id || item.id === '') {
+                        item.id = `${item.nome}_${item.categoria}_${idx}`;
+                    }
+                    item.isBeverage = false; // Flag per identificare le pizze
+                });
+                
+                // Carica bevande
+                const beverages = await loadBeveragesFromCSV();
+                
+                // Estrai categorie solo dalle pizze (non dalle bevande)
+                const pizzaCategories = [...new Set(pizzeItems.map(item => item.categoria))];
                 
                 // Estrai tutti gli ingredienti unici per il menu a tendina
                 await loadAdditionsFromFirestore();
                 
                 // Salva menuItems globalmente per uso in altre funzioni
-                window.menuItems = menuItems;
+                window.menuItems = [...pizzeItems, ...beverages];
+                window.pizzeItems = pizzeItems;
+                window.beverageItems = beverages;
 
-                // Genera i filtri e le sezioni
-                renderCategoryFilters(categories);
-                renderPizzaSections(menuItems, categories);
+                // Genera la sezione bevande fissa in alto
+                renderBeveragesSection(beverages);
+                
+                // Genera i filtri e le sezioni delle pizze
+                renderCategoryFilters(pizzaCategories);
+                renderPizzaSections(pizzeItems, pizzaCategories);
                 
             } catch (error) {
                 console.error("Errore:", error);
@@ -869,9 +1052,72 @@
             }
         }
 
+        // Genera il menu bevande nell'offcanvas
+        function renderBeveragesSection(beverages) {
+            const beveragesContainer = document.getElementById('beveragesContent');
+            
+            if (!beverages || beverages.length === 0) {
+                beveragesContainer.innerHTML = `
+                    <div class="text-center text-muted py-4">
+                        <i class="bi bi-cup-straw-x" style="font-size: 2rem;"></i>
+                        <p class="mt-2">Nessuna bevanda disponibile</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Raggruppa bevande per categoria
+            const beverageCategories = [...new Set(beverages.map(item => item.categoria))];
+            
+            let html = '';
+            
+            beverageCategories.forEach(category => {
+                const categoryBeverages = beverages.filter(item => item.categoria === category);
+                
+                html += `<div class="beverage-category-header">
+                    <i class="bi bi-cup-straw"></i>
+                    <span>${category}</span>
+                </div>`;
+                
+                categoryBeverages.forEach(beverage => {
+                    const allergens = beverage.allergeni ? beverage.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
+                    const description = beverage.descrizione || beverage.ingredienti || '';
+                    
+                    html += `
+                        <div class="beverage-item ${allergens.length > 0 ? 'allergen-warning' : ''}" data-beverage-id="${beverage.id}">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <div class="beverage-name">${beverage.nome}</div>
+                                    ${description ? `<div class="beverage-description">${description}</div>` : ''}
+                                    ${allergens.length > 0 ? `<div class="mt-2">${getAllergenBadges(allergens)}</div>` : ''}
+                                </div>
+                                <div class="beverage-price ms-3">${parseFloat(beverage.prezzo).toFixed(2)}€</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+            
+            beveragesContainer.innerHTML = html;
+            
+            // Aggiungi event listener per ogni bevanda
+            beverages.forEach(beverage => {
+                const item = beveragesContainer.querySelector(`[data-beverage-id="${beverage.id}"]`);
+                if (item) {
+                    item.addEventListener('click', () => {
+                        addBeverageToCart(beverage);
+                        // Chiudi l'offcanvas dopo l'aggiunta (opzionale)
+                        // const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasBeverages'));
+                        // if (offcanvas) offcanvas.hide();
+                    });
+                }
+            });
+        }
+
         // Genera i filtri delle categorie
         function renderCategoryFilters(categories) {
             const filtersContainer = document.getElementById('categoryFilters');
+            filtersContainer.innerHTML = '';
             
             // Filtro "Tutte"
             const allFilter = document.createElement('div');
@@ -890,15 +1136,15 @@
             });
         }
 
-        // Genera le sezioni delle pizze
+        // Genera le sezioni delle pizze e bevande
         function renderPizzaSections(menuItems, categories) {
             const sectionsContainer = document.getElementById('pizzaSections');
             sectionsContainer.innerHTML = '';
             
             categories.forEach(category => {
-                const categoryPizzas = menuItems.filter(item => item.categoria === category);
+                const categoryItems = menuItems.filter(item => item.categoria === category);
                 
-                if (categoryPizzas.length > 0) {
+                if (categoryItems.length > 0) {
                     const section = document.createElement('section');
                     section.className = 'category-section';
                     section.id = `cat-${category.replace(/\s+/g, '-')}`;
@@ -911,28 +1157,46 @@
                     const row = document.createElement('div');
                     row.className = 'row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4';
                     
-                    categoryPizzas.forEach(pizza => {
+                    categoryItems.forEach(item => {
                         const col = document.createElement('div');
                         col.className = 'col';
                         
-                        // Allergeni direttamente dalla pizza corrente
-                        const allergens = pizza.allergeni ? pizza.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
+                        // Allergeni direttamente dall'item corrente
+                        const allergens = item.allergeni ? item.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
+                        
+                        // Determina se è una bevanda o una pizza
+                        const isBeverage = item.isBeverage === true;
+                        
+                        // Per le bevande mostra la descrizione, per le pizze gli ingredienti
+                        let description = '';
+                        if (isBeverage) {
+                            description = item.descrizione || item.ingredienti || '';
+                        } else {
+                            const ingredients = item.ingredienti || '';
+                            const ingredientList = ingredients.split(',');
+                            description = ingredientList.slice(0, 3).join(', ') + (ingredientList.length > 3 ? '...' : '');
+                        }
                         
                         col.innerHTML = `
-                            <div class="card pizza-card h-100 ${allergens.length > 0 ? 'allergen-warning' : ''}" data-pizza-name="${pizza.nome}">
+                            <div class="card pizza-card h-100 ${allergens.length > 0 ? 'allergen-warning' : ''}" data-item-name="${item.nome}">
                                 ${allergens.length > 0 ? `<div class="allergen-indicator">${allergens.length}</div>` : ''}
                                 <div class="card-body">
-                                    <h3 class="h5 card-title">${pizza.nome}</h3>
-                                    <div class="text-danger fw-bold mb-2">${parseFloat(pizza.prezzo).toFixed(2)}€</div>
+                                    <h3 class="h5 card-title">${item.nome}</h3>
+                                    <div class="text-danger fw-bold mb-2">${parseFloat(item.prezzo).toFixed(2)}€</div>
                                     <p class="card-text text-muted">
-                                        ${pizza.ingredienti.split(',').slice(0, 3).join(', ')}${pizza.ingredienti.split(',').length > 3 ? '...' : ''}
+                                        ${description}
                                     </p>
                                     ${allergens.length > 0 ? `<div class="allergen-badges">${getAllergenBadges(allergens)}</div>` : ''}
                                 </div>
                             </div>
                         `;
                         
-                        col.querySelector('.pizza-card').addEventListener('click', () => showPizzaDetails(pizza));
+                        // Se è una bevanda, aggiungi direttamente al carrello, altrimenti mostra i dettagli
+                        if (isBeverage) {
+                            col.querySelector('.pizza-card').addEventListener('click', () => addBeverageToCart(item));
+                        } else {
+                            col.querySelector('.pizza-card').addEventListener('click', () => showPizzaDetails(item));
+                        }
                         row.appendChild(col);
                     });
                     
@@ -1362,6 +1626,62 @@
             document.getElementById('pizzaModalTotalPrice').textContent = (basePrice + extraPrice).toFixed(2);
         }
 
+        // Aggiungi bevanda al carrello (senza personalizzazioni)
+        function addBeverageToCart(beverage) {
+            const basePrice = parseFloat(beverage.prezzo);
+            
+            // Cerca se la bevanda è già nel carrello
+            const existingItemIndex = cart.findIndex(item => 
+                item.id === beverage.id && item.isBeverage === true
+            );
+            
+            if (existingItemIndex >= 0) {
+                // Bevanda già nel carrello, aumenta quantità
+                cart[existingItemIndex].quantity += 1;
+                cart[existingItemIndex].total = cart[existingItemIndex].quantity * basePrice;
+            } else {
+                // Nuova bevanda nel carrello
+                cart.push({
+                    id: beverage.id,
+                    name: beverage.nome,
+                    basePrice: basePrice,
+                    extraPrice: 0,
+                    quantity: 1,
+                    total: basePrice,
+                    isBeverage: true,
+                    description: beverage.descrizione || beverage.ingredienti || '',
+                    removed: [],
+                    added: [],
+                    dough: { type: 'normale', price: 0 }
+                });
+            }
+            
+            updateCartUI();
+            
+            // Mostra notifica
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 12px;
+                box-shadow: 0 4px 20px rgba(40, 167, 69, 0.3);
+                z-index: 9999;
+                font-weight: 600;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.innerHTML = `<i class="bi bi-check-circle"></i> ${beverage.nome} aggiunta al carrello!`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-in';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
         // Aggiungi al carrello
         function addToCart() {
             const quantity = parseInt(document.getElementById('pizzaQuantity').value) || 1;
@@ -1431,7 +1751,10 @@
             
             cart.forEach((item, index) => {
                 grandTotal += item.total;
-                totalPizzas += item.quantity;
+                // Conta solo le pizze per il coperto, non le bevande
+                if (!item.isBeverage) {
+                    totalPizzas += item.quantity;
+                }
                 
                 const itemEl = document.createElement('div');
                 itemEl.className = 'cart-item';
@@ -1441,40 +1764,49 @@
                     item.dough = { type: 'normale', price: 0 };
                 }
                 
-                // Mostra modifiche agli ingredienti e impasto
+                // Mostra modifiche agli ingredienti e impasto (solo per pizze, non per bevande)
                 let modificationsHtml = '';
-                const hasModifications = item.removed.length > 0 || item.added.length > 0 || (item.dough && item.dough.type !== 'normale');
+                const isBeverage = item.isBeverage === true;
                 
-                if (hasModifications) {
-                    modificationsHtml = '<div class="mt-2"><small class="text-muted">';
+                if (!isBeverage) {
+                    const hasModifications = item.removed.length > 0 || item.added.length > 0 || (item.dough && item.dough.type !== 'normale');
                     
-                    // Mostra impasto se diverso da normale
-                    if (item.dough && item.dough.type !== 'normale') {
-                        const doughNames = {
-                            'proteico': 'Impasto Proteico',
-                            'carbone': 'Impasto al Carbone',
-                            'tirato': 'Impasto Tirato'
-                        };
-                        modificationsHtml += `<span class="text-primary"><i class="bi bi-circle"></i> ${doughNames[item.dough.type] || item.dough.type}</span>`;
+                    if (hasModifications) {
+                        modificationsHtml = '<div class="mt-2"><small class="text-muted">';
+                        
+                        // Mostra impasto se diverso da normale
+                        if (item.dough && item.dough.type !== 'normale') {
+                            const doughNames = {
+                                'proteico': 'Impasto Proteico',
+                                'carbone': 'Impasto al Carbone',
+                                'tirato': 'Impasto Tirato'
+                            };
+                            modificationsHtml += `<span class="text-primary"><i class="bi bi-circle"></i> ${doughNames[item.dough.type] || item.dough.type}</span>`;
+                        }
+                        
+                        if (item.removed.length > 0) {
+                            if (item.dough && item.dough.type !== 'normale') modificationsHtml += '<br>';
+                            modificationsHtml += `<span class="text-danger">Rimossi: ${item.removed.join(', ')}</span>`;
+                        }
+                        
+                        if (item.added.length > 0) {
+                            if (item.removed.length > 0 || (item.dough && item.dough.type !== 'normale')) modificationsHtml += '<br>';
+                            modificationsHtml += `<span class="text-success">Aggiunti: ${item.added.map(a => a.ingredient).join(', ')}</span>`;
+                        }
+                        
+                        modificationsHtml += '</small></div>';
                     }
-                    
-                    if (item.removed.length > 0) {
-                        if (item.dough && item.dough.type !== 'normale') modificationsHtml += '<br>';
-                        modificationsHtml += `<span class="text-danger">Rimossi: ${item.removed.join(', ')}</span>`;
+                } else {
+                    // Per le bevande, mostra la descrizione se presente
+                    if (item.description) {
+                        modificationsHtml = `<div class="mt-1"><small class="text-muted fst-italic">${item.description}</small></div>`;
                     }
-                    
-                    if (item.added.length > 0) {
-                        if (item.removed.length > 0 || (item.dough && item.dough.type !== 'normale')) modificationsHtml += '<br>';
-                        modificationsHtml += `<span class="text-success">Aggiunti: ${item.added.map(a => a.ingredient).join(', ')}</span>`;
-                    }
-                    
-                    modificationsHtml += '</small></div>';
                 }
                 
                 itemEl.innerHTML = `
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h6 class="mb-1">${item.name}</h6>
+                            <h6 class="mb-1">${isBeverage ? '<i class="bi bi-cup-straw"></i> ' : ''}${item.name}</h6>
                             <small class="text-muted">${item.quantity}x ${(item.basePrice + item.extraPrice).toFixed(2)}€</small>
                             ${modificationsHtml}
                         </div>
@@ -1705,4 +2037,3 @@
     </script>
 </body>
 </html>
-
