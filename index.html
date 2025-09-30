@@ -1178,7 +1178,7 @@
                         }
                         
                         col.innerHTML = `
-                            <div class="card pizza-card h-100 ${allergens.length > 0 ? 'allergen-warning' : ''}" data-item-name="${item.nome}">
+                            <div class="card pizza-card h-100" data-item-name="${item.nome}">
                                 ${allergens.length > 0 ? `<div class="allergen-indicator">${allergens.length}</div>` : ''}
                                 <div class="card-body">
                                     <h3 class="h5 card-title">${item.nome}</h3>
@@ -1266,12 +1266,24 @@
             // Aggiorna la visualizzazione dei prezzi degli impasti
             updateDoughPricesDisplay();
             
-            // Nascondi la sezione impasti per le pizze senza glutine
+            // Nascondi la sezione impasti per le pizze senza glutine e per i dolci
             const doughSection = document.querySelector('.dough-section');
-            if (pizza.categoria === 'PIZZA SENZA GLUTINE') {
+            const ingredientList = document.getElementById('ingredientList');
+            const addIngredientsBtn = document.getElementById('showAdditionsBtn');
+            
+            if (pizza.categoria === 'PIZZA SENZA GLUTINE' || pizza.categoria === 'DOLCI') {
                 doughSection.style.display = 'none';
             } else {
                 doughSection.style.display = 'block';
+            }
+            
+            // Nascondi la lista ingredienti e il pulsante aggiungi ingredienti per i dolci
+            if (pizza.categoria === 'DOLCI') {
+                ingredientList.style.display = 'none';
+                addIngredientsBtn.style.display = 'none';
+            } else {
+                ingredientList.style.display = 'block';
+                addIngredientsBtn.style.display = 'block';
             }
             
             // Imposta immagine se presente nel CSV
@@ -1969,15 +1981,15 @@
             pizzaCards.forEach(card => {
                 card.classList.remove('allergen-warning');
 
-                const pizzaName = card.getAttribute('data-pizza-name');
-                const pizza = window.menuItems.find(p => p.nome === pizzaName);
+                const itemName = card.getAttribute('data-item-name');
+                const item = window.menuItems.find(p => p.nome === itemName);
 
-                if (!pizza) return;
+                if (!item) return;
 
                 // Parse allergens from CSV data
-                const allergens = pizza.allergeni ? pizza.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
+                const allergens = item.allergeni ? item.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
 
-                // Controlla se la pizza contiene allergeni selezionati
+                // Controlla se l'item contiene allergeni selezionati
                 const hasAllergen = userAllergens.some(allergen =>
                     allergens.includes(allergen)
                 );
