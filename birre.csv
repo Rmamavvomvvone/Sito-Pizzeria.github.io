@@ -1,7 +1,9 @@
 Categoria;Nome;Prezzo;Allergeni;Descrizione
 BIRRA;Brooklyn - THE STONEWALL INN IPA;4;1;25cl Alc: 4.6% fermentazione: Alta Stile:IPA Colore:Dorato acceso
 BIRRA;Brooklyn - THE STONEWALL INN IPA;6;1;40cl Alc: 4.6% fermentazione: Alta Stile:IPA Colore:Dorato acceso
-BIRRA;Brooklyn - TUCHER WEIZEN;4;1;25cl Alc: 5.2% fermentazione: Alta Stile:Hefeweizen Colore: Chiaro
-BIRRA;Brooklyn - TUCHER WEIZEN;6;1;40cl Alc: 5.2% fermentazione: Alta Stile:Hefeweizen Colore: Chiaro
-  BIRRA;Brooklyn - GRIMBERGEN DOUBLE AMBREE;4;1;25cl Alc: 6.5% fermentazione: Alta Stile: Ambree D'abbazia Colore: Ambrato
-BIRRA;Brooklyn - GRIMBERGEN DOUBLE AMBREE;6;1;40cl Alc: 6.5% fermentazione: Alta Stile: Ambree D'abbazia Colore: Ambrato
+BIRRA;TUCHER WEIZEN;4;1;30cl Alc: 5.2% fermentazione: Alta Stile:Hefeweizen Colore: Chiaro
+BIRRA;TUCHER WEIZEN;6;1;50cl Alc: 5.2% fermentazione: Alta Stile:Hefeweizen Colore: Chiaro
+BIRRA;GRIMBERGEN DOUBLE AMBREE;4;1;25cl Alc: 6.5% fermentazione: Alta Stile: Ambree D'abbazia Colore: Ambrato
+BIRRA;GRIMBERGEN DOUBLE AMBREE;6;1;50cl Alc: 6.5% fermentazione: Alta Stile: Ambree D'abbazia Colore: Ambrato
+BIBITA;COCA SPINA;4;;25cl COCA COLA alla spina 
+BIBITA;COCA SPINA;6;;50cl COCA COLA alla spina
