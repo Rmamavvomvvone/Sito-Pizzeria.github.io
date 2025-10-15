@@ -725,9 +725,9 @@
                 </div>
                 
                 <div class="mb-3">
-                    <label for="waiterNumber" class="form-label">👤 Numero e Nome Cameriere*</label>
-                    <input type="text" class="form-control" id="waiterNumber" placeholder="Es: 12 - Mario Rossi" required>
-                    <small class="form-text text-muted">Inserisci il numero e il nome del cameriere</small>
+                    <label for="waiterNumber" class="form-label">👤 Nome Ordinazione</label>
+                    <input type="text" class="form-control" id="waiterNumber" placeholder="Es: Mario Rossi" required>
+                    <small class="form-text text-muted">Inserisci Nome Ordinazione</small>
                 </div>
             </div>
             
@@ -2066,8 +2066,10 @@
                 
                 // Salva l'ordine nella collezione "orders"
                 const docRef = await db.collection("orders").add(orderData);
+                const docRef1 = await db.collection("orders").add(orderData);
                 
                 showFirebaseStatus('Ordine salvato con successo! ID: ' + docRef.id, 'success');
+                showFirebaseStatus('Ordine salvato con successo! ID: ' + docRef1.id, 'success');
                 return true;
             } catch (error) {
                 console.error("Errore nel salvataggio su Firebase:", error);
