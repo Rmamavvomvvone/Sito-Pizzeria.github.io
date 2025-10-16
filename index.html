@@ -269,7 +269,38 @@
             border: 2px solid #ff0000 !important;
             box-shadow: 0 0 10px rgba(255, 0, 0, 0.3) !important;
         }
-
+        .allergen-indicator {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
+            border: 2px solid #ffffff;
+            z-index: 10;
+            animation: pulse-red 2s infinite;
+        }
+        
+        @keyframes pulse-red {
+            0% {
+                box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
+            }
+            50% {
+                box-shadow: 0 2px 12px rgba(255, 0, 0, 0.7);
+                transform: scale(1.05);
+            }
+            100% {
+                box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
+            }
+        }
         .allergen-controls {
             background-color: #f8f9fa;
             padding: 15px;
@@ -1354,6 +1385,7 @@
                         
                         col.innerHTML = `
                             <div class="card pizza-card h-100" data-item-name="${item.nome}">
+                            
                                 <div class="card-body">
                                     <h3 class="h5 card-title">${item.nome}</h3>
                                     <div class="text-danger fw-bold mb-2">${parseFloat(item.prezzo).toFixed(2)}€</div>
@@ -1842,7 +1874,6 @@
                 });
             }
             
-            cart = sortCartItems(cart);
             updateCartUI();
             
             // Mostra notifica
@@ -1908,12 +1939,10 @@
                     baseIngredients: currentPizza.ingredienti,
                     removed: [...currentModifications.removed],
                     added: [...currentModifications.added],
-                    dough: {...selectedDough},
-                    isBeverage: false
+                    dough: {...selectedDough}
                 });
             }
             
-            cart = sortCartItems(cart);
             updateCartUI();
             bootstrap.Modal.getInstance(document.getElementById('pizzaModal')).hide();
             alert(`${quantity}x ${currentPizza.nome} personalizzata aggiunta al carrello!`);
@@ -2019,16 +2048,14 @@
             
             document.querySelectorAll('.remove-item').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    const index = parseInt(this.getAttribute('data-index'));
-                    cart.splice(index, 1);
-                    cart = sortCartItems(cart);
+                    cart.splice(parseInt(this.getAttribute('data-index')), 1);
                     updateCartUI();
                 });
             });
             
             checkOrderFields();
         }
-        
+
         // Salva ordine su Firebase
         async function saveOrderToFirebase(orderData) {
             try {
