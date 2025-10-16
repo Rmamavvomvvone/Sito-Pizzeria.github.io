@@ -1,14 +1,14 @@
 Categoria;Nome;Prezzo;Allergeni;Descrizione
-BIRRA;Brooklyn - THE STONEWALL INN IPA;4;1;25cl Alc: 4.6% fermentazione: Alta Stile:IPA Colore:Dorato acceso
-BIRRA;Brooklyn - THE STONEWALL INN IPA;6;1;40cl Alc: 4.6% fermentazione: Alta Stile:IPA Colore:Dorato acceso
-BIRRA;TUCHER WEIZEN;4;1;30cl Alc: 5.2% fermentazione: Alta Stile:Hefeweizen Colore: Chiaro
-BIRRA;TUCHER WEIZEN;6;1;50cl Alc: 5.2% fermentazione: Alta Stile:Hefeweizen Colore: Chiaro
-BIRRA;GRIMBERGEN DOUBLE AMBREE;4;1;25cl Alc: 6.5% fermentazione: Alta Stile: Ambree D'abbazia Colore: Ambrato
-BIRRA;GRIMBERGEN DOUBLE AMBREE;6;1;50cl Alc: 6.5% fermentazione: Alta Stile: Ambree D'abbazia Colore: Ambrato
-BIRRA;CARLSBERG ELEPHANT;4;1;25cl Alc: 7.2% fermentazione: Bassa Stile: Strong Lager Colore: Oro carico
-BIRRA;CARLSBERG ELEPHANT;6;1;40cl Alc: 7.2% fermentazione: Bassa Stile: Strong Lager Colore: Oro carico
-BIRRA;ANGELO PORETTI 4 LUPPOLI;4;1;25cl Alc: 5.0% fermentazione: Bassa Stile: Lager Colore: Chiaro Paglierino
-BIRRA;ANGELO PORETTI 4 LUPPOLI;6;1;40cl Alc: 5.0% fermentazione: Bassa Stile: Lager Colore: Chiaro Paglierino
+BIRRA;Brooklyn - THE STONEWALL INN IPA 25cl ;4;1;Alc: 4.6% fermentazione: Alta Stile:IPA Colore:Dorato acceso
+BIRRA;Brooklyn - THE STONEWALL INN IPA 40cl ;6;1;Alc: 4.6% fermentazione: Alta Stile:IPA Colore:Dorato acceso
+BIRRA;TUCHER WEIZEN 30cl;4;1; Alc: 5.2% fermentazione: Alta Stile:Hefeweizen Colore: Chiaro
+BIRRA;TUCHER WEIZEN 50cl;6;1; Alc: 5.2% fermentazione: Alta Stile:Hefeweizen Colore: Chiaro
+BIRRA;GRIMBERGEN DOUBLE AMBREE 25cl;4;1; Alc: 6.5% fermentazione: Alta Stile: Ambree D'abbazia Colore: Ambrato
+BIRRA;GRIMBERGEN DOUBLE AMBREE 50cl;6;1; Alc: 6.5% fermentazione: Alta Stile: Ambree D'abbazia Colore: Ambrato
+BIRRA;CARLSBERG ELEPHANT 25cl;4;1; Alc: 7.2% fermentazione: Bassa Stile: Strong Lager Colore: Oro carico
+BIRRA;CARLSBERG ELEPHANT 40cl;6;1; Alc: 7.2% fermentazione: Bassa Stile: Strong Lager Colore: Oro carico
+BIRRA;ANGELO PORETTI 4 LUPPOLI 25cl;4;1; Alc: 5.0% fermentazione: Bassa Stile: Lager Colore: Chiaro Paglierino
+BIRRA;ANGELO PORETTI 4 LUPPOLI 40cl;6;1; Alc: 5.0% fermentazione: Bassa Stile: Lager Colore: Chiaro Paglierino
 BIBITA;COCA COLA SPINA;6;;40cl COCA COLA alla spina
 BIBITA;COCA COLA Lattina;2.5;;33cl COCA COLA lattina
 BIBITA;COCA COLA ZERO ZUCCHERO Lattina;2.5;;33cl COCA COLA zero zuccheri lattina
