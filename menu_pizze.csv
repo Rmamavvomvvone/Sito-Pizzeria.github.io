@@ -79,7 +79,6 @@ PIZZE CLASSICHE;FUNGHI MISTI;9.50;1,7,12;impasto classico, pomodoro italiano, mo
 PIZZE CLASSICHE;GORGONZOLA E SPECK;8.50;1,7;impasto classico, pomodoro italiano, mozzarella, gorgonzola, speck
 PIZZE CLASSICHE;LA VERA PIZZA;7.50;1,7;impasto classico, pomodoro italiano, fiordilatte, basilico
 PIZZE CLASSICHE;MARGHERITA;6.00;1,7;impasto classico, pomodoro italiano, mozzarella
-PIZZE CLASSICHE;FUNGHI MISTI;8.00;1,7;impasto classico, pomodoro italiano, mozzarella, funghi misti
 PIZZE CLASSICHE;MARINARA;5.00;1;impasto classico, pomodoro italiano, origano, aglio, olio
 PIZZE CLASSICHE;NAPOLI;8.00;1,4,7;impasto classico, pomodoro italiano, mozzarella, acciuga del cantabrico, origano
 PIZZE CLASSICHE;PARMIGIANA;8.50;1,7;impasto classico, pomodoro italiano, mozzarella, melanzane, scaglie di grana
@@ -98,6 +97,7 @@ DOLCI;PANNA COTTA CON CREMA Caffe';6.00;3,7;Panna, latte, uova, caffe', miele, c
 DOLCI;CREMA DI ZABAIONE AL MARSALA Secco Fine;6.00;3,7;Tuorlo d'uovo, vino di marsala, zucchero, latte, panna, sale, vaniglia.
 DOLCI;BRUNET EXTRA-ARTIGIANALE AL RHUM;6.00;3,7,8;Latte, panna, tuorlo, albume, mandorla di albicocca, agenti lievitanti E500, E503, cacao amaro, rhum, miele, scorza d'arancio candita, sale.
 DOLCI;CACCOLE DELLA MAMMA;5.00;8;Bon Bon di mandorle e nocciole ricoperte di cioccolato fondente minino 70%
+
 
 
 
