@@ -22,7 +22,7 @@
             background: rgba(255,255,255,0.95);
             z-index: 1000;
             padding: 18px 0 10px;
-            box-shadow: 0 4px 1 rgba(13,110,253,0.08);
+            box-shadow: 0 4px 18px rgba(13,110,253,0.08);
             border-bottom: 1px solid #e3e9f7;
             backdrop-filter: blur(4px);
         }
@@ -34,7 +34,7 @@
         }
         .category-tab {
             white-space: nowrap;
-            padding: 10px 2;
+            padding: 10px 28px;
             border-radius: 24px;
             background: linear-gradient(90deg, #f8f9fa 60%, #e3e9f7 100%);
             cursor: pointer;
@@ -42,7 +42,7 @@
             border: 1.5px solid #dee2e6;
             font-weight: 600;
             font-size: 1.08rem;
-            box-shadow: 0 2px rgba(13,110,253,0.04);
+            box-shadow: 0 2px 8px rgba(13,110,253,0.04);
             letter-spacing: 0.5px;
         }
         .category-tab:hover {
@@ -55,11 +55,11 @@
             background: linear-gradient(90deg, #0d6efd 60%, #3b82f6 100%);
             color: #fff;
             border-color: #0d6efd;
-            box-shadow: 0 6px 1 rgba(13,110,253,0.15);
+            box-shadow: 0 6px 18px rgba(13,110,253,0.15);
         }
         .category-title {
             font-size: 2.1rem;
-            margin: 3 0 1;
+            margin: 38px 0 18px;
             color: #1a237e;
             position: relative;
             padding-bottom: 12px;
@@ -125,6 +125,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 0.8rem;
         }
         .offcanvas-cart {
             width: 420px;
@@ -347,9 +348,9 @@
         }
         .allergens-button {
             position: fixed;
-            bottom: 176px;
+            bottom: 176px;  /* Posizionato sopra il pulsante bevande */
             right: 24px;
-            z-index: 1060;
+            z-index: 1060;  /* Aumentato per essere sopra altri elementi */
             width: 60px;
             height: 60px;
             border-radius: 50%;
@@ -645,11 +646,10 @@
             font-style: italic;
         }
         .form-text.text-muted {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #6c757d;
             margin-top: 5px;
         }
-        
     </style>
 </head>
 <body>
@@ -710,9 +710,9 @@
                         <div class="number-btn disabled" data-number="5">5</div>
                         <div class="number-btn disabled" data-number="6">6</div>
                         <div class="number-btn disabled" data-number="7">7</div>
-                        <div class="number-btn disabled" data-number="8">8</div>
-                        <div class="number-btn disabled" data-number="9">9</div>
-                        <div class="number-btn disabled" data-number="10">10</div>
+                        <div class="number-btn disabled" data-number="fante">8</div>
+                        <div class="number-btn disabled" data-number="cavallo">9</div>
+                        <div class="number-btn disabled" data-number="re">10</div>
                     </div>
                     
                     <!-- Display carta selezionata -->
@@ -2094,7 +2094,26 @@
             }
             
             // Prepara SOLO i dati essenziali per Firebase
-            const pizzeOrdinate = cart.map(item => {
+            const categoryPriority = ["stuzzichini", "pizze", "birre/bibite"];
+
+            const normalizedCart = cart.map(item => ({
+                ...item,
+                category: (item.category || item.categoria || "").toLowerCase()
+            }));
+
+            normalizedCart.forEach(item => {
+                if (!item.category) {
+                    item.category = item.isBeverage ? "birre/bibite" : "pizze";
+                }
+            });
+
+            normalizedCart.sort((a, b) => {
+                const indexA = categoryPriority.indexOf(a.category);
+                const indexB = categoryPriority.indexOf(b.category);
+                return (indexA === -1 ? Infinity : indexA) - (indexB === -1 ? Infinity : indexB);
+            });
+
+            const pizzeOrdinate = normalizedCart.map(item => {
                 let nomeCompleto = item.name;
                 
                 // Aggiungi impasto se diverso da normale
@@ -2343,7 +2362,3 @@
     </script>
 </body>
 </html>
-
-
-
-
