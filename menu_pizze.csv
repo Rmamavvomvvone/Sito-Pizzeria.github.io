@@ -1,5 +1,7 @@
 Categoria;Nome;Prezzo;Allergeni;Ingredienti
 
+STUZZICHINI;PATATINE FRITTE;4.00;;Patatine fritte
+STUZZICHINI;CECIO FRITTO;4.00;;Farinata di ceci fritta. Si consiglia di prenderne 2, sono buoni ;) 
 PIZZE SPECIALI;BENO & DENY;8.50;1,7;impasto classico, pomodoro italiano, fiordilatte, aglio, origano
 PIZZE SPECIALI;DELICATA;9.50;1,7,12;impasto classico, fiordilatte, datterini speziati, olive taggiasche, capperi
 PIZZE SPECIALI;NEW;9.50;1,7,12;impasto classico, fiordilatte, pancetta, friarielli, datterini speziati
@@ -26,8 +28,9 @@ PIZZE SPECIALI;PIZZA DI PAPÀ;13.50;1,4,7;impasto classico, pomodoro italiano, a
 PIZZE SPECIALI;BELLA ITALIA;13.50;1,7,12;impasto classico, pomodoro italiano, crudo di Parma 24 mesi, burrata, datterini speziati, pesto genovese
 PIZZE SPECIALI;CACIO E PEPE;13.50;1,7;impasto classico, fiordilatte, cacio e pepe
 PIZZE SPECIALI;Z900;13.50;1,7;impasto classico, fiordilatte, crema di porro, pancetta, olive taggiasche/leccino, tarallo sbriciolato, grana
-PIZZE SPECIALI;FUTTITINNI;14.00;1,5,7,4,2;impasto schiacciata, salsa di pistacchio, carpaccio di pesce spada, stracciatella/burrata
+PIZZE SPECIALI;FUTTITINNI;14.00;1,5,7,4,2;impasto schiacciata, salsa di pistacchio, carpaccio di pesce spada, stracciatella (oppure)
 PIZZE SPECIALI;PANIGALE;14.00;1,7;impasto classico, pomodoro italiano, ragù di carne, melanzane fritte, fiordilatte, grana
+PIZZE SPECIALI;BORGO PUNTA;14.001,7;impasto classico, pomodoro italiano, fiordilatte, grana, rucola, crudo stagionato, burrata.
 PANUOZZI GOURMET;PANUOZZI N1;10.00;1,7;impasto panuozzo, zucchine fritte, scamorza affumicata, prosciutto cotto, grana
 PANUOZZI GOURMET;PANUOZZI N2;10.00;1,7,12;impasto panuozzo, bufala, melanzane fritte, friarielli, scamorza
 PANUOZZI GOURMET;PANUOZZI N3;10.00;1,7,12;impasto panuozzo, friarielli, scamorza, pancetta, datterini speziati, cheddar
@@ -91,12 +94,14 @@ PIZZE CLASSICHE;SALAMINO E SCAMORZA;8.50;1,7;impasto classico, pomodoro italiano
 PIZZE CLASSICHE;SPECK E PORCINI;9.00;1,7,12;impasto classico, pomodoro italiano, mozzarella, speck, funghi porcini
 PIZZE CLASSICHE;TONNO E CIPOLLA;8.50;1,4,7;impasto classico, pomodoro italiano, mozzarella, cipolla di tropea (stagionale), tonno
 PIZZE CLASSICHE;VEGETARIANA;9.50;1,7;impasto classico, pomodoro italiano, mozzarella, melanzane grigliate, zucchine grigliate, peperoni grigliati
-PIZZA SENZA GLUTINE;BASE;4.50;;Base senza glutine 
-PIZZA SENZA GLUTINE;BASE;6.50;;Base senza glutine pomodoro e fiordilatte 
+PIZZA SENZA GLUTINE;SG SCHIACCIATA;4.50;;Base senza glutine 
+PIZZA SENZA GLUTINE;SG MARGHERITA;6.50;;Base senza glutine pomodoro e fiordilatte 
 DOLCI;PANNA COTTA CON CREMA Caffe';6.00;3,7;Panna, latte, uova, caffe', miele, cacao, sale, agar agar, vaniglia.
 DOLCI;CREMA DI ZABAIONE AL MARSALA Secco Fine;6.00;3,7;Tuorlo d'uovo, vino di marsala, zucchero, latte, panna, sale, vaniglia.
 DOLCI;BRUNET EXTRA-ARTIGIANALE AL RHUM;6.00;3,7,8;Latte, panna, tuorlo, albume, mandorla di albicocca, agenti lievitanti E500, E503, cacao amaro, rhum, miele, scorza d'arancio candita, sale.
 DOLCI;CACCOLE DELLA MAMMA;5.00;8;Bon Bon di mandorle e nocciole ricoperte di cioccolato fondente minino 70%
+
+
 
 
 
