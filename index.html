@@ -703,7 +703,7 @@
                     
                     <!-- Selettore numeri -->
                     <div class="number-selector">
-                        <div class="number-btn disabled" data-number="1">1</div>
+                        <div class="number-btn disabled" data-number="asso">1</div>
                         <div class="number-btn disabled" data-number="2">2</div>
                         <div class="number-btn disabled" data-number="3">3</div>
                         <div class="number-btn disabled" data-number="4">4</div>
@@ -1867,6 +1867,8 @@
                     quantity: 1,
                     total: basePrice,
                     isBeverage: true,
+                    category: (beverage.categoria || 'Birre/Bibite'),
+                    categoria: (beverage.categoria || 'Birre/Bibite'),
                     description: beverage.descrizione || beverage.ingredienti || '',
                     removed: [],
                     added: [],
@@ -2107,14 +2109,34 @@
                 }
             });
 
+            const isBeverageItem = (item) => {
+                if (item.isBeverage === true) return true;
+                if (item.isBeverage === false) return false;
+                if (typeof item.isBeverage === 'string') {
+                    const normalised = item.isBeverage.trim().toLowerCase();
+                    if (normalised === 'true') return true;
+                    if (normalised === 'false') return false;
+                }
+                return Boolean(item.isBeverage);
+            };
+
             normalizedCart.sort((a, b) => {
+                const priorityA = isBeverageItem(a) ? 1 : 0;
+                const priorityB = isBeverageItem(b) ? 1 : 0;
+
+                if (priorityA !== priorityB) {
+                    return priorityA - priorityB;
+                }
+
                 const indexA = categoryPriority.indexOf(a.category);
                 const indexB = categoryPriority.indexOf(b.category);
                 return (indexA === -1 ? Infinity : indexA) - (indexB === -1 ? Infinity : indexB);
             });
 
-            const pizzeOrdinate = normalizedCart.map(item => {
-                let nomeCompleto = item.name;
+            const pizzeOrdinate = normalizedCart
+                .filter(item => !isBeverageItem(item))
+                .map(item => {
+                    let nomeCompleto = item.name;
                 
                 // Aggiungi impasto se diverso da normale
                 if (item.dough && item.dough.type !== 'normale') {
@@ -2150,7 +2172,14 @@
                 tavolo: orderName,
                 cameriere: waiterNumber,
                 status: "Nuovo",
-                pizze: pizzeOrdinate
+                pizze: pizzeOrdinate,
+                bevande: normalizedCart
+                    .filter(item => isBeverageItem(item))
+                    .map(item => ({
+                        nome: item.name,
+                        quantita: item.quantity,
+                        prezzoUnitario: (item.basePrice + (item.extraPrice || 0)).toFixed(2)
+                    }))
             };
             
             // Salva su Firebase
