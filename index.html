@@ -2096,18 +2096,11 @@
             }
             
             // Prepara SOLO i dati essenziali per Firebase
-            const categoryPriority = ["stuzzichini", "pizze", "birre/bibite"];
-
-            const normalizedCart = cart.map(item => ({
+            const normalizedCart = cart.map((item, index) => ({
                 ...item,
-                category: (item.category || item.categoria || "").toLowerCase()
+                category: (item.category || item.categoria || "").toLowerCase(),
+                __originalIndex: index
             }));
-
-            normalizedCart.forEach(item => {
-                if (!item.category) {
-                    item.category = item.isBeverage ? "birre/bibite" : "pizze";
-                }
-            });
 
             const isBeverageItem = (item) => {
                 if (item.isBeverage === true) return true;
@@ -2117,51 +2110,57 @@
                     if (normalised === 'true') return true;
                     if (normalised === 'false') return false;
                 }
-                return Boolean(item.isBeverage);
+                return item.category === 'birre/bibite';
             };
 
-            normalizedCart.sort((a, b) => {
-                const priorityA = isBeverageItem(a) ? 1 : 0;
-                const priorityB = isBeverageItem(b) ? 1 : 0;
-
-                if (priorityA !== priorityB) {
-                    return priorityA - priorityB;
+            normalizedCart.forEach(item => {
+                if (!item.category) {
+                    item.category = isBeverageItem(item) ? 'birre/bibite' : 'pizze';
                 }
-
-                const indexA = categoryPriority.indexOf(a.category);
-                const indexB = categoryPriority.indexOf(b.category);
-                return (indexA === -1 ? Infinity : indexA) - (indexB === -1 ? Infinity : indexB);
             });
 
-            const pizzeOrdinate = normalizedCart
-                .filter(item => !isBeverageItem(item))
-                .map(item => {
-                    let nomeCompleto = item.name;
-                
-                // Aggiungi impasto se diverso da normale
-                if (item.dough && item.dough.type !== 'normale') {
-                    const doughNames = {
-                        'proteico': 'Impasto Proteico',
-                        'carbone': 'Impasto al Carbone',
-                        'tirato': 'Impasto Tirato'
-                    };
-                    nomeCompleto += ` - ${doughNames[item.dough.type] || item.dough.type}`;
-                }
-                
-                // Aggiungi modifiche al nome se presenti
-                if (item.removed.length > 0 || item.added.length > 0) {
-                    let modifiche = [];
-                    if (item.removed.length > 0) {
-                        modifiche.push(`SENZA: ${item.removed.join(', ')}`);
+            const getOrderPriority = (item) => {
+                if (item.category === 'stuzzichini') return 0; // stuzzichini vengono prima
+                if (isBeverageItem(item) || item.category === 'birre/bibite') return 2; // bevande vengono ultime
+                return 1; // pizze vengono nel mezzo
+            };
+
+            const sortedCartForFirebase = [...normalizedCart].sort((a, b) => {
+                const priorityDiff = getOrderPriority(a) - getOrderPriority(b);
+                if (priorityDiff !== 0) return priorityDiff;
+                return a.__originalIndex - b.__originalIndex;
+            });
+
+            const pizzeOrdinate = sortedCartForFirebase.map(item => {
+                const isBeverage = isBeverageItem(item) || item.category === 'birre/bibite';
+                let nomeCompleto = item.name;
+
+                if (!isBeverage) {
+                    // Aggiungi impasto se diverso da normale
+                    if (item.dough && item.dough.type !== 'normale') {
+                        const doughNames = {
+                            'proteico': 'Impasto Proteico',
+                            'carbone': 'Impasto al Carbone',
+                            'tirato': 'Impasto Tirato'
+                        };
+                        nomeCompleto += ` - ${doughNames[item.dough.type] || item.dough.type}`;
                     }
-                    if (item.added.length > 0) {
-                        // Estrai solo i nomi degli ingredienti dagli oggetti
-                        const nomiIngredienti = item.added.map(a => a.ingredient || a);
-                        modifiche.push(`CON: ${nomiIngredienti.join(', ')}`);
+
+                    // Aggiungi modifiche al nome se presenti
+                    if (item.removed.length > 0 || item.added.length > 0) {
+                        let modifiche = [];
+                        if (item.removed.length > 0) {
+                            modifiche.push(`SENZA: ${item.removed.join(', ')}`);
+                        }
+                        if (item.added.length > 0) {
+                            // Estrai solo i nomi degli ingredienti dagli oggetti
+                            const nomiIngredienti = item.added.map(a => a.ingredient || a);
+                            modifiche.push(`CON: ${nomiIngredienti.join(', ')}`);
+                        }
+                        nomeCompleto += ` (${modifiche.join(' - ')})`;
                     }
-                    nomeCompleto += ` (${modifiche.join(' - ')})`;
                 }
-                
+
                 return {
                     pizza: nomeCompleto,
                     quantita: item.quantity
@@ -2172,14 +2171,7 @@
                 tavolo: orderName,
                 cameriere: waiterNumber,
                 status: "Nuovo",
-                pizze: pizzeOrdinate,
-                bevande: normalizedCart
-                    .filter(item => isBeverageItem(item))
-                    .map(item => ({
-                        nome: item.name,
-                        quantita: item.quantity,
-                        prezzoUnitario: (item.basePrice + (item.extraPrice || 0)).toFixed(2)
-                    }))
+                pizze: pizzeOrdinate
             };
             
             // Salva su Firebase
