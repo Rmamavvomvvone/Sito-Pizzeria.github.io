@@ -1,7 +1,12 @@
 Categoria;Nome;Prezzo;Allergeni;Ingredienti
 
-STUZZICHINI;PORZ. PATATINE FRITTE;4.00;;Patatine fritte
-STUZZICHINI;CECIO FRITTO;7.00;;Farinata di ceci fritta. Si consiglia di prenderne 2, sono buoni ;) 
+STUZZICHINI;PORZ. PATATINE FRITTE;5.00;;Patatine fritte
+STUZZICHINI;CECIO FRITTO;7.00;;Farinata di ceci fritta.
+STUZZICHINI;CECIO;4.00;;Farinata di ceci 
+STUZZICHINI;PORZ. PATATINE FRITTE CON SALSE;5.00;;patatine con salse
+STUZZICHINI;FRITTO MISTO;8.00;;misto fritto con patate mozzarella in carrozza verdure fiori di zucca (ingredienti a discrezione della cucina)
+STUZZICHINI;CREMA FRITTA;5.00;;crema fritta con zucchero vanigliato 
+STUZZICHINI;3 BOCCONCINI DI PIZZA FRITTA;9.50;;margherita napoli cotto e scamorza e cipolla caramellata 
 PIZZE SPECIALI;BENO & DENY;8.50;1,7;impasto classico, pomodoro italiano, fiordilatte, aglio, origano
 PIZZE SPECIALI;DELICATA;9.50;1,7,12;impasto classico, fiordilatte, datterini speziati, olive taggiasche, capperi
 PIZZE SPECIALI;NEW;9.50;1,7,12;impasto classico, fiordilatte, pancetta, friarielli, datterini speziati
@@ -100,6 +105,7 @@ DOLCI;PANNA COTTA CON CREMA Caffe';6.00;3,7;Panna, latte, uova, caffe', miele, c
 DOLCI;CREMA DI ZABAIONE AL MARSALA Secco Fine;6.00;3,7;Tuorlo d'uovo, vino di marsala, zucchero, latte, panna, sale, vaniglia.
 DOLCI;BRUNET EXTRA-ARTIGIANALE AL RHUM;6.00;3,7,8;Latte, panna, tuorlo, albume, mandorla di albicocca, agenti lievitanti E500, E503, cacao amaro, rhum, miele, scorza d'arancio candita, sale.
 DOLCI;CACCOLE DELLA MAMMA;5.00;8;Bon Bon di mandorle e nocciole ricoperte di cioccolato fondente minino 70%
+
 
 
 
