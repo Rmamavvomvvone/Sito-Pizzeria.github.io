@@ -10,7 +10,7 @@ STUZZICHINI;3 BOCCONCINI DI PIZZA FRITTA;9.50;;margherita napoli cotto e scamorz
 PIZZE SPECIALI;BENO & DENY;8.50;1,7;impasto classico, pomodoro italiano, fiordilatte, aglio, origano
 PIZZE SPECIALI;DELICATA;9.50;1,7,12;impasto classico, fiordilatte, datterini speziati, olive taggiasche, capperi
 PIZZE SPECIALI;NEW;9.50;1,7,12;impasto classico, fiordilatte, pancetta, friarielli, datterini speziati
-PIZZE SPECIALI;SPECIALE;9.50;1,7;impasto classico, fiordilatte, porchetta, grana, cipolla o patate al forno
+PIZZE SPECIALI;SPECIALE;9.50;1,7;impasto classico, fiordilatte, porchetta, grana, cipolla, patate al forno
 PIZZE SPECIALI;BRUSCHETTA;9.00;1,7,12;impasto schiacciata, olio, sale, rosmarino, cipolla di tropea, datterini, stracciatella/bufala, basilico
 PIZZE SPECIALI;PIZZA DI MAMMA;10.50;1,7;impasto classico, bordo farcito mozzarella e salsiccia, pomodoro italiano, mozzarella, cipolla di tropea/rossa
 PIZZE SPECIALI;MESSICANA;10.50;1,7;impasto classico, pomodoro italiano, mozzarella, fagioli piccanti, salsiccia, peperone, cipolla, guacamole (opzionale)
@@ -19,7 +19,7 @@ PIZZE SPECIALI;NATALE;10.50;1,7,8;impasto schiacciata, salsa di pistacchio, mort
 PIZZE SPECIALI;MIA;10.50;1,4,7,12;impasto classico, pomodoro italiano, tomino piccante, acciuga del cantabrico, datterini speziati, origano, aglio
 PIZZE SPECIALI;HOLLYWOOD;10.50;1,7,12;impasto classico, bufala/fiordilatte, funghi freschi, datterini speziati/pomodorini gialli in salsa agrodolce
 PIZZE SPECIALI;SICILIANA;10.50;1,7,12;impasto classico, fiordilatte, salsiccia, taleggio, melanzane, datterini speziati
-PIZZE SPECIALI;REGINA DEL SUD;11.50;1,7,8,12;impasto schiacciata, salsa di pistacchio, datterini speziati/crema pomodorino giallo, crudo di Parma, stracciatella/burrata
+PIZZE SPECIALI;REGINA DEL SUD;11.50;1,7,8,12;impasto schiacciata, salsa di pistacchio, datterini speziati/crema pomodorino giallo, crudo di Parma, stracciatella 
 PIZZE SPECIALI;MALBORGHETTO;11.00;1,7;impasto al carbone, fiordilatte, mortadella, radicchio, taleggio
 PIZZE SPECIALI;FRANCOLINO;11.00;1,3,7;impasto classico, pomodoro, mozzarella, pancetta, uovo, pepe, scaglie di grana
 PIZZE SPECIALI;PONTEGRADELLA;11.00;1,3,7;impasto classico, pomodoro, mozzarella, asparagi, scaglie di grana, uovo, crema di tartufo
@@ -33,7 +33,7 @@ PIZZE SPECIALI;PIZZA DI PAPÀ;13.50;1,4,7;impasto classico, pomodoro italiano, a
 PIZZE SPECIALI;BELLA ITALIA;13.50;1,7,12;impasto classico, pomodoro italiano, crudo di Parma 24 mesi, burrata, datterini speziati, pesto genovese
 PIZZE SPECIALI;CACIO E PEPE;13.50;1,7;impasto classico, fiordilatte, cacio e pepe
 PIZZE SPECIALI;Z900;13.50;1,7;impasto classico, fiordilatte, crema di porro, pancetta, olive taggiasche/leccino, tarallo sbriciolato, grana
-PIZZE SPECIALI;FUTTITINNI;14.00;1,5,7,4,2;impasto schiacciata, salsa di pistacchio, carpaccio di pesce spada, stracciatella (oppure)
+PIZZE SPECIALI;FUTTITINNI;14.00;1,5,7,4,2;impasto schiacciata, salsa di pistacchio, carpaccio di pesce spada, stracciatella 
 PIZZE SPECIALI;PANIGALE;14.00;1,7;impasto classico, pomodoro italiano, ragù di carne, melanzane fritte, fiordilatte, grana
 PIZZE SPECIALI;BORGO PUNTA;14.00;1,7;impasto classico, pomodoro italiano, fiordilatte, grana, rucola, crudo stagionato, burrata.
 PANUOZZI GOURMET;PANUOZZI N1;10.00;1,7;impasto panuozzo, zucchine fritte, scamorza affumicata, prosciutto cotto, grana
@@ -105,6 +105,7 @@ DOLCI;PANNA COTTA CON CREMA Caffe';6.00;3,7;Panna, latte, uova, caffe', miele, c
 DOLCI;CREMA DI ZABAIONE AL MARSALA Secco Fine;6.00;3,7;Tuorlo d'uovo, vino di marsala, zucchero, latte, panna, sale, vaniglia.
 DOLCI;BRUNET EXTRA-ARTIGIANALE AL RHUM;6.00;3,7,8;Latte, panna, tuorlo, albume, mandorla di albicocca, agenti lievitanti E500, E503, cacao amaro, rhum, miele, scorza d'arancio candita, sale.
 DOLCI;CACCOLE DELLA MAMMA;5.00;8;Bon Bon di mandorle e nocciole ricoperte di cioccolato fondente minino 70%
+
 
 
 
