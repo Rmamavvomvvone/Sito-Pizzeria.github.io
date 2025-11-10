@@ -10,647 +10,728 @@
     <!-- Aggiungi Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <style>
-        body {
-            background: linear-gradient(135deg, #f8fafc 0%, #e3e9f7 100%);
-            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-            padding-bottom: 100px;
-        }
-        .category-header {
-            position: sticky;
-            top: 0;
-            background: rgba(255,255,255,0.95);
-            z-index: 1000;
-            padding: 18px 0 10px;
-            box-shadow: 0 4px 18px rgba(13,110,253,0.08);
-            border-bottom: 1px solid #e3e9f7;
-            backdrop-filter: blur(4px);
-        }
-        .category-tabs {
-            display: flex;
-            overflow-x: auto;
-            gap: 14px;
-            padding-bottom: 5px;
-        }
-        .category-tab {
-            white-space: nowrap;
-            padding: 10px 28px;
-            border-radius: 24px;
-            background: linear-gradient(90deg, #f8f9fa 60%, #e3e9f7 100%);
-            cursor: pointer;
-            transition: all 0.25s;
-            border: 1.5px solid #dee2e6;
-            font-weight: 600;
-            font-size: 1.08rem;
-            box-shadow: 0 2px 8px rgba(13,110,253,0.04);
-            letter-spacing: 0.5px;
-        }
-        .category-tab:hover {
-            background: linear-gradient(90deg, #e9ecef 60%, #dbe6fa 100%);
-            border-color: #0d6efd;
-            color: #0d6efd;
-            box-shadow: 0 4px 12px rgba(13,110,253,0.08);
-        }
-        .category-tab.active {
-            background: linear-gradient(90deg, #0d6efd 60%, #3b82f6 100%);
-            color: #fff;
-            border-color: #0d6efd;
-            box-shadow: 0 6px 18px rgba(13,110,253,0.15);
-        }
-        .category-title {
-            font-size: 2.1rem;
-            margin: 38px 0 18px;
-            color: #1a237e;
-            position: relative;
-            padding-bottom: 12px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-        .category-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(90deg, #0d6efd 60%, #3b82f6 100%);
-            border-radius: 2px;
-        }
-        .pizza-card {
-            border: none;
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(13,110,253,0.07);
-            transition: transform 0.25s, box-shadow 0.25s;
-            height: 100%;
-            margin-bottom: 22px;
-            cursor: pointer;
-            background: linear-gradient(120deg, #fff 80%, #e3e9f7 100%);
-        }
-        .pizza-card:hover {
-            transform: translateY(-8px) scale(1.03);
-            box-shadow: 0 16px 40px rgba(13,110,253,0.13);
-            border: 1.5px solid #0d6efd;
-        }
-        .cart-badge {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            z-index: 1050;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #0d6efd 0%, #3b82f6 100%);
-            color: white;
-            box-shadow: 0 4px 20px rgba(13,110,253,0.3);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .cart-badge:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 24px rgba(13,110,253,0.4);
-        }
-        .cart-badge .badge-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ff1744;
-            color: white;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-        }
-        .offcanvas-cart {
-            width: 420px;
-            background: linear-gradient(120deg, #fff 80%, #e3e9f7 100%);
-        }
-        .pizza-modal-img {
-            max-height: 220px;
-            object-fit: cover;
-            border-radius: 12px;
-        }
-        .cart-item {
-            border-bottom: 1.5px dashed #e3e9f7;
-            padding: 14px 0;
-            background: linear-gradient(90deg, #f8f9fa 80%, #e3e9f7 100%);
-            border-radius: 8px;
-            margin-bottom: 4px;
-        }
-        .btn-primary, .btn-success {
-            border-radius: 24px;
-            padding: 10px 28px;
-            font-size: 1.08rem;
-        }
-        .btn-outline-danger {
-            border-radius: 50%;
-            padding: 0.3em 0.6em;
-        }
-        .order-info {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #e3e9f7;
-        }
-        .coperto-info {
-            background-color: #f8f9fa;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 10px;
-            border-left: 4px solid #0d6efd;
-        }
-        .coperto-price {
-            font-weight: bold;
-            color: #dc3545;
-        }
-        .total-with-coperto {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #0d6efd;
-        }
-        .ingredient-list {
-            margin-top: 15px;
-        }
-        .ingredient-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
-        }
-        .ingredient-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .ingredient-price {
-            color: #28a745;
-            font-weight: bold;
-            min-width: 50px;
-            text-align: right;
-        }
-        .modified-ingredient {
-            background-color: #fff3cd;
-            padding: 2px 5px;
-            border-radius: 4px;
-        }
-        .removed-ingredient {
-            text-decoration: line-through;
-            color: #dc3545;
-        }
-        .added-ingredient {
-            color: #28a745;
-            font-weight: bold;
-        }
-        .add-ingredients-btn {
-            width: 100%;
-            margin-top: 10px;
-        }
-        .additions-modal .modal-body {
-            max-height: 60vh;
-            overflow-y: auto;
-        }
-        .addition-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        .addition-item:hover {
-            background-color: #f8f9fa;
-        }
-        .firebase-status {
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 15px;
-            text-align: center;
-            display: none;
-        }
-        .status-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        .status-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        .status-loading {
-            background-color: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-        .loading-spinner {
-            display: inline-block;
-            width: 1rem;
-            height: 1rem;
-            vertical-align: text-bottom;
-            border: 0.2em solid currentColor;
-            border-right-color: transparent;
-            border-radius: 50%;
-            animation: spinner-border .75s linear infinite;
-        }
-        @keyframes spinner-border {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* Nuovi stili per allergeni */
-        .allergen-warning {
-            background-color: rgba(255, 0, 0, 0.15) !important;
-            border: 2px solid #ff0000 !important;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3) !important;
-        }
-        .allergen-indicator {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: bold;
+<style>
+    body {
+        background: linear-gradient(135deg, #f8fafc 0%, #e3e9f7 100%);
+        font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+        padding-bottom: 100px;
+    }
+    
+    .category-header {
+        position: sticky;
+        top: 0;
+        background: rgba(255,255,255,0.95);
+        z-index: 1000;
+        padding: 18px 0 10px;
+        box-shadow: 0 4px 18px rgba(13,110,253,0.08);
+        border-bottom: 1px solid #e3e9f7;
+        backdrop-filter: blur(4px);
+    }
+    
+    .category-tabs {
+        display: flex;
+        overflow-x: auto;
+        gap: 14px;
+        padding-bottom: 5px;
+    }
+    
+    .category-tab {
+        white-space: nowrap;
+        padding: 10px 28px;
+        border-radius: 24px;
+        background: linear-gradient(90deg, #f8f9fa 60%, #e3e9f7 100%);
+        cursor: pointer;
+        transition: all 0.25s;
+        border: 1.5px solid #dee2e6;
+        font-weight: 600;
+        font-size: 1.08rem;
+        box-shadow: 0 2px 8px rgba(13,110,253,0.04);
+        letter-spacing: 0.5px;
+    }
+    
+    .category-tab:hover {
+        background: linear-gradient(90deg, #e9ecef 60%, #dbe6fa 100%);
+        border-color: #0d6efd;
+        color: #0d6efd;
+        box-shadow: 0 4px 12px rgba(13,110,253,0.08);
+    }
+    
+    .category-tab.active {
+        background: linear-gradient(90deg, #0d6efd 60%, #3b82f6 100%);
+        color: #fff;
+        border-color: #0d6efd;
+        box-shadow: 0 6px 18px rgba(13,110,253,0.15);
+    }
+    
+    .category-title {
+        font-size: 2.1rem;
+        margin: 38px 0 18px;
+        color: #1a237e;
+        position: relative;
+        padding-bottom: 12px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+    
+    .category-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #0d6efd 60%, #3b82f6 100%);
+        border-radius: 2px;
+    }
+    
+    .pizza-card {
+        border: none;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 8px 32px rgba(13,110,253,0.07);
+        transition: transform 0.25s, box-shadow 0.25s;
+        height: 100%;
+        margin-bottom: 22px;
+        cursor: pointer;
+        background: linear-gradient(120deg, #fff 80%, #e3e9f7 100%);
+    }
+    
+    .pizza-card:hover {
+        transform: translateY(-8px) scale(1.03);
+        box-shadow: 0 16px 40px rgba(13,110,253,0.13);
+        border: 1.5px solid #0d6efd;
+    }
+    
+    .cart-badge {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        z-index: 1050;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #0d6efd 0%, #3b82f6 100%);
+        color: white;
+        box-shadow: 0 4px 20px rgba(13,110,253,0.3);
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .cart-badge:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 24px rgba(13,110,253,0.4);
+    }
+    
+    .cart-badge .badge-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ff1744;
+        color: white;
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+    }
+    
+    .offcanvas-cart {
+        width: 420px;
+        background: linear-gradient(120deg, #fff 80%, #e3e9f7 100%);
+    }
+    
+    .pizza-modal-img {
+        max-height: 220px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+    
+    .cart-item {
+        border-bottom: 1.5px dashed #e3e9f7;
+        padding: 14px 0;
+        background: linear-gradient(90deg, #f8f9fa 80%, #e3e9f7 100%);
+        border-radius: 8px;
+        margin-bottom: 4px;
+    }
+    
+    .btn-primary, .btn-success {
+        border-radius: 24px;
+        padding: 10px 28px;
+        font-size: 1.08rem;
+    }
+    
+    .btn-outline-danger {
+        border-radius: 50%;
+        padding: 0.3em 0.6em;
+    }
+    
+    .order-info {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #e3e9f7;
+    }
+    
+    .coperto-info {
+        background-color: #f8f9fa;
+        padding: 10px;
+        border-radius: 8px;
+        margin-top: 10px;
+        border-left: 4px solid #0d6efd;
+    }
+    
+    .coperto-price {
+        font-weight: bold;
+        color: #dc3545;
+    }
+    
+    .total-with-coperto {
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #0d6efd;
+    }
+    
+    .ingredient-list {
+        margin-top: 15px;
+    }
+    
+    .ingredient-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .ingredient-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .ingredient-price {
+        color: #28a745;
+        font-weight: bold;
+        min-width: 50px;
+        text-align: right;
+    }
+    
+    .modified-ingredient {
+        background-color: #fff3cd;
+        padding: 2px 5px;
+        border-radius: 4px;
+    }
+    
+    .removed-ingredient {
+        text-decoration: line-through;
+        color: #dc3545;
+    }
+    
+    .added-ingredient {
+        color: #28a745;
+        font-weight: bold;
+    }
+    
+    .add-ingredients-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+    
+    .additions-modal .modal-body {
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+    
+    .addition-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .addition-item:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .firebase-status {
+        padding: 10px;
+        border-radius: 8px;
+        margin-top: 15px;
+        text-align: center;
+        display: none;
+    }
+    
+    .status-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    
+    .status-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+    
+    .status-loading {
+        background-color: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+    }
+    
+    .loading-spinner {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        vertical-align: text-bottom;
+        border: 0.2em solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        animation: spinner-border .75s linear infinite;
+    }
+    
+    @keyframes spinner-border {
+        to { transform: rotate(360deg); }
+    }
+    
+    /* Allergeni */
+    .allergen-warning {
+        background-color: rgba(255, 0, 0, 0.15) !important;
+        border: 2px solid #ff0000 !important;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.3) !important;
+    }
+    
+    .allergen-indicator {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: bold;
+        box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
+        border: 2px solid #ffffff;
+        z-index: 10;
+        animation: pulse-red 2s infinite;
+    }
+    
+    @keyframes pulse-red {
+        0% {
             box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
-            border: 2px solid #ffffff;
-            z-index: 10;
-            animation: pulse-red 2s infinite;
         }
-        
-        @keyframes pulse-red {
-            0% {
-                box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
-            }
-            50% {
-                box-shadow: 0 2px 12px rgba(255, 0, 0, 0.7);
-                transform: scale(1.05);
-            }
-            100% {
-                box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
-            }
-        }
-        .allergen-controls {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #e3e9f7;
-        }
-        .allergen-tag {
-            display: inline-block;
-            padding: 3px 8px;
-            margin: 3px;
-            border-radius: 12px;
-            background-color: #e9ecef;
-            font-size: 0.85rem;
-        }
-        .allergen-list {
-            margin-top: 10px;
-        }
-        .allergen-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            font-weight: bold;
-            margin: 5px;
-            transition: all 0.3s;
-        }
-        .allergen-btn.selected {
-            transform: scale(1.1);
-            box-shadow: 0 0 0 3px #ffc107;
-        }
-        .selected-allergens {
-            margin-top: 15px;
-            padding: 15px;
-            background-color: #e9ecef;
-            border-radius: 10px;
-        }
-        .allergen-badge {
-            display: inline-block;
-            padding: 3px 8px;
-            margin: 2px;
-            border-radius: 10px;
-            background-color: #f8d7da;
-            color: #721c24;
-            font-size: 0.75rem;
-        }
-        .allergens-button {
-            position: fixed;
-            bottom: 176px;  /* Posizionato sopra il pulsante bevande */
-            right: 24px;
-            z-index: 1060;  /* Aumentato per essere sopra altri elementi */
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-            color: white;
-            box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .allergens-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 24px rgba(220, 53, 69, 0.4);
-        }
-        
-        /* Stili per la sezione impasti */
-        .dough-section {
-            background-color: #f8f9fa;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #e3e9f7;
-        }
-        .dough-option {
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-            margin: 5px 0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 2px solid transparent;
-        }
-        .dough-option:hover {
-            background-color: #e9ecef;
-        }
-        .dough-option.selected {
-            background-color: #e3f2fd;
-            border-color: #0d6efd;
-        }
-        .dough-option input[type="radio"] {
-            margin-right: 10px;
-        }
-        .dough-price {
-            margin-left: auto;
-            font-weight: bold;
-            color: #28a745;
-        }
-        .dough-price.extra {
-            color: #dc3545;
-        }
-        
-        /* Animazioni per notifiche */
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        @keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-        }
-        
-        /* Pulsante bevande fisso */
-        .beverages-button {
-            position: fixed;
-            bottom: 100px;
-            right: 24px;
-            z-index: 1060;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
-            color: white;
-            box-shadow: 0 4px 20px rgba(23, 162, 184, 0.3);
-            cursor: pointer;
-            transition: all 0.3s;
-            border: none;
-        }
-        .beverages-button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 24px rgba(23, 162, 184, 0.4);
-        }
-        .beverages-button i {
-            font-size: 1.5rem;
-        }
-        
-        /* Offcanvas bevande */
-        .offcanvas-beverages {
-            width: 380px;
-            background: linear-gradient(120deg, #fff 80%, #e3f2fd 100%);
-        }
-        .beverage-item {
-            background: white;
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            transition: all 0.3s;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-        .beverage-item:hover {
-            transform: translateX(-5px);
-            box-shadow: 0 4px 12px rgba(23, 162, 184, 0.2);
-            border-color: #17a2b8;
-        }
-        .beverage-item.allergen-warning {
-            background-color: rgba(255, 0, 0, 0.05);
-            border-color: #ff000033;
-        }
-        .beverage-category-header {
-            background: linear-gradient(90deg, #17a2b8 0%, #138496 100%);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin: 15px 0 10px 0;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .beverage-name {
-            font-weight: 600;
-            font-size: 1rem;
-            color: #212529;
-        }
-        .beverage-price {
-            color: #dc3545;
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-        .beverage-description {
-            font-size: 0.85rem;
-            color: #6c757d;
-            margin-top: 4px;
-        }
-        
-        /* Stili per il selettore carte da briscola */
-        .card-selector {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 15px;
-            border: 2px solid #dee2e6;
-        }
-        .card-selector-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #495057;
-            text-align: center;
-        }
-        .suit-selector {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .suit-btn {
-            width: 70px;
-            height: 70px;
-            border-radius: 12px;
-            border: 3px solid #dee2e6;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        .suit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-        }
-        .suit-btn.selected {
-            border-color: #0d6efd;
-            background: linear-gradient(135deg, #e7f3ff 0%, #cfe2ff 100%);
+        50% {
+            box-shadow: 0 2px 12px rgba(255, 0, 0, 0.7);
             transform: scale(1.05);
-            box-shadow: 0 4px 16px rgba(13,110,253,0.3);
         }
-        .suit-btn .suit-icon {
-            font-size: 2.5rem;
-            line-height: 1;
+        100% {
+            box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
         }
-        .suit-btn .suit-name {
-            font-size: 0.65rem;
-            margin-top: 2px;
-            font-weight: 600;
-            color: #495057;
+    }
+    
+    .allergen-controls {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #e3e9f7;
+    }
+    
+    .allergen-tag {
+        display: inline-block;
+        padding: 3px 8px;
+        margin: 3px;
+        border-radius: 12px;
+        background-color: #e9ecef;
+        font-size: 0.85rem;
+    }
+    
+    .allergen-list {
+        margin-top: 10px;
+    }
+    
+    .allergen-btn {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        font-weight: bold;
+        margin: 5px;
+        transition: all 0.3s;
+    }
+    
+    .allergen-btn.selected {
+        transform: scale(1.1);
+        box-shadow: 0 0 0 3px #ffc107;
+    }
+    
+    .selected-allergens {
+        margin-top: 15px;
+        padding: 15px;
+        background-color: #e9ecef;
+        border-radius: 10px;
+    }
+    
+    .allergen-badge {
+        display: inline-block;
+        padding: 3px 8px;
+        margin: 2px;
+        border-radius: 10px;
+        background-color: #f8d7da;
+        color: #721c24;
+        font-size: 0.75rem;
+    }
+    
+    .allergens-button {
+        position: fixed;
+        bottom: 176px;
+        right: 24px;
+        z-index: 1060;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        color: white;
+        box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .allergens-button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 24px rgba(220, 53, 69, 0.4);
+    }
+    
+    /* Impasti */
+    .dough-section {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        border: 1px solid #e3e9f7;
+    }
+    
+    .dough-option {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        margin: 5px 0;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: 2px solid transparent;
+    }
+    
+    .dough-option:hover {
+        background-color: #e9ecef;
+    }
+    
+    .dough-option.selected {
+        background-color: #e3f2fd;
+        border-color: #0d6efd;
+    }
+    
+    .dough-option input[type="radio"] {
+        margin-right: 10px;
+    }
+    
+    .dough-price {
+        margin-left: auto;
+        font-weight: bold;
+        color: #28a745;
+    }
+    
+    .dough-price.extra {
+        color: #dc3545;
+    }
+    
+    /* Animazioni */
+    @keyframes slideIn {
+        from {
+            transform: translateX(400px);
+            opacity: 0;
         }
-        .number-selector {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            margin-top: 15px;
+        to {
+            transform: translateX(0);
+            opacity: 1;
         }
-        .number-btn {
-            aspect-ratio: 1;
-            border-radius: 10px;
-            border: 2px solid #dee2e6;
-            background: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #495057;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
         }
-        .number-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            border-color: #0d6efd;
+        to {
+            transform: translateX(400px);
+            opacity: 0;
         }
-        .number-btn.selected {
-            border-color: #0d6efd;
-            background: linear-gradient(135deg, #0d6efd 0%, #3b82f6 100%);
-            color: white;
-            transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(13,110,253,0.4);
-        }
-        .number-btn.disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
-        .selected-card-display {
-            text-align: center;
-            padding: 15px;
-            background: white;
-            border-radius: 10px;
-            margin-top: 15px;
-            border: 2px solid #0d6efd;
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #0d6efd;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .selected-card-display.empty {
-            border-color: #dee2e6;
-            color: #6c757d;
-            font-size: 0.95rem;
-            font-weight: normal;
-        }
-        
-        /* Stili per il campo cameriere */
-        .mb-3 label[for="waiterNumber"] {
-            font-weight: 600;
-            color: #495057;
-            font-size: 1.05rem;
-        }
-        #waiterNumber {
-            border: 2px solid #dee2e6;
-            border-radius: 10px;
-            padding: 12px 15px;
-            font-size: 1rem;
-            transition: all 0.3s;
-            background: white;
-        }
-        #waiterNumber:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
-            outline: none;
-        }
-        #waiterNumber::placeholder {
-            color: #adb5bd;
-            font-style: italic;
-        }
-        .form-text.text-muted {
-            font-size: 0.85rem;
-            color: #6c757d;
-            margin-top: 5px;
-        }
-    </style>
+    }
+    
+    /* Bevande */
+    .beverages-button {
+        position: fixed;
+        bottom: 100px;
+        right: 24px;
+        z-index: 1060;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        color: white;
+        box-shadow: 0 4px 20px rgba(23, 162, 184, 0.3);
+        cursor: pointer;
+        transition: all 0.3s;
+        border: none;
+    }
+    
+    .beverages-button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 24px rgba(23, 162, 184, 0.4);
+    }
+    
+    .beverages-button i {
+        font-size: 1.5rem;
+    }
+    
+    .offcanvas-beverages {
+        width: 380px;
+        background: linear-gradient(120deg, #fff 80%, #e3f2fd 100%);
+    }
+    
+    .beverage-item {
+        background: white;
+        border-radius: 12px;
+        padding: 12px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        transition: all 0.3s;
+        cursor: pointer;
+        border: 2px solid transparent;
+    }
+    
+    .beverage-item:hover {
+        transform: translateX(-5px);
+        box-shadow: 0 4px 12px rgba(23, 162, 184, 0.2);
+        border-color: #17a2b8;
+    }
+    
+    .beverage-item.allergen-warning {
+        background-color: rgba(255, 0, 0, 0.05);
+        border-color: #ff000033;
+    }
+    
+    .beverage-category-header {
+        background: linear-gradient(90deg, #17a2b8 0%, #138496 100%);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 8px;
+        margin: 15px 0 10px 0;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .beverage-name {
+        font-weight: 600;
+        font-size: 1rem;
+        color: #212529;
+    }
+    
+    .beverage-price {
+        color: #dc3545;
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+    
+    .beverage-description {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-top: 4px;
+    }
+    
+    /* Carte da briscola */
+    .card-selector {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 20px;
+        border-radius: 15px;
+        margin-bottom: 15px;
+        border: 2px solid #dee2e6;
+    }
+    
+    .card-selector-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: #495057;
+        text-align: center;
+    }
+    
+    .suit-selector {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .suit-btn {
+        width: 70px;
+        height: 70px;
+        border-radius: 12px;
+        border: 3px solid #dee2e6;
+        background: white;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .suit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .suit-btn.selected {
+        border-color: #0d6efd;
+        background: linear-gradient(135deg, #e7f3ff 0%, #cfe2ff 100%);
+        transform: scale(1.05);
+        box-shadow: 0 4px 16px rgba(13,110,253,0.3);
+    }
+    
+    .suit-btn .suit-icon {
+        font-size: 2.5rem;
+        line-height: 1;
+    }
+    
+    .suit-btn .suit-name {
+        font-size: 0.65rem;
+        margin-top: 2px;
+        font-weight: 600;
+        color: #495057;
+    }
+    
+    .number-selector {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+        margin-top: 15px;
+    }
+    
+    .number-btn {
+        aspect-ratio: 1;
+        border-radius: 10px;
+        border: 2px solid #dee2e6;
+        background: white;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        font-weight: bold;
+        color: #495057;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    
+    .number-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        border-color: #0d6efd;
+    }
+    
+    .number-btn.selected {
+        border-color: #0d6efd;
+        background: linear-gradient(135deg, #0d6efd 0%, #3b82f6 100%);
+        color: white;
+        transform: scale(1.05);
+        box-shadow: 0 4px 12px rgba(13,110,253,0.4);
+    }
+    
+    .number-btn.disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+    
+    .selected-card-display {
+        text-align: center;
+        padding: 15px;
+        background: white;
+        border-radius: 10px;
+        margin-top: 15px;
+        border: 2px solid #0d6efd;
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #0d6efd;
+        min-height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .selected-card-display.empty {
+        border-color: #dee2e6;
+        color: #6c757d;
+        font-size: 0.95rem;
+        font-weight: normal;
+    }
+    
+    /* Campo cameriere */
+    .mb-3 label[for="waiterNumber"] {
+        font-weight: 600;
+        color: #495057;
+        font-size: 1.05rem;
+    }
+    
+    #waiterNumber {
+        border: 2px solid #dee2e6;
+        border-radius: 10px;
+        padding: 12px 15px;
+        font-size: 1rem;
+        transition: all 0.3s;
+        background: white;
+    }
+    
+    #waiterNumber:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+        outline: none;
+    }
+    
+    #waiterNumber::placeholder {
+        color: #adb5bd;
+        font-style: italic;
+    }
+    
+    .form-text.text-muted {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-top: 5px;
+    }
+</style>
 </head>
 <body>
     <!-- Pulsante bevande fisso -->
@@ -2385,3 +2466,4 @@
     </script>
 </body>
 </html>
+
