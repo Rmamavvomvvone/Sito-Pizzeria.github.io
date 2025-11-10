@@ -1,4 +1,7 @@
 Categoria;Nome;Prezzo;Allergeni;Descrizione
+BIRRA;CARAFFA bionda;14;1;Caraffa bionda
+BIRRA;CARAFFA bianca;14;1;Caraffa bianca
+BIRRA;CARAFFA rossa;14;1;Caraffa rossa
 BIRRA;Brooklyn - THE STONEWALL INN IPA 25cl ;4;1;Alc: 4.6% fermentazione: Alta Stile:IPA Colore:Dorato acceso
 BIRRA;Brooklyn - THE STONEWALL INN IPA 40cl ;6;1;Alc: 4.6% fermentazione: Alta Stile:IPA Colore:Dorato acceso
 BIRRA;TUCHER WEIZEN 30cl;4;1; Alc: 5.2% fermentazione: Alta Stile:Hefeweizen Colore: Chiaro
@@ -23,6 +26,7 @@ VINO;APERIFICO GREEN;6.00;;APERIFICO GREEN
 VINO;APERIFICO FLOWER;6.00;;APERIFICO FLOWER
 VINO;APERIFICO LIMONE;6.00;;APERIFICO LIMONE
 VINO;APERIFICO MANDARINO;6.00;;APERIFICO MANDARINO
+BIBITA;CARAFFA COCA COLA 1L;11;;Caraffa di coca cola
 BIBITA;COCA COLA SPINA;4.5;;40cl COCA COLA alla spina
 BIBITA;COCA COLA ZERO ZUCCHERO MEDIA;4.5;;40cl COCA COLA zero zuccheri 
 BIBITA;COCA COLA Lattina;2.5;;33cl COCA COLA lattina
