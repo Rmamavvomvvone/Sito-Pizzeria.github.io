@@ -2,7 +2,14 @@ Categoria;Nome;Prezzo;Allergeni;Descrizione
 BIRRA;CARAFFA bionda;14;1;Caraffa bionda
 BIRRA;CARAFFA bianca;14;1;Caraffa bianca
 BIRRA;CARAFFA rossa;14;1;Caraffa rossa
-BIRRA;Brooklyn - THE STONEWALL INN IPA 25cl ;4;1;Alc: 4.6% fermentazione: Alta Stile:IPA Colore:Dorato acceso
+BIRRA;ANALCOLICA 33cl ;4.50;1;Alc: 0.0% 
+BIRRA;SENZA GLUTINE ANALCOLICA 33cl ;5.50;;Alc: 0.0% 
+BIRRA;AUDACE 33cl ;5.50;1;RED ALE 5.2% ALC
+BIRRA;PUNGENTE 33cl ;5.50;1;DUBLE IPA  7.5% ALC
+BIRRA;DA URLO 33cl ;5.50;1;BLANCHE  4.4% ALC
+BIRRA;LUNATICA 33cl ;5.50;1;STRONG LAGER  8.5% ALC
+BIRRA;RIBELLE 33cl ;5.50;1;SESSION IPA  3.9% ALC
+BIRRA;TI AMO 33cl ;5.50;1;BLONDE ALE  6.5% ALC
 BIRRA;Brooklyn - THE STONEWALL INN IPA 40cl ;6;1;Alc: 4.6% fermentazione: Alta Stile:IPA Colore:Dorato acceso
 BIRRA;TUCHER WEIZEN 30cl;4;1; Alc: 5.2% fermentazione: Alta Stile:Hefeweizen Colore: Chiaro
 BIRRA;TUCHER WEIZEN 50cl;6;1; Alc: 5.2% fermentazione: Alta Stile:Hefeweizen Colore: Chiaro
@@ -12,6 +19,12 @@ BIRRA;CARLSBERG ELEPHANT 25cl;4;1; Alc: 7.2% fermentazione: Bassa Stile: Strong 
 BIRRA;CARLSBERG ELEPHANT 40cl;6;1; Alc: 7.2% fermentazione: Bassa Stile: Strong Lager Colore: Oro carico
 BIRRA;ANGELO PORETTI 4 LUPPOLI 25cl;4;1; Alc: 5.0% fermentazione: Bassa Stile: Lager Colore: Chiaro Paglierino
 BIRRA;ANGELO PORETTI 4 LUPPOLI 40cl;6;1; Alc: 5.0% fermentazione: Bassa Stile: Lager Colore: Chiaro Paglierino
+BIRRA;GRIMBERGEN BLANCHE 25cl;4;1; Alc: 6.0% fermentazione: Alta Stile: Blanche D'abbazia Colore: Chiaro
+BIRRA;GRIMBERGEN BLANCHE 50cl;6;1; Alc: 6.0% fermentazione: Alta Stile: Blanche D'abbazia Colore: Chiaro
+BIRRA;Brooklyn - EAST IPA 25cl ;4;1;Alc: 6.9% fermentazione: Alta Stile:India Pale Ale Colore: Ambrato
+BIRRA;Brooklyn - EAST IPA 40cl ;6;1;Alc: 6.9% fermentazione: Alta Stile:India Pale Ale Colore: Ambrato
+BIRRA;CARLSBERG SPECIAL BREW 25cl;4;1; Alc: 9.0% fermentazione: Bassa Stile: Strong Lager Colore: Oro carico
+BIRRA;CARLSBERG SPECIAL BREW 40cl;6;1; Alc: 9.0% fermentazione: Bassa Stile: Strong Lager Colore: Oro carico
 VINO;Calice di Vino Rosso FERMO;6.00;;Rosso Fermo
 VINO;Calice di Vino BIANCO FERMO FRUTTATO;6.00;;Bianco Fermo Fruttato
 VINO;Calice di Vino BIANCO FERMO SECCO;6.00;;Bianco Fermo Secco
