@@ -99,10 +99,66 @@
 
         body {
             background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
             font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
             padding-bottom: 100px;
-            transition: background var(--transition-fast) ease;
+            transition: background var(--transition-fast) ease, color var(--transition-fast) ease;
         }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-primary) !important;
+        }
+
+        p, span, label, a, li, div {
+            color: inherit;
+        }
+
+        a {
+            color: var(--primary) !important;
+        }
+
+        a:hover {
+            color: var(--primary-light) !important;
+        }
+
+        .card {
+            background-color: var(--bg-secondary) !important;
+            color: var(--text-primary) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        .form-control, .form-select {
+            background-color: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 0.2rem rgba(90,111,125,0.25) !important;
+        }
+
+        .modal-content {
+            background-color: var(--bg-secondary) !important;
+            color: var(--text-primary) !important;
+        }
+
+        .modal-header {
+            background-color: var(--bg-primary) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        .offcanvas {
+            background-color: var(--bg-secondary) !important;
+            color: var(--text-primary) !important;
+        }
+
+        .btn {
+            color: white !important;
+        }
+
         .category-header {
             position: sticky;
             top: 0;
@@ -276,12 +332,12 @@
         }
         .coperto-price {
             font-weight: bold;
-            color: #dc3545;
+            color: var(--accent);
         }
         .total-with-coperto {
             font-size: 1.2rem;
             font-weight: bold;
-            color: #0d6efd;
+            color: var(--primary);
         }
         .ingredient-list {
             margin-top: 15px;
@@ -291,7 +347,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 8px 0;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border-color);
         }
         .ingredient-actions {
             display: flex;
@@ -299,22 +355,23 @@
             gap: 8px;
         }
         .ingredient-price {
-            color: #28a745;
+            color: var(--secondary);
             font-weight: bold;
             min-width: 50px;
             text-align: right;
         }
         .modified-ingredient {
-            background-color: #fff3cd;
+            background-color: var(--accent);
+            opacity: 0.2;
             padding: 2px 5px;
             border-radius: 4px;
         }
         .removed-ingredient {
             text-decoration: line-through;
-            color: #dc3545;
+            color: #cc4444;
         }
         .added-ingredient {
-            color: #28a745;
+            color: var(--secondary);
             font-weight: bold;
         }
         .add-ingredients-btn {
@@ -347,19 +404,22 @@
             display: none;
         }
         .status-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+            background-color: var(--secondary);
+            opacity: 0.15;
+            color: var(--text-primary);
+            border: 1px solid var(--secondary);
         }
         .status-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
+            background-color: var(--accent);
+            opacity: 0.15;
+            color: var(--text-primary);
+            border: 1px solid var(--accent);
         }
         .status-loading {
-            background-color: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
+            background-color: var(--primary);
+            opacity: 0.15;
+            color: var(--text-primary);
+            border: 1px solid var(--primary);
         }
         .loading-spinner {
             display: inline-block;
@@ -704,32 +764,32 @@
         .beverage-name {
             font-weight: 600;
             font-size: 1rem;
-            color: #212529;
+            color: var(--text-primary);
         }
         .beverage-price {
-            color: #dc3545;
+            color: var(--accent);
             font-weight: bold;
             font-size: 1.1rem;
         }
         .beverage-description {
             font-size: 0.85rem;
-            color: #6c757d;
+            color: var(--text-secondary);
             margin-top: 4px;
         }
         
         /* Stili per il selettore carte da briscola */
         .card-selector {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
             padding: 20px;
             border-radius: 15px;
             margin-bottom: 15px;
-            border: 2px solid #dee2e6;
+            border: 2px solid var(--border-color);
         }
         .card-selector-title {
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 15px;
-            color: #495057;
+            color: var(--text-primary);
             text-align: center;
         }
         .suit-selector {
@@ -743,8 +803,8 @@
             width: 70px;
             height: 70px;
             border-radius: 12px;
-            border: 3px solid #dee2e6;
-            background: white;
+            border: 3px solid var(--border-color);
+            background: var(--bg-primary);
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
@@ -759,10 +819,11 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
         .suit-btn.selected {
-            border-color: #0d6efd;
-            background: linear-gradient(135deg, #e7f3ff 0%, #cfe2ff 100%);
+            border-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             transform: scale(1.05);
-            box-shadow: 0 4px 16px rgba(13,110,253,0.3);
+            box-shadow: 0 4px 16px rgba(90,111,125,0.3);
+            color: white;
         }
         .suit-btn .suit-icon {
             font-size: 2.5rem;
@@ -772,7 +833,7 @@
             font-size: 0.65rem;
             margin-top: 2px;
             font-weight: 600;
-            color: #495057;
+            color: var(--text-secondary);
         }
         .number-selector {
             display: grid;
@@ -783,8 +844,8 @@
         .number-btn {
             aspect-ratio: 1;
             border-radius: 10px;
-            border: 2px solid #dee2e6;
-            background: white;
+            border: 2px solid var(--border-color);
+            background: var(--bg-primary);
             cursor: pointer;
             transition: all 0.3s;
             display: flex;
@@ -792,20 +853,20 @@
             justify-content: center;
             font-size: 1.3rem;
             font-weight: bold;
-            color: #495057;
+            color: var(--text-primary);
             box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         }
         .number-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            border-color: #0d6efd;
+            border-color: var(--primary);
         }
         .number-btn.selected {
-            border-color: #0d6efd;
-            background: linear-gradient(135deg, #0d6efd 0%, #3b82f6 100%);
+            border-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
             transform: scale(1.05);
-            box-shadow: 0 4px 12px rgba(13,110,253,0.4);
+            box-shadow: 0 4px 12px rgba(90,111,125,0.4);
         }
         .number-btn.disabled {
             opacity: 0.3;
@@ -815,21 +876,21 @@
         .selected-card-display {
             text-align: center;
             padding: 15px;
-            background: white;
+            background: var(--bg-primary);
             border-radius: 10px;
             margin-top: 15px;
-            border: 2px solid #0d6efd;
+            border: 2px solid var(--primary);
             font-size: 1.2rem;
             font-weight: 600;
-            color: #0d6efd;
+            color: var(--primary);
             min-height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .selected-card-display.empty {
-            border-color: #dee2e6;
-            color: #6c757d;
+            border-color: var(--border-color);
+            color: var(--text-secondary);
             font-size: 0.95rem;
             font-weight: normal;
         }
@@ -837,29 +898,30 @@
         /* Stili per il campo cameriere */
         .mb-3 label[for="waiterNumber"] {
             font-weight: 600;
-            color: #495057;
+            color: var(--text-primary);
             font-size: 1.05rem;
         }
         #waiterNumber {
-            border: 2px solid #dee2e6;
+            border: 2px solid var(--border-color);
             border-radius: 10px;
             padding: 12px 15px;
             font-size: 1rem;
             transition: all 0.3s;
-            background: white;
+            background: var(--bg-primary);
+            color: var(--text-primary);
         }
         #waiterNumber:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(90, 111, 125, 0.15);
             outline: none;
         }
         #waiterNumber::placeholder {
-            color: #adb5bd;
+            color: var(--text-secondary);
             font-style: italic;
         }
         .form-text.text-muted {
             font-size: 0.85rem;
-            color: #6c757d;
+            color: var(--text-secondary);
             margin-top: 5px;
         }
     </style>
