@@ -437,9 +437,9 @@
         
         /* Nuovi stili per allergeni */
         .allergen-warning {
-            background-color: rgba(255, 0, 0, 0.15) !important;
-            border: 2px solid #ff0000 !important;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3) !important;
+            background-color: rgba(255, 0, 0, 0.1) !important;
+            border: 2px solid rgba(255, 0, 0, 0.3) !important;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2) !important;
         }
         .allergen-indicator {
             position: absolute;
@@ -501,7 +501,7 @@
         }
         .allergen-btn.selected {
             transform: scale(1.1);
-            box-shadow: 0 0 0 3px #ffc107;
+            box-shadow: 0 0 0 3px var(--accent);
         }
         .selected-allergens {
             margin-top: 15px;
@@ -514,12 +514,13 @@
             padding: 4px 10px;
             margin: 3px;
             border-radius: 10px;
-            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
-            color: #721c24;
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.15) 0%, rgba(255, 0, 0, 0.1) 100%);
+            color: var(--text-primary);
             font-size: 0.75rem;
             font-weight: 600;
-            box-shadow: 0 2px 6px rgba(248, 215, 218, 0.4);
+            box-shadow: 0 2px 6px rgba(90, 111, 125, 0.1);
             animation: glow 2s ease-in-out infinite;
+            border: 1px solid rgba(255, 0, 0, 0.2);
         }
         .allergens-button {
             position: fixed;
@@ -532,21 +533,21 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, rgba(198, 120, 86, 0.8) 100%);
             color: white;
-            box-shadow: 0 4px 20px rgba(220, 53, 69, 0.3);
+            box-shadow: 0 4px 20px rgba(90, 111, 125, 0.25);
             cursor: pointer;
             transition: all 0.35s ease-out;
             animation: fadeInScale 0.5s ease-out;
         }
         .allergens-button:hover {
             transform: scale(1.08);
-            box-shadow: 0 6px 28px rgba(220, 53, 69, 0.4);
+            box-shadow: 0 6px 28px rgba(90, 111, 125, 0.3);
         }
         
         .allergens-button:active {
             transform: scale(0.98);
-            box-shadow: 0 2px 10px rgba(220, 53, 69, 0.2);
+            box-shadow: 0 2px 10px rgba(90, 111, 125, 0.15);
         }
         
         /* Stili per la sezione impasti */
@@ -704,9 +705,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--secondary) 0%, #0d9fbf 100%);
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary-light) 100%);
             color: white;
-            box-shadow: 0 4px 20px rgba(23, 162, 184, 0.3);
+            box-shadow: 0 4px 20px rgba(90, 111, 125, 0.25);
             cursor: pointer;
             transition: all 0.35s ease-out;
             border: none;
@@ -714,13 +715,13 @@
         }
         .beverages-button:hover {
             transform: scale(1.1);
-            box-shadow: 0 6px 28px rgba(23, 162, 184, 0.4);
+            box-shadow: 0 6px 28px rgba(90, 111, 125, 0.3);
             animation: none;
         }
         
         .beverages-button:active {
             transform: scale(0.98);
-            box-shadow: 0 2px 10px rgba(23, 162, 184, 0.2);
+            box-shadow: 0 2px 10px rgba(90, 111, 125, 0.15);
         }
         .beverages-button i {
             font-size: 1.5rem;
@@ -728,30 +729,30 @@
         
         .offcanvas-beverages {
             width: 380px;
-            background: linear-gradient(120deg, #fff 80%, #e3f2fd 100%);
+            background: linear-gradient(120deg, var(--bg-primary) 80%, var(--bg-secondary) 100%);
             animation: slideIn 0.3s ease-out;
         }
         .beverage-item {
-            background: white;
+            background: var(--bg-secondary);
             border-radius: var(--radius-md);
             padding: 14px;
             margin-bottom: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 8px rgba(90, 111, 125, 0.08);
             transition: all 0.3s ease-out;
             cursor: pointer;
             border: 2px solid transparent;
             animation: fadeInScale 0.4s ease-out;
         }
         .beverage-item:hover {
-            box-shadow: 0 6px 16px rgba(23, 162, 184, 0.2);
+            box-shadow: 0 6px 16px rgba(90, 111, 125, 0.2);
             border-color: var(--secondary);
         }
         .beverage-item.allergen-warning {
-            background-color: rgba(255, 0, 0, 0.05);
-            border-color: #ff000033;
+            background-color: rgba(255, 0, 0, 0.1);
+            border-color: rgba(255, 0, 0, 0.3);
         }
         .beverage-category-header {
-            background: linear-gradient(90deg, #17a2b8 0%, #138496 100%);
+            background: linear-gradient(90deg, var(--secondary) 0%, var(--primary-light) 100%);
             color: white;
             padding: 10px 15px;
             border-radius: 8px;
