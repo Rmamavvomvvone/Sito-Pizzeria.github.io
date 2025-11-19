@@ -315,6 +315,14 @@
         .btn-outline-danger {
             border-radius: 50%;
             padding: 0.3em 0.6em;
+            color: #dc3545 !important;
+            background-color: #ffe5e5 !important;
+            border-color: #dc3545 !important;
+            font-weight: 600;
+        }
+        
+        .btn-outline-danger:hover {
+            background-color: #ffcccc !important;
         }
         .order-info {
             background: var(--bg-secondary);
@@ -1112,6 +1120,11 @@
                                         <input type="radio" name="doughType" value="tirato_proteico">
                                         <span>Tirato Proteico</span>
                                         <span class="dough-price extra">+4.00€</span>
+                                    </div>
+                                    <div class="dough-option" data-dough="doppio" data-price="3.00">
+                                        <input type="radio" name="doughType" value="doppio">
+                                        <span>Impasto Doppio</span>
+                                        <span class="dough-price extra">+3.00€</span>
                                     </div>
                                 </div>
                             </div>
@@ -1951,7 +1964,8 @@
                 'carbone': 2.00,
                 'tirato': 2.00,
                 'tirato_carbone': 4.00,
-                'tirato_proteico': 4.00
+                'tirato_proteico': 4.00,
+                'doppio': 3.00
             };
             
             // Aggiorna ogni opzione di impasto
@@ -2810,6 +2824,31 @@
             
             // Setup selettore carte da briscola
             setupCardSelector();
+            
+            // Gestione del tasto back del telefono
+            let modalOpen = false;
+            
+            // Aggiungi stato quando il modal si apre
+            document.getElementById('pizzaModal').addEventListener('show.bs.modal', function() {
+                modalOpen = true;
+                window.history.pushState({ modal: true }, '', '');
+            });
+            
+            // Rimuovi lo stato quando il modal si chiude
+            document.getElementById('pizzaModal').addEventListener('hide.bs.modal', function() {
+                modalOpen = false;
+            });
+            
+            // Gestisci il tasto back del telefono
+            window.addEventListener('popstate', function(event) {
+                if (modalOpen && bootstrap.Modal.getInstance(document.getElementById('pizzaModal'))) {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('pizzaModal'));
+                    if (modal) {
+                        modal.hide();
+                        modalOpen = false;
+                    }
+                }
+            });
         });
 
         // Event listeners
