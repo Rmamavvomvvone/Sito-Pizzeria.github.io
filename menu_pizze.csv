@@ -8,6 +8,7 @@ STUZZICHINI;FRITTO MISTO;8.00;;misto fritto con patate mozzarella in carrozza ve
 STUZZICHINI;CREMA FRITTA;5.00;;crema fritta con zucchero vanigliato 
 STUZZICHINI;3 BOCCONCINI DI PIZZA FRITTA;9.50;;margherita - napoli - cotto scamorza e cipolla caramellata 
 STUZZICHINI;COTOLETTA CON PATATE FRITTE ;10.00;;Cotolotta di pollo con patatine fritte 
+STUZZICHINI;FISH AND CHIPS;15.00;;baccalà fritto con patatine fritte
 PIZZE SPECIALI;BENO & DENY;8.50;1,7;impasto classico, pomodoro italiano, fiordilatte, aglio, origano
 PIZZE SPECIALI;DELICATA;9.50;1,7,12;impasto classico, fiordilatte, datterini speziati, olive taggiasche, capperi
 PIZZE SPECIALI;NEW;9.50;1,7,12;impasto classico, fiordilatte, pancetta, friarielli, datterini speziati
@@ -106,6 +107,7 @@ DOLCI;PANNA COTTA CON CREMA Caffe';6.00;3,7;Panna, latte, uova, caffe', miele, c
 DOLCI;CREMA DI ZABAIONE AL MARSALA Secco Fine;6.00;3,7;Tuorlo d'uovo, vino di marsala, zucchero, latte, panna, sale, vaniglia.
 DOLCI;BRUNET EXTRA-ARTIGIANALE AL RHUM;6.00;3,7,8;Latte, panna, tuorlo, albume, mandorla di albicocca, agenti lievitanti E500, E503, cacao amaro, rhum, miele, scorza d'arancio candita, sale.
 DOLCI;CACCOLE DELLA MAMMA;5.00;8;Bon Bon di mandorle e nocciole ricoperte di cioccolato fondente minino 70%
+
 
 
 
