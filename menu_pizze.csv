@@ -42,7 +42,7 @@ PANUOZZI GOURMET;PANUOZZI N1;10.00;1,7;impasto panuozzo, fiordilatte, zucchine f
 PANUOZZI GOURMET;PANUOZZI N2;10.00;1,7,12;impasto panuozzo, fiordilatte, bufala, melanzane fritte, friarielli, scamorza
 PANUOZZI GOURMET;PANUOZZI N3;10.00;1,7,12;impasto panuozzo, fiordilatte, friarielli, scamorza, pancetta, datterini speziati, cheddar
 PANUOZZI GOURMET;PANUOZZI N4;10.00;1,4,7,12;impasto panuozzo, fiordilatte, datterini, capperi, olive, acciughe, basilico
-PANUOZZI GOURMET;PANUOZZI N5;10.00;1,7,12;impasto panuozzo, fiordilatte, datterini speziati, zucchine fritte, crudo di Parma
+PANUOZZI GOURMET;PANUOZZI N5;11.00;1,7,12;impasto panuozzo, fiordilatte, datterini speziati, zucchine fritte, crudo di Parma
 PANUOZZI GOURMET;PANUOZZI N6;10.00;1,7,12;impasto panuozzo, fiordilatte, tonno, cipolla di tropea, olive leccino, datterini, basilico
 PANUOZZI GOURMET;PANUOZZI N7;13.50;1,7,12;impasto panuozzo, radicchio/rucola, pulled pork, salsa BBQ, cheddar, cipolla caramellata
 DIET PIZZA;DIET N1;14.00;1,4,7;impasto proteico, pomodoro, mozzarella, ricotta, rucola, salmone
@@ -67,17 +67,17 @@ CALZONI;SFIZIOSO;9.50;1,7;impasto calzone, mozzarella, stracchino, radicchio, sp
 CALZONI;MEDITERRANEO;9.50;1,4,7,12;impasto calzone, mozzarella, pomodorini, olive nere, capperi, tonno
 CALZONI;VEGETARIANO;10.00;1,7,12;impasto calzone, mozzarella, friarielli, petali di grana
 PIZZE DI STAGIONE;GENNAIO;13.50;1,7,12;impasto classico, crema di carciofi, carciofi alla romana, fiordilatte, guanciale, olio tartufato, basilico
-PIZZE DI STAGIONE;FEBBRAIO;11.00;1,7;impasto classico, fiordilatte, ricotta, salame piccante
-PIZZE DI STAGIONE;MARZO;11.00;1,7,12;impasto classico, pomodoro italiano, frutti di cappero, pomodorini speziati, bufala
-PIZZE DI STAGIONE;APRILE;11.00;1,4,7,12;impasto classico, pomodoro italiano, mozzarella, tonno, cipolla di tropea, datterini speziati, rucola
-PIZZE DI STAGIONE;MAGGIO;11.00;1,7,12;impasto classico, fiordilatte, pomodorini speziati, porchetta
-PIZZE DI STAGIONE;GIUGNO;11.00;1,7,12;impasto classico, fiordilatte, friarielli, acciughe cantabrico, olive, capperi, scamorza
-PIZZE DI STAGIONE;LUGLIO;11.00;1,7,12;impasto classico, pomodoro italiano, datterini speziati, fiordilatte, crudo di Parma 24 mesi
-PIZZE DI STAGIONE;AGOSTO;11.00;1,7;impasto classico, stracchino, brie, scamorza affumicata, grana, miele
-PIZZE DI STAGIONE;SETTEMBRE;11.00;1,7,12;impasto classico, fiordilatte, speck, funghi porcini, mascarpone
-PIZZE DI STAGIONE;OTTOBRE;11.00;1,7,12;impasto classico, fiordilatte, funghi porcini, pera, gorgonzola
-PIZZE DI STAGIONE;NOVEMBRE;11.00;1,7,8,12;impasto classico, crema di zucca, fiordilatte, gorgonzola, grana, noci
-PIZZE DI STAGIONE;DICEMBRE;11.00;1,7,12;impasto classico, crema di tartufo, fiordilatte/bufala, crudo di Parma 24 mesi
+PIZZE DI STAGIONE;FEBBRAIO;10.50;1,7;impasto classico, fiordilatte, ricotta, salame piccante
+PIZZE DI STAGIONE;MARZO;10.50;1,7,12;impasto classico, pomodoro italiano, frutti di cappero, pomodorini speziati, bufala
+PIZZE DI STAGIONE;APRILE;10.50;1,4,7,12;impasto classico, pomodoro italiano, mozzarella, tonno, cipolla di tropea, datterini speziati, rucola
+PIZZE DI STAGIONE;MAGGIO;10.50;1,7,12;impasto classico, fiordilatte, pomodorini speziati, porchetta
+PIZZE DI STAGIONE;GIUGNO;10.50;1,7,12;impasto classico, fiordilatte, friarielli, acciughe cantabrico, olive, capperi, scamorza
+PIZZE DI STAGIONE;LUGLIO;10.50;1,7,12;impasto classico, pomodoro italiano, datterini speziati, fiordilatte, crudo di Parma 24 mesi
+PIZZE DI STAGIONE;AGOSTO;10.50;1,7;impasto classico, stracchino, brie, scamorza affumicata, grana, miele
+PIZZE DI STAGIONE;SETTEMBRE;10.50;1,7,12;impasto classico, fiordilatte, speck, funghi porcini, mascarpone
+PIZZE DI STAGIONE;OTTOBRE;10.50;1,7,12;impasto classico, fiordilatte, funghi porcini, pera, gorgonzola
+PIZZE DI STAGIONE;NOVEMBRE;10.50;1,7,8,12;impasto classico, crema di zucca, fiordilatte, gorgonzola, grana, noci
+PIZZE DI STAGIONE;DICEMBRE;10.50;1,7,12;impasto classico, crema di tartufo, fiordilatte/bufala, crudo di Parma 24 mesi
 PIZZE CLASSICHE;BUFALA;8.00;1,7;impasto classico, pomodoro italiano, bufala DOP
 PIZZE CLASSICHE;BRESAOLA COMPLETA;10.0;1,7;impasto classico, pomodoro italiano, mozzarella, bresaola, rucola, grana
 PIZZE CLASSICHE;BRESAOLONA;10.00;1,7,12;impasto schiacciata, olio, sale, rosmarino, bresaola, fiordilatte, datterini
@@ -107,6 +107,7 @@ DOLCI;PANNA COTTA CON CREMA Caffe';6.00;3,7;Panna, latte, uova, caffe', miele, c
 DOLCI;CREMA DI ZABAIONE AL MARSALA Secco Fine;6.00;3,7;Tuorlo d'uovo, vino di marsala, zucchero, latte, panna, sale, vaniglia.
 DOLCI;BRUNET EXTRA-ARTIGIANALE AL RHUM;6.00;3,7,8;Latte, panna, tuorlo, albume, mandorla di albicocca, agenti lievitanti E500, E503, cacao amaro, rhum, miele, scorza d'arancio candita, sale.
 DOLCI;CACCOLE DELLA MAMMA;5.00;8;Bon Bon di mandorle e nocciole ricoperte di cioccolato fondente minino 70%
+
 
 
 
