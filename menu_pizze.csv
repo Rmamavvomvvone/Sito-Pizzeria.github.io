@@ -54,12 +54,12 @@ DIET PIZZA;DIET N7;11.00;1,7,8;impasto proteico, pomodoro, ricotta, rucola, noci
 DIET PIZZA;DIET N8;11.00;1,7;impasto proteico, pomodoro, rucola, bresaola, ricotta
 DIET PIZZA;DIET N9;12.00;1,3;impasto proteico, pomodoro, asparagi, funghi, uovo, grana
 DIET PIZZA;DIET N10;13.00;1,4,8;impasto proteico, pomodoro, salmone, rucola, noci
-INSALATE A PIZZA;N.58;9.50;1,7,12;impasto schiacciata, olio, sale, rucola, pomodorini, cipolla di tropea, bufala
-INSALATE A PIZZA;N.59;10.50;1,4,7,12;impasto schiacciata, radicchio rosso, tonno, olive leccino, capperi
-INSALATE A PIZZA;N.60;9.50;1,7,12;impasto schiacciata, bresaola, bufala, olive leccino, capperi
-INSALATE A PIZZA;N.61;10.50;1,4,7;impasto schiacciata, rucola, radicchio, bufala, tonno, funghi freschi
-INSALATE A PIZZA;N.62;8.50;1,7,12;impasto schiacciata, fiordilatte, pomodorini, capperi, olive
-INSALATE A PIZZA;N.63;10.50;1,4,7,12;impasto schiacciata, fiordilatte, tonno, olive, capperi, rucola, radicchio
+INSALATE A PIZZA;N.58;9.50;1,7,12;impasto schiacciata, olio, sale, rucola, pomodorini, cipolla di tropea, bufala, olio Evo, glassa di aceto balsamico 
+INSALATE A PIZZA;N.59;10.50;1,4,7,12;impasto schiacciata, radicchio rosso, tonno, olive leccino, capperi, olio Evo, glassa di aceto balsamico
+INSALATE A PIZZA;N.60;9.50;1,7,12;impasto schiacciata, bresaola, bufala, olive leccino, capperi, olio Evo, glassa di aceto balsamico
+INSALATE A PIZZA;N.61;10.50;1,4,7;impasto schiacciata, rucola, radicchio, bufala, tonno, funghi freschi, olio Evo, glassa di aceto balsamico
+INSALATE A PIZZA;N.62;8.50;1,7,12;impasto schiacciata, fiordilatte, pomodorini, capperi, olive, olio Evo, glassa di aceto balsamico
+INSALATE A PIZZA;N.63;10.50;1,4,7,12;impasto schiacciata, fiordilatte, tonno, olive, capperi, rucola, radicchio, olio Evo, glassa di aceto balsamico
 CALZONI;TRADIZIONALE;8.50;1,7,12;impasto calzone, mozzarella, prosciutto cotto, funghi
 CALZONI;PIZZAIOLO;10.00;1,7;impasto calzone, mozzarella, patate fritte, mascarpone, salame piccante
 CALZONI;BOMBA;9.00;1,7;impasto calzone, mozzarella, speck, scamorza
@@ -107,6 +107,7 @@ DOLCI;PANNA COTTA CON CREMA Caffe';6.00;3,7;Panna, latte, uova, caffe', miele, c
 DOLCI;CREMA DI ZABAIONE AL MARSALA Secco Fine;6.00;3,7;Tuorlo d'uovo, vino di marsala, zucchero, latte, panna, sale, vaniglia.
 DOLCI;BRUNET EXTRA-ARTIGIANALE AL RHUM;6.00;3,7,8;Latte, panna, tuorlo, albume, mandorla di albicocca, agenti lievitanti E500, E503, cacao amaro, rhum, miele, scorza d'arancio candita, sale.
 DOLCI;CACCOLE DELLA MAMMA;5.00;8;Bon Bon di mandorle e nocciole ricoperte di cioccolato fondente minino 70%
+
 
 
 
