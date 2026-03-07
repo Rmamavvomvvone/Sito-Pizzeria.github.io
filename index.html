@@ -2615,12 +2615,25 @@
                     quantita: item.quantity
                 };
             });
+
+            // Calcola il totale complessivo dell'ordine
+            let grandTotal = 0;
+            let totalPizzas = 0;
+            cart.forEach(item => {
+                grandTotal += item.total;
+                if (!isBeverageItem(item) && item.categoria !== 'DOLCI' && item.categoria !== 'STUZZICHINI') {
+                    totalPizzas += item.quantity;
+                }
+            });
+            const coperto = 2 * totalPizzas;
+            const totalWithCoperto = grandTotal + coperto;
             
             const orderData = {
                 tavolo: orderName,
                 cameriere: waiterNumber,
                 status: "Nuovo",
-                pizze: pizzeOrdinate
+                pizze: pizzeOrdinate,
+                totale: totalWithCoperto.toFixed(2)
             };
             
             // Salva su Firebase
@@ -2857,3 +2870,4 @@
     </script>
 </body>
 </html>
+
