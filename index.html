@@ -1091,6 +1091,11 @@
                                         <span>Impasto Normale (preselezionato)</span>
                                         <span class="dough-price">Incluso</span>
                                     </div>
+                                    <div class="dough-option" data-dough="baby" data-price="0">
+                                        <input type="radio" name="doughType" value="baby">
+                                        <span>Impasto Baby</span>
+                                        <span class="dough-price">Incluso</span>
+                                    </div>
                                     <div class="dough-option" data-dough="proteico" data-price="2.00">
                                         <input type="radio" name="doughType" value="proteico">
                                         <span>Impasto Proteico</span>
@@ -1929,11 +1934,13 @@
             // Mappa dei tipi di impasto
             const doughTypeMap = {
                 'normale': 'impasto classico',
+                'baby': 'impasto baby',
                 'proteico': 'impasto proteico', 
                 'carbone': 'impasto al carbone',
                 'tirato': 'impasto tirato',
                 'tirato_carbone': 'tirato al carbone',
-                'tirato_proteico': 'tirato proteico'
+                'tirato_proteico': 'tirato proteico',
+                'doppio': 'impasto doppio'
             };
             
             // Sostituisci l'impasto se trovato
@@ -1955,6 +1962,7 @@
             // Mappa dei prezzi degli impasti
             const doughPrices = {
                 'normale': 0,
+                'baby': 0,
                 'proteico': 2.00,
                 'carbone': 2.00,
                 'tirato': 2.00,
