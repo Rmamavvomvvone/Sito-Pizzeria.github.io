@@ -14,16 +14,16 @@ BIRRA;DA URLO 33cl ;5.50;1;BLANCHE  4.4% ALC
 BIRRA;LUNATICA 33cl ;5.50;1;STRONG LAGER  8.5% ALC
 BIRRA;RIBELLE 33cl ;5.50;1;SESSION IPA  3.9% ALC
 BIRRA;TI AMO 33cl ;5.50;1;BLONDE ALE  6.5% ALC
-BIRRA;TUCHER WEIZEN 30cl;4;1; Alc: 5.2% fermentazione: Alta Stile:Hefeweizen Colore: Chiaro
-BIRRA;TUCHER WEIZEN 50cl;6;1; Alc: 5.2% fermentazione: Alta Stile:Hefeweizen Colore: Chiaro
-BIRRA;GRIMBERGEN DOUBLE AMBREE 25cl;4;1; Alc: 6.5% fermentazione: Alta Stile: Ambree D'abbazia Colore: Ambrato
-BIRRA;GRIMBERGEN DOUBLE AMBREE 50cl;6;1; Alc: 6.5% fermentazione: Alta Stile: Ambree D'abbazia Colore: Ambrato
-BIRRA;CARLSBERG ELEPHANT 25cl;4;1; Alc: 7.2% fermentazione: Bassa Stile: Strong Lager Colore: Oro carico
-BIRRA;CARLSBERG ELEPHANT 40cl;6;1; Alc: 7.2% fermentazione: Bassa Stile: Strong Lager Colore: Oro carico
-BIRRA;ANGELO PORETTI 4 LUPPOLI 25cl;4;1; Alc: 5.0% fermentazione: Bassa Stile: Lager Colore: Chiaro Paglierino
-BIRRA;ANGELO PORETTI 4 LUPPOLI 40cl;6;1; Alc: 5.0% fermentazione: Bassa Stile: Lager Colore: Chiaro Paglierino
-BIRRA;GRIMBERGEN BLANCHE 25cl;4;1; Alc: 6.0% fermentazione: Alta Stile: Blanche D'abbazia Colore: Chiaro
-BIRRA;GRIMBERGEN BLANCHE 50cl;6;1; Alc: 6.0% fermentazione: Alta Stile: Blanche D'abbazia Colore: Chiaro
+BIRRA; SPINA TUCHER WEIZEN 30cl;4;1; Alc: 5.2% fermentazione: Alta Stile:Hefeweizen Colore: Chiaro
+BIRRA; SPINA TUCHER WEIZEN 50cl;6;1; Alc: 5.2% fermentazione: Alta Stile:Hefeweizen Colore: Chiaro
+BIRRA; SPINA GRIMBERGEN DOUBLE AMBREE 25cl;4;1; Alc: 6.5% fermentazione: Alta Stile: Ambree D'abbazia Colore: Ambrato
+BIRRA; SPINA GRIMBERGEN DOUBLE AMBREE 50cl;6;1; Alc: 6.5% fermentazione: Alta Stile: Ambree D'abbazia Colore: Ambrato
+BIRRA; SPINA CARLSBERG ELEPHANT 25cl;4;1; Alc: 7.2% fermentazione: Bassa Stile: Strong Lager Colore: Oro carico
+BIRRA; SPINA CARLSBERG ELEPHANT 40cl;6;1; Alc: 7.2% fermentazione: Bassa Stile: Strong Lager Colore: Oro carico
+BIRRA; SPINA ANGELO PORETTI 4 LUPPOLI 25cl;4;1; Alc: 5.0% fermentazione: Bassa Stile: Lager Colore: Chiaro Paglierino
+BIRRA; SPINA ANGELO PORETTI 4 LUPPOLI 40cl;6;1; Alc: 5.0% fermentazione: Bassa Stile: Lager Colore: Chiaro Paglierino
+BIRRA; SPINA GRIMBERGEN BLANCHE 25cl;4;1; Alc: 6.0% fermentazione: Alta Stile: Blanche D'abbazia Colore: Chiaro
+BIRRA; SPINA GRIMBERGEN BLANCHE 50cl;6;1; Alc: 6.0% fermentazione: Alta Stile: Blanche D'abbazia Colore: Chiaro
 BIRRA;Brooklyn - EAST IPA 25cl ;4;1;Alc: 6.9% fermentazione: Alta Stile:India Pale Ale Colore: Ambrato
 BIRRA;Brooklyn - EAST IPA 40cl ;6;1;Alc: 6.9% fermentazione: Alta Stile:India Pale Ale Colore: Ambrato
 BIRRA;CARLSBERG SPECIAL BREW 25cl;4;1; Alc: 9.0% fermentazione: Bassa Stile: Strong Lager Colore: Oro carico
@@ -61,3 +61,8 @@ BIBITA;THE PESCA;2.5;;The alla pesca
 BIBITA;THE LIMONE;2.5;;The al limone
 BIBITA;ACQUA NATURALE;2;;Acqua naturale
 BIBITA;ACQUA FRIZZANTE;2;;Acqua frizzante
+CAFFÈ;CAFFE;1.5;; Caffè 
+CAFFÈ;CAFFE DECAFFEINATO;1.5;; Caffè decaffeinato
+CAFFÈ;CAFFE CORRETTO;2.5;; Caffè corretto 
+CAFFÈ;CAFFE CORRETTO SAMBUCA;2.5;; Caffè corretto sambuca
+
