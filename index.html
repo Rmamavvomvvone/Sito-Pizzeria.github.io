@@ -1121,6 +1121,11 @@
                                         <span>Tirato Proteico</span>
                                         <span class="dough-price extra">+4.00€</span>
                                     </div>
+                                    <div class="dough-option" data-dough="ruota_carro_40" data-price="4.00">
+                                        <input type="radio" name="doughType" value="ruota_carro_40">
+                                        <span>Ruota di Carro 40 cm</span>
+                                        <span class="dough-price extra">+4.00€</span>
+                                    </div>
                                     <div class="dough-option" data-dough="doppio" data-price="3.00">
                                         <input type="radio" name="doughType" value="doppio">
                                         <span>Impasto Doppio</span>
@@ -1780,6 +1785,8 @@
                     defaultDoughType = 'proteico';
                 } else if (originalDough.toLowerCase().includes('carbone')) {
                     defaultDoughType = 'carbone';
+                } else if (originalDough.toLowerCase().includes('ruota')) {
+                    defaultDoughType = 'ruota_carro_40';
                 } else if (originalDough.toLowerCase().includes('tirato')) {
                     defaultDoughType = 'tirato';
                 }
@@ -1940,6 +1947,7 @@
                 'tirato': 'impasto tirato',
                 'tirato_carbone': 'tirato al carbone',
                 'tirato_proteico': 'tirato proteico',
+                'ruota_carro_40': 'ruota di carro 40 cm',
                 'doppio': 'impasto doppio'
             };
             
@@ -1968,6 +1976,7 @@
                 'tirato': 2.00,
                 'tirato_carbone': 4.00,
                 'tirato_proteico': 4.00,
+                'ruota_carro_40': 4.00,
                 'doppio': 3.00
             };
             
@@ -2423,7 +2432,8 @@
                                 'carbone': 'Impasto al Carbone',
                                 'tirato': 'Impasto Tirato',
                                 'tirato_carbone': 'Tirato al Carbone',
-                                'tirato_proteico': 'Tirato Proteico'
+                                'tirato_proteico': 'Tirato Proteico',
+                                'ruota_carro_40': 'Ruota di Carro 40 cm'
                             };
                             modificationsHtml += `<span class="text-primary"><i class="bi bi-circle"></i> ${doughNames[item.dough.type] || item.dough.type}</span>`;
                         }
