@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!doctype html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">
@@ -977,19 +976,6 @@
         <div class="offcanvas-header">
             <h5 class="offcanvas-title">Il tuo ordine</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MD Tuning Lab Admin</title>
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <div class="app-shell">
-      <aside class="app-sidebar">
-        <div class="brand-card">
-          <span class="brand-kicker">MD Performance</span>
-          <h1>Admin ordini</h1>
-          <p>Portale riservato agli amministratori per gestire richieste centraline e approvazioni.</p>
         </div>
         <div class="offcanvas-body">
             <div class="order-info">
@@ -1054,14 +1040,6 @@
             <div class="mt-3 pt-3 border-top">
                 <button class="btn btn-success w-100 mt-3" id="checkoutBtn" disabled>Conferma ordine</button>
             </div>
-
-        <div id="adminIdentityCard" class="identity-card hidden">
-          <div class="identity-avatar" id="adminAvatar">AD</div>
-          <div>
-            <p class="identity-role">Amministratore</p>
-            <h2 id="adminName">-</h2>
-            <p id="adminEmail">-</p>
-          </div>
         </div>
     </div>
 
@@ -1070,37 +1048,6 @@
         <div class="offcanvas-header">
             <h5 class="offcanvas-title"><i class="bi bi-cup-straw"></i> Menu Bevande</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
-        <div id="dbStatusBadge" class="db-status-badge hidden">DB: PRIMARIO</div>
-
-        <form id="loginForm" class="panel-card">
-          <div class="panel-head">
-            <span class="panel-kicker">Login</span>
-            <h2>Accesso admin</h2>
-          </div>
-
-          <label class="field">
-            <span>Email</span>
-            <input id="emailInput" type="email" placeholder="amedeoaimone.pannitteri@iticopernico.it" required />
-          </label>
-
-          <label class="field">
-            <span>Password</span>
-            <input id="passwordInput" type="password" placeholder="••••••••" required />
-          </label>
-
-          <button class="primary-button" type="submit">Entra nel portale</button>
-          <p id="loginStatus" class="status-message"></p>
-        </form>
-
-        <div id="sessionActions" class="panel-card hidden">
-          <div class="panel-head">
-            <span class="panel-kicker">Sessione</span>
-            <h2>Controlli rapidi</h2>
-          </div>
-          <button id="refreshOrdersButton" class="secondary-button" type="button">Aggiorna ordini</button>
-          <p id="newOrdersNotice" class="new-orders-notice hidden">Nuovi ordini disponibili. Aggiorna la lista.</p>
-          <button id="logoutButton" class="ghost-button" type="button">Logout</button>
-          <p class="hint-text">Aggiorna la lista manualmente quando vuoi controllare nuovi ordini.</p>
         </div>
         <div class="offcanvas-body">
             <div id="beveragesContent">
@@ -1108,45 +1055,9 @@
                     <i class="bi bi-hourglass-split" style="font-size: 2rem;"></i>
                     <p class="mt-2">Caricamento bevande...</p>
                 </div>
-      </aside>
-
-      <main class="app-main">
-        <section class="hero-card">
-          <div>
-            <span class="panel-kicker">Repository admin</span>
-            <h2>Gestione ordini centraline</h2>
-            <p>Visualizza i dati ricevuti dal client, controlla i file allegati e approva o rifiuta l'ordine con prezzo e nota interna.</p>
-          </div>
-
-          <div class="toolbar">
-            <label class="filter-field">
-              <span>Filtro stato</span>
-              <select id="statusFilter">
-                <option value="all">Tutti</option>
-                <option value="pending">In sospeso</option>
-                <option value="approved">Approvati</option>
-                <option value="rejected">Rifiutati</option>
-              </select>
-            </label>
-            <label class="filter-field">
-              <span>Filtro modello</span>
-              <select id="modelFilter">
-                <option value="all">Tutti i modelli</option>
-              </select>
-            </label>
-          </div>
-        </section>
-
-        <section class="orders-card">
-          <div class="panel-head">
-            <div>
-              <span class="panel-kicker">Ordini</span>
-              <h2>Elenco richieste</h2>
             </div>
         </div>
     </div>
-            <p id="ordersStatus" class="status-message"></p>
-          </div>
 
     <!-- Modal Pizza -->
     <div class="modal fade" id="pizzaModal" tabindex="-1">
@@ -1195,10 +1106,10 @@
                                         <span>Impasto al Carbone</span>
                                         <span class="dough-price extra">+2.00€</span>
                                     </div>
-                                    <div class="dough-option" data-dough="ruota di carro" data-price="2.00">
-                                        <input type="radio" name="doughType" value="ruota di carro">
-                                        <span>Impasto ruota di carro (40 cm)</span>
-                                        <span class="dough-price extra">+4.00€</span>
+                                    <div class="dough-option" data-dough="tirato" data-price="2.00">
+                                        <input type="radio" name="doughType" value="tirato">
+                                        <span>Impasto Tirato (36 cm)</span>
+                                        <span class="dough-price extra">+2.00€</span>
                                     </div>
                                     <div class="dough-option" data-dough="tirato_carbone" data-price="4.00">
                                         <input type="radio" name="doughType" value="tirato_carbone">
@@ -1244,10 +1155,6 @@
             </div>
         </div>
     </div>
-          <div id="ordersEmptyState" class="empty-state">
-            <h3>Nessun ordine disponibile</h3>
-            <p>Accedi come admin per leggere gli ordini presenti nel database Firebase.</p>
-          </div>
 
     <!-- Modal Aggiunte -->
     <div class="modal fade additions-modal" id="additionsModal" tabindex="-1">
@@ -1266,9 +1173,6 @@
                 </div>
             </div>
         </div>
-          <div id="ordersList" class="orders-list"></div>
-        </section>
-      </main>
     </div>
 
     <!-- Modal Allergeni -->
@@ -1342,14 +1246,6 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
                 </div>
             </div>
-    <div id="orderDetailModal" class="modal-backdrop hidden" role="presentation">
-      <section class="request-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <div class="modal-header">
-          <div>
-            <span class="panel-kicker">Richiesta selezionata</span>
-            <h2 id="modalTitle">-</h2>
-          </div>
-          <button id="closeOrderDetailButton" class="modal-close-button" type="button" aria-label="Chiudi dettaglio richiesta">Chiudi</button>
         </div>
     </div>
 
@@ -1362,15 +1258,9 @@
 
         <div class="category-header">
             <div class="category-tabs" id="categoryFilters"></div>
-        <div id="selectedOrderDetail" class="selected-request"></div>
-        <div class="modal-history-head">
-          <span class="panel-kicker">Storico soluzioni</span>
-          <h3>Richieste precedenti dello stesso cliente e modello</h3>
         </div>
 
         <div id="pizzaSections"></div>
-        <div id="orderHistoryList" class="request-history-list"></div>
-      </section>
     </div>
 
     
@@ -2991,6 +2881,5 @@
         checkoutBtn.addEventListener('click', checkout);
     </script>
 </body>
-    <script type="module" src="./app.js"></script>
-  </body>
 </html>
+
