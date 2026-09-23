@@ -1,5 +1,982 @@
+<!DOCTYPE html>
 <!doctype html>
 <html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Menu Pizze Personalizzabili</title>
+    <link rel="icon" href="data:,">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Aggiungi Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <style>
+        :root {
+            --primary: #5a6f7d;
+            --primary-light: #7a8f9d;
+            --secondary: #6d9b8f;
+            --accent: #c67856;
+            --bg-primary: #faf7f5;
+            --bg-secondary: #f0ede9;
+            --text-primary: #3d3d3d;
+            --text-secondary: #6b6b6b;
+            --border-color: #e5e1dd;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 18px;
+            --transition-fast: 0.2s;
+            --transition-normal: 0.3s;
+        }
+
+        body.os-windows {
+            --primary: #5a7a96;
+            --primary-light: #7a9ab6;
+            --secondary: #6d9b8f;
+            --accent: #c67c56;
+            --bg-primary: #f7f5f3;
+            --bg-secondary: #ede9e5;
+            --text-primary: #2d2d2d;
+            --text-secondary: #5f5f5f;
+            --border-color: #ddd9d4;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body.os-macos {
+            --primary: #5a7a96;
+            --primary-light: #6d9b8f;
+            --secondary: #7a9ab6;
+            --accent: #c67c56;
+            --bg-primary: #faf7f5;
+            --bg-secondary: #f0ede9;
+            --text-primary: #2d2d2d;
+            --text-secondary: #5f5f5f;
+            --border-color: #e5e1dd;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        body.os-linux {
+            --primary: #9ba89d;
+            --primary-light: #b0bca9;
+            --secondary: #7fa38f;
+            --accent: #d4a574;
+            --bg-primary: #1f2420;
+            --bg-secondary: #2a2f2a;
+            --text-primary: #f5f5f3;
+            --text-secondary: #c8c8c4;
+            --border-color: #3a4038;
+            font-family: 'Ubuntu', 'Noto Sans', sans-serif;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary: #9ba89d;
+                --primary-light: #b0bca9;
+                --secondary: #7fa38f;
+                --accent: #d4a574;
+                --bg-primary: #1f2420;
+                --bg-secondary: #2a2f2a;
+                --text-primary: #f5f5f3;
+                --text-secondary: #c8c8c4;
+                --border-color: #3a4038;
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --primary: #5a6f7d;
+                --primary-light: #7a8f9d;
+                --secondary: #6d9b8f;
+                --accent: #c67856;
+                --bg-primary: #faf7f5;
+                --bg-secondary: #f0ede9;
+                --text-primary: #3d3d3d;
+                --text-secondary: #6b6b6b;
+                --border-color: #e5e1dd;
+            }
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+            padding-bottom: 100px;
+            transition: background var(--transition-fast) ease, color var(--transition-fast) ease;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-primary) !important;
+        }
+
+        p, span, label, a, li, div {
+            color: inherit;
+        }
+
+        a {
+            color: var(--primary) !important;
+        }
+
+        a:hover {
+            color: var(--primary-light) !important;
+        }
+
+        .card {
+            background-color: var(--bg-secondary) !important;
+            color: var(--text-primary) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        .form-control, .form-select {
+            background-color: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: var(--bg-primary) !important;
+            color: var(--text-primary) !important;
+            border-color: var(--primary) !important;
+            box-shadow: 0 0 0 0.2rem rgba(90,111,125,0.25) !important;
+        }
+
+        .modal-content {
+            background-color: var(--bg-secondary) !important;
+            color: var(--text-primary) !important;
+        }
+
+        .modal-header {
+            background-color: var(--bg-primary) !important;
+            border-color: var(--border-color) !important;
+        }
+
+        .offcanvas {
+            background-color: var(--bg-secondary) !important;
+            color: var(--text-primary) !important;
+        }
+
+        .btn {
+            color: white !important;
+        }
+
+        .category-header {
+            position: sticky;
+            top: 0;
+            background: var(--bg-primary);
+            z-index: 1000;
+            padding: 18px 0 10px;
+            box-shadow: 0 4px 18px rgba(90,111,125,0.06);
+            border-bottom: 1px solid var(--border-color);
+            backdrop-filter: blur(4px);
+            animation: slideDownIn 0.4s ease-out;
+        }
+        .category-tabs {
+            display: flex;
+            overflow-x: auto;
+            gap: 14px;
+            padding-bottom: 5px;
+        }
+        .category-tab {
+            white-space: nowrap;
+            padding: 10px 28px;
+            border-radius: 24px;
+            background: linear-gradient(90deg, var(--bg-primary) 60%, var(--bg-secondary) 100%);
+            cursor: pointer;
+            transition: all 0.35s ease-out;
+            border: 2px solid var(--border-color);
+            font-weight: 600;
+            font-size: 1.08rem;
+            box-shadow: 0 2px 8px rgba(90,111,125,0.04);
+            letter-spacing: 0.5px;
+        }
+        .category-tab:hover {
+            background: linear-gradient(90deg, var(--bg-secondary) 60%, var(--border-color) 100%);
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: 0 4px 12px rgba(90,111,125,0.1);
+        }
+        .category-tab.active {
+            background: linear-gradient(90deg, var(--primary) 60%, var(--primary-light) 100%);
+            color: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 6px 16px rgba(90,111,125,0.2);
+        }
+        .category-title {
+            font-size: 2.1rem;
+            margin: 38px 0 18px;
+            color: var(--text-primary);
+            position: relative;
+            padding-bottom: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            animation: fadeInScale 0.4s ease-out;
+        }
+        .category-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 60%, var(--primary-light) 100%);
+            border-radius: 2px;
+            animation: slideIn 0.5s ease-out;
+        }
+        .pizza-card {
+            border: none;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(90,111,125,0.08);
+            transition: all 0.35s ease-out;
+            height: 100%;
+            margin-bottom: 22px;
+            cursor: pointer;
+            background: linear-gradient(120deg, var(--bg-primary) 80%, var(--bg-secondary) 100%);
+            animation: fadeInScale 0.5s ease-out;
+        }
+        .pizza-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 35px rgba(90,111,125,0.15);
+            border: 2px solid var(--primary);
+        }
+        .cart-badge {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1050;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(90,111,125,0.25);
+            cursor: pointer;
+            transition: all 0.35s ease-out;
+            animation: floatingPulse 4s ease-in-out infinite;
+        }
+        .cart-badge:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 28px rgba(90,111,125,0.35);
+        }
+        
+        .cart-badge:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(90,111,125,0.15);
+        }
+        .cart-badge .badge-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff1744;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+        .offcanvas-cart {
+            width: 420px;
+            background: linear-gradient(120deg, var(--bg-primary) 80%, var(--bg-secondary) 100%);
+            animation: slideIn 0.3s ease-out;
+        }
+        .pizza-modal-img {
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+        .cart-item {
+            border-bottom: 1.5px dashed var(--border-color);
+            padding: 14px 0;
+            background: linear-gradient(90deg, var(--bg-primary) 80%, var(--bg-secondary) 100%);
+            border-radius: 8px;
+            margin-bottom: 4px;
+        }
+        .btn-primary, .btn-success {
+            border-radius: 24px;
+            padding: 10px 28px;
+            font-size: 1.08rem;
+            transition: all 0.3s ease-out;
+        }
+        
+        .btn-primary:hover, .btn-success:hover {
+            box-shadow: 0 4px 16px rgba(90,111,125,0.2);
+        }
+        
+        .btn-primary:active, .btn-success:active {
+            transform: scale(0.99);
+            box-shadow: 0 2px 8px rgba(90,111,125,0.12);
+        }
+        .btn-outline-danger {
+            border-radius: 50%;
+            padding: 0.3em 0.6em;
+            color: #dc3545 !important;
+            background-color: #ffe5e5 !important;
+            border-color: #dc3545 !important;
+            font-weight: 600;
+        }
+        
+        .btn-outline-danger:hover {
+            background-color: #ffcccc !important;
+        }
+        .order-info {
+            background: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+        .coperto-info {
+            background-color: var(--bg-secondary);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            border-left: 4px solid var(--primary);
+        }
+        .coperto-price {
+            font-weight: bold;
+            color: var(--accent);
+        }
+        .total-with-coperto {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        .ingredient-list {
+            margin-top: 15px;
+        }
+        .ingredient-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .ingredient-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .ingredient-price {
+            color: var(--secondary);
+            font-weight: bold;
+            min-width: 50px;
+            text-align: right;
+        }
+        .modified-ingredient {
+            background-color: var(--accent);
+            opacity: 0.2;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+        .removed-ingredient {
+            text-decoration: line-through;
+            color: #cc4444;
+        }
+        .added-ingredient {
+            color: var(--secondary);
+            font-weight: bold;
+        }
+        .add-ingredients-btn {
+            width: 100%;
+            margin-top: 10px;
+        }
+        .additions-modal .modal-body {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+        .addition-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            margin-bottom: 4px;
+            transition: all 0.25s ease;
+        }
+        .addition-item:hover {
+            background-color: var(--bg-secondary);
+            box-shadow: 0 1px 4px rgba(90,111,125,0.08);
+        }
+        .firebase-status {
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+        }
+        .status-success {
+            background-color: var(--secondary);
+            opacity: 0.15;
+            color: var(--text-primary);
+            border: 1px solid var(--secondary);
+        }
+        .status-error {
+            background-color: var(--accent);
+            opacity: 0.15;
+            color: var(--text-primary);
+            border: 1px solid var(--accent);
+        }
+        .status-loading {
+            background-color: var(--primary);
+            opacity: 0.15;
+            color: var(--text-primary);
+            border: 1px solid var(--primary);
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            vertical-align: text-bottom;
+            border: 0.2em solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spinner-border .75s linear infinite;
+        }
+        @keyframes spinner-border {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Nuovi stili per allergeni */
+        .allergen-warning {
+            background-color: rgba(255, 0, 0, 0.1) !important;
+            border: 2px solid rgba(255, 0, 0, 0.3) !important;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.2) !important;
+        }
+        .allergen-indicator {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
+            border: 2px solid #ffffff;
+            z-index: 10;
+            animation: pulse-red 2s infinite;
+        }
+        
+        @keyframes pulse-red {
+            0% {
+                box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
+            }
+            50% {
+                box-shadow: 0 2px 12px rgba(255, 0, 0, 0.7);
+                transform: scale(1.05);
+            }
+            100% {
+                box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
+            }
+        }
+        .allergen-controls {
+            background-color: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+        .allergen-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            margin: 3px;
+            border-radius: 12px;
+            background-color: var(--border-color);
+            font-size: 0.85rem;
+        }
+        .allergen-list {
+            margin-top: 10px;
+        }
+        .allergen-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-weight: bold;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        .allergen-btn.selected {
+            transform: scale(1.1);
+            box-shadow: 0 0 0 3px var(--accent);
+        }
+        .selected-allergens {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+        }
+        .allergen-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            margin: 3px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.15) 0%, rgba(255, 0, 0, 0.1) 100%);
+            color: var(--text-primary);
+            font-size: 0.75rem;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(90, 111, 125, 0.1);
+            animation: glow 2s ease-in-out infinite;
+            border: 1px solid rgba(255, 0, 0, 0.2);
+        }
+        .allergens-button {
+            position: fixed;
+            bottom: 176px;
+            right: 24px;
+            z-index: 1060;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent) 0%, rgba(198, 120, 86, 0.8) 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(90, 111, 125, 0.25);
+            cursor: pointer;
+            transition: all 0.35s ease-out;
+            animation: fadeInScale 0.5s ease-out;
+        }
+        .allergens-button:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 28px rgba(90, 111, 125, 0.3);
+        }
+        
+        .allergens-button:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(90, 111, 125, 0.15);
+        }
+        
+        /* Stili per la sezione impasti */
+        .dough-section {
+            background-color: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+        .dough-option {
+            display: flex;
+            align-items: center;
+            padding: 12px 14px;
+            margin: 8px 0;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: all 0.3s ease-out;
+            border: 2px solid transparent;
+            background: var(--bg-primary);
+        }
+        .dough-option:hover {
+            background-color: var(--bg-secondary);
+            border-color: var(--primary-light);
+        }
+        .dough-option.selected {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary-light) 100%);
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(90,111,125,0.12);
+            color: white;
+        }
+        .dough-option input[type="radio"] {
+            margin-right: 10px;
+        }
+        .dough-price {
+            margin-left: auto;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .dough-price.extra {
+            color: #dc3545;
+        }
+        
+        /* Animazioni per notifiche */
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideDownIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes floatingPulse {
+            0% {
+                transform: translateY(0px);
+                box-shadow: 0 4px 20px rgba(90,111,125,0.25);
+            }
+            50% {
+                transform: translateY(-4px);
+                box-shadow: 0 6px 24px rgba(90,111,125,0.3);
+            }
+            100% {
+                transform: translateY(0px);
+                box-shadow: 0 4px 20px rgba(90,111,125,0.25);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 4px rgba(248, 215, 218, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 8px rgba(248, 215, 218, 0.5);
+            }
+        }
+
+        @keyframes scaleInUp {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes rotateIn {
+            from {
+                opacity: 0;
+                transform: rotate(-10deg) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: rotate(0) scale(1);
+            }
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal.fade .modal-dialog {
+            animation: fadeInScale 0.25s ease-out;
+        }
+        
+        .beverages-button {
+            position: fixed;
+            bottom: 100px;
+            right: 24px;
+            z-index: 1060;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary-light) 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(90, 111, 125, 0.25);
+            cursor: pointer;
+            transition: all 0.35s ease-out;
+            border: none;
+            animation: floatingPulse 4s ease-in-out infinite;
+        }
+        .beverages-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 28px rgba(90, 111, 125, 0.3);
+            animation: none;
+        }
+        
+        .beverages-button:active {
+            transform: scale(0.98);
+            box-shadow: 0 2px 10px rgba(90, 111, 125, 0.15);
+        }
+        .beverages-button i {
+            font-size: 1.5rem;
+        }
+        
+        .offcanvas-beverages {
+            width: 380px;
+            background: linear-gradient(120deg, var(--bg-primary) 80%, var(--bg-secondary) 100%);
+            animation: slideIn 0.3s ease-out;
+        }
+        .beverage-item {
+            background: var(--bg-secondary);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(90, 111, 125, 0.08);
+            transition: all 0.3s ease-out;
+            cursor: pointer;
+            border: 2px solid transparent;
+            animation: fadeInScale 0.4s ease-out;
+        }
+        .beverage-item:hover {
+            box-shadow: 0 6px 16px rgba(90, 111, 125, 0.2);
+            border-color: var(--secondary);
+        }
+        .beverage-item.allergen-warning {
+            background-color: rgba(255, 0, 0, 0.1);
+            border-color: rgba(255, 0, 0, 0.3);
+        }
+        .beverage-category-header {
+            background: linear-gradient(90deg, var(--secondary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 15px 0 10px 0;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .beverage-name {
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+        .beverage-price {
+            color: var(--accent);
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .beverage-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+        
+        /* Stili per il selettore carte da briscola */
+        .card-selector {
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            border: 2px solid var(--border-color);
+        }
+        .card-selector-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+            text-align: center;
+        }
+        .suit-selector {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .suit-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            border: 3px solid var(--border-color);
+            background: var(--bg-primary);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .suit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .suit-btn.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            transform: scale(1.05);
+            box-shadow: 0 4px 16px rgba(90,111,125,0.3);
+            color: white;
+        }
+        .suit-btn .suit-icon {
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+        .suit-btn .suit-name {
+            font-size: 0.65rem;
+            margin-top: 2px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+        .number-selector {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-top: 15px;
+        }
+        .number-btn {
+            aspect-ratio: 1;
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+            background: var(--bg-primary);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--text-primary);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        .number-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            border-color: var(--primary);
+        }
+        .number-btn.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(90,111,125,0.4);
+        }
+        .number-btn.disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+        .selected-card-display {
+            text-align: center;
+            padding: 15px;
+            background: var(--bg-primary);
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 2px solid var(--primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .selected-card-display.empty {
+            border-color: var(--border-color);
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: normal;
+        }
+        
+        /* Stili per il campo cameriere */
+        .mb-3 label[for="waiterNumber"] {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1.05rem;
+        }
+        #waiterNumber {
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        #waiterNumber:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(90, 111, 125, 0.15);
+            outline: none;
+        }
+        #waiterNumber::placeholder {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+        .form-text.text-muted {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+
+        .ingredients-description {
+            color: var(--text-primary) !important;
+            font-size: 0.75rem;
+            display: block;
+            line-height: 1.3;
+        }
+
+        .text-danger {
+            color: #cc4444 !important;
+        }
+
+        .text-success {
+            color: var(--secondary) !important;
+        }
+
+        .text-muted {
+            color: var(--text-secondary) !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Pulsante bevande fisso -->
+    <button class="beverages-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBeverages" title="Menu Bevande">
+        <i class="bi bi-cup-straw"></i>
+    </button>
+
+    <!-- Pulsante allergeni fisso - POSIZIONATO SOPRA IL CARRELLO -->
+    <div class="allergens-button" data-bs-toggle="modal" data-bs-target="#allergensModal">
+        <i class="bi bi-exclamation-triangle"></i>
+    </div>
+
+    <!-- Carrello fisso -->
+    <div class="cart-badge" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart">
+        <i class="bi bi-cart3"></i>
+        <span class="badge-count" id="cartCounter">0</span>
+    </div>
+
+    <!-- Offcanvas Carrello -->
+    <div class="offcanvas offcanvas-end offcanvas-cart" tabindex="-1" id="offcanvasCart">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title">Il tuo ordine</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -14,6 +991,69 @@
           <h1>Admin ordini</h1>
           <p>Portale riservato agli amministratori per gestire richieste centraline e approvazioni.</p>
         </div>
+        <div class="offcanvas-body">
+            <div class="order-info">
+                <!-- Selettore carte da briscola per il tavolo -->
+                <div class="card-selector">
+                    <div class="card-selector-title">🃏 Seleziona il tavolo con le carte</div>
+                    
+                    <!-- Selettore semi -->
+                    <div class="suit-selector">
+                        <div class="suit-btn" data-suit="coppe" title="Coppe">
+                            <div class="suit-icon">🏆</div>
+                            <div class="suit-name">Coppe</div>
+                        </div>
+                        <div class="suit-btn" data-suit="denari" title="Denari">
+                            <div class="suit-icon">💰</div>
+                            <div class="suit-name">Denari</div>
+                        </div>
+                        <div class="suit-btn" data-suit="spade" title="Spade">
+                            <div class="suit-icon">⚔️</div>
+                            <div class="suit-name">Spade</div>
+                        </div>
+                        <div class="suit-btn" data-suit="bastoni" title="Bastoni">
+                            <div class="suit-icon">🪵</div>
+                            <div class="suit-name">Bastoni</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Selettore numeri -->
+                    <div class="number-selector">
+                        <div class="number-btn disabled" data-number="asso">1</div>
+                        <div class="number-btn disabled" data-number="2">2</div>
+                        <div class="number-btn disabled" data-number="3">3</div>
+                        <div class="number-btn disabled" data-number="4">4</div>
+                        <div class="number-btn disabled" data-number="5">5</div>
+                        <div class="number-btn disabled" data-number="6">6</div>
+                        <div class="number-btn disabled" data-number="7">7</div>
+                        <div class="number-btn disabled" data-number="fante">8</div>
+                        <div class="number-btn disabled" data-number="cavallo">9</div>
+                        <div class="number-btn disabled" data-number="re">10</div>
+                    </div>
+                    
+                    <!-- Display carta selezionata -->
+                    <div class="selected-card-display empty" id="selectedCardDisplay">
+                        Seleziona prima il seme, poi il numero
+                    </div>
+                    
+                    <!-- Campo nascosto per memorizzare il valore -->
+                    <input type="hidden" id="orderName" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="waiterNumber" class="form-label">👤 Nome Ordinazione</label>
+                    <input type="text" class="form-control" id="waiterNumber" placeholder="Es: Mario Rossi" required>
+                    <small class="form-text text-muted">Inserisci Nome Ordinazione</small>
+                </div>
+            </div>
+            
+            <div id="cartItems"></div>
+            
+            <div class="firebase-status" id="firebaseStatus"></div>
+            
+            <div class="mt-3 pt-3 border-top">
+                <button class="btn btn-success w-100 mt-3" id="checkoutBtn" disabled>Conferma ordine</button>
+            </div>
 
         <div id="adminIdentityCard" class="identity-card hidden">
           <div class="identity-avatar" id="adminAvatar">AD</div>
@@ -23,7 +1063,13 @@
             <p id="adminEmail">-</p>
           </div>
         </div>
+    </div>
 
+    <!-- Offcanvas Bevande -->
+    <div class="offcanvas offcanvas-end offcanvas-beverages" tabindex="-1" id="offcanvasBeverages">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title"><i class="bi bi-cup-straw"></i> Menu Bevande</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         <div id="dbStatusBadge" class="db-status-badge hidden">DB: PRIMARIO</div>
 
         <form id="loginForm" class="panel-card">
@@ -56,6 +1102,12 @@
           <button id="logoutButton" class="ghost-button" type="button">Logout</button>
           <p class="hint-text">Aggiorna la lista manualmente quando vuoi controllare nuovi ordini.</p>
         </div>
+        <div class="offcanvas-body">
+            <div id="beveragesContent">
+                <div class="text-center text-muted py-4">
+                    <i class="bi bi-hourglass-split" style="font-size: 2rem;"></i>
+                    <p class="mt-2">Caricamento bevande...</p>
+                </div>
       </aside>
 
       <main class="app-main">
@@ -91,19 +1143,205 @@
               <span class="panel-kicker">Ordini</span>
               <h2>Elenco richieste</h2>
             </div>
+        </div>
+    </div>
             <p id="ordersStatus" class="status-message"></p>
           </div>
 
+    <!-- Modal Pizza -->
+    <div class="modal fade" id="pizzaModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pizzaModalTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <img src="" id="pizzaModalImage" class="img-fluid pizza-modal-img mb-3" alt="Pizza">
+                            <div id="pizzaAllergens" class="allergen-list"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Ingredienti base:</h6>
+                            <p id="pizzaModalBaseIngredients"></p>
+                            
+                            <div class="mt-3">
+                                <label for="pizzaQuantity" class="form-label">Quantità:</label>
+                                <input type="number" min="1" value="1" class="form-control" id="pizzaQuantity">
+                            </div>
+                            
+                            <!-- Sezione selezione impasti -->
+                            <div class="dough-section mt-3">
+                                <h6 class="mb-3"><i class="bi bi-circle"></i> Scegli il tipo di impasto:</h6>
+                                <div id="doughOptions">
+                                    <div class="dough-option selected" data-dough="normale" data-price="0">
+                                        <input type="radio" name="doughType" value="normale" checked>
+                                        <span>Impasto Normale (preselezionato)</span>
+                                        <span class="dough-price">Incluso</span>
+                                    </div>
+                                    <div class="dough-option" data-dough="baby" data-price="0">
+                                        <input type="radio" name="doughType" value="baby">
+                                        <span>Impasto Baby</span>
+                                        <span class="dough-price">Incluso</span>
+                                    </div>
+                                    <div class="dough-option" data-dough="proteico" data-price="2.00">
+                                        <input type="radio" name="doughType" value="proteico">
+                                        <span>Impasto Proteico</span>
+                                        <span class="dough-price extra">+2.00€</span>
+                                    </div>
+                                    <div class="dough-option" data-dough="carbone" data-price="2.00">
+                                        <input type="radio" name="doughType" value="carbone">
+                                        <span>Impasto al Carbone</span>
+                                        <span class="dough-price extra">+2.00€</span>
+                                    </div>
+                                    <div class="dough-option" data-dough="ruota di carro" data-price="2.00">
+                                        <input type="radio" name="doughType" value="ruota di carro">
+                                        <span>Impasto ruota di carro (40 cm)</span>
+                                        <span class="dough-price extra">+4.00€</span>
+                                    </div>
+                                    <div class="dough-option" data-dough="tirato_carbone" data-price="4.00">
+                                        <input type="radio" name="doughType" value="tirato_carbone">
+                                        <span>Tirato al Carbone</span>
+                                        <span class="dough-price extra">+4.00€</span>
+                                    </div>
+                                    <div class="dough-option" data-dough="tirato_proteico" data-price="4.00">
+                                        <input type="radio" name="doughType" value="tirato_proteico">
+                                        <span>Tirato Proteico</span>
+                                        <span class="dough-price extra">+4.00€</span>
+                                    </div>
+                                    <div class="dough-option" data-dough="ruota_carro_40" data-price="4.00">
+                                        <input type="radio" name="doughType" value="ruota_carro_40">
+                                        <span>Ruota di Carro 40 cm</span>
+                                        <span class="dough-price extra">+4.00€</span>
+                                    </div>
+                                    <div class="dough-option" data-dough="doppio" data-price="3.00">
+                                        <input type="radio" name="doughType" value="doppio">
+                                        <span>Impasto Doppio</span>
+                                        <span class="dough-price extra">+3.00€</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="ingredient-list" id="ingredientList">
+                                <!-- Lista ingredienti modificabili -->
+                            </div>
+                            
+                            <button class="btn btn-outline-primary add-ingredients-btn" id="showAdditionsBtn">
+                                <i class="bi bi-plus-circle"></i> Aggiungi ingredienti
+                            </button>
+                            
+                            <h5 class="mt-3">Prezzo base: <span id="pizzaModalBasePrice">0.00</span>€</h5>
+                            <h5>Extra: <span id="pizzaModalExtraPrice">0.00</span>€</h5>
+                            <h4 class="text-primary">Totale: <span id="pizzaModalTotalPrice">0.00</span>€</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                    <button type="button" class="btn btn-primary" id="addToCartBtn">Aggiungi al carrello</button>
+                </div>
+            </div>
+        </div>
+    </div>
           <div id="ordersEmptyState" class="empty-state">
             <h3>Nessun ordine disponibile</h3>
             <p>Accedi come admin per leggere gli ordini presenti nel database Firebase.</p>
           </div>
 
+    <!-- Modal Aggiunte -->
+    <div class="modal fade additions-modal" id="additionsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Aggiungi ingredienti</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="additionsList">
+                    <!-- Lista ingredienti disponibili -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                    <button type="button" class="btn btn-primary" id="confirmAdditionsBtn">Conferma</button>
+                </div>
+            </div>
+        </div>
           <div id="ordersList" class="orders-list"></div>
         </section>
       </main>
     </div>
 
+    <!-- Modal Allergeni -->
+    <div class="modal fade" id="allergensModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Gestione Allergeni</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle"></i> Seleziona i numeri corrispondenti ai tuoi allergeni. Le pizze contenenti questi allergeni saranno evidenziate in rosso.
+                    </div>
+                    
+                    <h5 class="mb-3">Seleziona i tuoi allergeni:</h5>
+                    <div class="d-flex flex-wrap justify-content-center mb-4">
+                        <button class="btn btn-primary allergen-btn" data-allergen="1">1</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="2">2</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="3">3</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="4">4</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="5">5</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="6">6</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="7">7</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="8">8</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="9">9</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="10">10</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="11">11</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="12">12</button>
+                        <button class="btn btn-primary allergen-btn" data-allergen="13">13</button>
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        <button class="btn btn-success me-2" id="applyAllergensBtn">Applica selezione</button>
+                        <button class="btn btn-outline-secondary" id="clearAllergensBtn">Cancella tutto</button>
+                    </div>
+                    
+                    <div class="selected-allergens">
+                        <h5><i class="bi bi-check2-circle"></i> Allergeni selezionati:</h5>
+                        <div id="selectedAllergensList">Nessun allergene selezionato</div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h5 class="mb-3">Legenda allergeni:</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ul class="list-group">
+                                <li class="list-group-item">1 - Glutine (cereali, frumento, segale, orzo, avena)</li>
+                                <li class="list-group-item">2 - Crostacei e derivati</li>
+                                <li class="list-group-item">3 - Uova e derivati</li>
+                                <li class="list-group-item">4 - Pesce e derivati</li>
+                                <li class="list-group-item">5 - Arachidi e derivati</li>
+                                <li class="list-group-item">6 - Soia e derivati</li>
+                                <li class="list-group-item">7 - Latte e derivati (incluso lattosio)</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-group">
+                                <li class="list-group-item">8 - Frutta a guscio (mandorle, nocciole, noci, ecc.)</li>
+                                <li class="list-group-item">9 - Sedano e derivati</li>
+                                <li class="list-group-item">10 - Senape e derivati</li>
+                                <li class="list-group-item">11 - Semi di sesamo e derivati</li>
+                                <li class="list-group-item">12 - Anidride solforosa e solfiti</li>
+                                <li class="list-group-item">13 - Lupini e derivati</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                </div>
+            </div>
     <div id="orderDetailModal" class="modal-backdrop hidden" role="presentation">
       <section class="request-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
         <div class="modal-header">
@@ -113,15 +1351,1646 @@
           </div>
           <button id="closeOrderDetailButton" class="modal-close-button" type="button" aria-label="Chiudi dettaglio richiesta">Chiudi</button>
         </div>
+    </div>
+
+    <!-- Container principale -->
+    <div class="container py-4">
+        <header class="text-center mb-5">
+            <h1 class="display-4 fw-bold">🍕 Menu Pizze</h1>
+            <p class="lead text-muted">Personalizza la tua pizza preferita</p>
+        </header>
+
+        <div class="category-header">
+            <div class="category-tabs" id="categoryFilters"></div>
         <div id="selectedOrderDetail" class="selected-request"></div>
         <div class="modal-history-head">
           <span class="panel-kicker">Storico soluzioni</span>
           <h3>Richieste precedenti dello stesso cliente e modello</h3>
         </div>
+
+        <div id="pizzaSections"></div>
         <div id="orderHistoryList" class="request-history-list"></div>
       </section>
     </div>
 
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function detectAndApplyOS() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            let osClass = 'os-windows';
+
+            if (/Mac|iPhone|iPad|iPod/.test(userAgent)) {
+                osClass = 'os-macos';
+            } else if (/Linux|X11|Android/.test(userAgent)) {
+                osClass = 'os-linux';
+            } else if (/Windows|Win32/.test(userAgent)) {
+                osClass = 'os-windows';
+            }
+
+            document.documentElement.classList.add(osClass);
+            document.body.classList.add(osClass);
+            console.log('OS Detected:', osClass);
+        }
+
+        detectAndApplyOS();
+
+        // Configurazione Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNDrS5kB8XnUcV8HHN9dt5f_mUWXYbGJs",
+            authDomain: "final-3a252.firebaseapp.com",
+            projectId: "final-3a252",
+            storageBucket: "final-3a252.firebasestorage.app",
+            messagingSenderId: "414588792299",
+            appId: "1:414588792299:web:e84177169978ac0792bdae",
+            measurementId: "G-NVGWXSB8SW"
+        };
+        
+        // Inizializza Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Stato globale
+        let currentPizza = null;
+        let cart = [];
+        let currentModifications = {
+            removed: [],
+            added: []
+        };
+        let selectedAdditions = [];
+        let userAllergens = [];
+        let selectedDough = {
+            type: 'normale',
+            price: 0
+        };
+
+        // Elementi DOM
+        const cartCounter = document.getElementById('cartCounter');
+        const cartItemsEl = document.getElementById('cartItems');
+        const cartTotalEl = document.getElementById('cartTotal');
+        const copertoCountEl = document.getElementById('copertoCount');
+        const copertoTotalEl = document.getElementById('copertoTotal');
+        const totalWithCopertoEl = document.getElementById('totalWithCoperto');
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const orderNameInput = document.getElementById('orderName');
+        const waiterNumberInput = document.getElementById('waiterNumber');
+        const ingredientListEl = document.getElementById('ingredientList');
+        const showAdditionsBtn = document.getElementById('showAdditionsBtn');
+        const additionsListEl = document.getElementById('additionsList');
+        const confirmAdditionsBtn = document.getElementById('confirmAdditionsBtn');
+        const firebaseStatusEl = document.getElementById('firebaseStatus');
+        const applyAllergensBtn = document.getElementById('applyAllergensBtn');
+        const clearAllergensBtn = document.getElementById('clearAllergensBtn');
+        const selectedAllergensList = document.getElementById('selectedAllergensList');
+
+        // Elementi per il selettore carte
+        let selectedSuit = null;
+        let selectedNumber = null;
+        const suitIcons = {
+            'coppe': '🏆',
+            'denari': '💰',
+            'spade': '⚔️',
+            'bastoni': '🪵'
+        };
+        const suitNames = {
+            'coppe': 'Coppe',
+            'denari': 'Denari',
+            'spade': 'Spade',
+            'bastoni': 'Bastoni'
+        };
+
+        // Dati delle pizze con relativi allergeni
+        const pizzaMenu = [
+            {
+                name: "Margherita",
+                ingredients: "Pomodoro, mozzarella, basilico",
+                price: 6.50,
+                allergens: [1, 7],
+                categoria: "Classiche"
+            },
+            {
+                name: "Marinara",
+                ingredients: "Pomodoro, aglio, origano",
+                price: 5.00,
+                allergens: [1],
+                categoria: "Classiche"
+            },
+            {
+                name: "Diavola",
+                ingredients: "Pomodoro, mozzarella, salame piccante",
+                price: 8.00,
+                allergens: [1, 7],
+                categoria: "Classiche"
+            },
+            {
+                name: "Quattro Stagioni",
+                ingredients: "Pomodoro, mozzarella, funghi, prosciutto, carciofi, olive",
+                price: 9.50,
+                allergens: [1, 7],
+                categoria: "Speciali"
+            },
+            {
+                name: "Capricciosa",
+                ingredients: "Pomodoro, mozzarella, funghi, prosciutto, carciofi, olive",
+                price: 9.00,
+                allergens: [1, 3, 7],
+                categoria: "Speciali"
+            },
+            {
+                name: "Quattro Formaggi",
+                ingredients: "Mozzarella, gorgonzola, parmigiano, fontina",
+                price: 10.00,
+                allergens: [1, 7],
+                categoria: "Formaggi"
+            },
+            {
+                name: "Ortolana",
+                ingredients: "Pomodoro, mozzarella, melanzane, zucchine, peperoni",
+                price: 8.50,
+                allergens: [1, 7],
+                categoria: "Vegetariane"
+            },
+            {
+                name: "Tonno e Cipolla",
+                ingredients: "Pomodoro, mozzarella, tonno, cipolla",
+                price: 9.00,
+                allergens: [1, 4, 7],
+                categoria: "Di Mare"
+            },
+            {
+                name: "Siciliana",
+                ingredients: "Pomodoro, mozzarella, acciughe, olive, capperi",
+                price: 9.50,
+                allergens: [1, 4, 7],
+                categoria: "Di Mare"
+            },
+            {
+                name: "Bianca con Ricotta",
+                ingredients: "Mozzarella, ricotta, salsiccia",
+                price: 10.50,
+                allergens: [1, 7],
+                categoria: "Speciali"
+            }
+        ];
+
+        // Funzione per mostrare lo stato di Firebase
+        function showFirebaseStatus(message, type) {
+            firebaseStatusEl.textContent = message;
+            firebaseStatusEl.className = 'firebase-status status-' + type;
+            firebaseStatusEl.style.display = 'block';
+            
+            if (type !== 'loading') {
+                setTimeout(() => {
+                    firebaseStatusEl.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Controlla i campi obbligatori
+        function checkOrderFields() {
+            const hasItems = cart.length > 0;
+            const hasName = orderNameInput.value.trim() !== '';
+            const hasWaiterNumber = waiterNumberInput.value.trim() !== '';
+            checkoutBtn.disabled = !(hasItems && hasName && hasWaiterNumber);
+        }
+
+        // Event listeners per i campi obbligatori
+        orderNameInput.addEventListener('input', checkOrderFields);
+        waiterNumberInput.addEventListener('input', checkOrderFields);
+
+        // Funzione per convertire CSV in array di oggetti - CORRETTA
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n').filter(line => line.trim() !== '');
+            const headers = lines[0].split(';').map(h => h.trim().toLowerCase());
+            
+            return lines.slice(1).map(line => {
+                const values = line.split(';');
+                const obj = {};
+                headers.forEach((header, index) => {
+                    obj[header] = values[index] ? values[index].trim() : '';
+                });
+                return obj;
+            });
+        }
+
+        // Carica aggiunte da Firestore (collezione 'Add')
+        async function loadAdditionsFromFirestore() {
+            try {
+                showFirebaseStatus('Carico aggiunte...', 'loading');
+                const snap = await db.collection('Add').get();
+                const additions = [];
+                snap.forEach(doc => {
+                    const d = doc.data() || {};
+                    const usable = d.usable === true || (typeof d.usable === 'string' && d.usable.toLowerCase() === 'true');
+                    const name = (d.item || doc.id || '').toString().trim();
+                    const priceNum = parseFloat(d.price);
+                    const price = isNaN(priceNum) ? 0 : priceNum;
+                    if (name) additions.push({ ingredient: name, price, usable });
+                });
+                additions.sort((a, b) => a.ingredient.localeCompare(b.ingredient, 'it', { sensitivity: 'base' }));
+                window.__allAdditions = additions;
+                showFirebaseStatus(`Aggiunte caricate: ${additions.length}`, 'success');
+            } catch (e) {
+                console.error('Errore caricamento aggiunte:', e);
+                showFirebaseStatus('Errore caricamento aggiunte: ' + e.message, 'error');
+                window.__allAdditions = [];
+            }
+        }
+
+        // Funzione per caricare le bevande da CSV (prima da GitHub, poi locale)
+        async function loadBeveragesFromCSV() {
+            const githubUrl = 'https://raw.githubusercontent.com/Rmamavvomvvone/Sito-Pizzeria.github.io/main/birre.csv';
+            const localUrl = './birre.csv';
+            
+            try {
+                // Prova prima a caricare da GitHub
+                console.log('Tentativo di caricamento bevande da GitHub...');
+                let response = await fetch(githubUrl);
+                
+                if (!response.ok) {
+                    // Se GitHub fallisce, prova in locale
+                    console.warn('GitHub non disponibile, provo caricamento locale...');
+                    response = await fetch(localUrl);
+                    
+                    if (!response.ok) {
+                        console.warn("File birre.csv non trovato né su GitHub né in locale");
+                        return [];
+                    }
+                    console.log('Bevande caricate da file locale');
+                } else {
+                    console.log('Bevande caricate da GitHub');
+                }
+                
+                const csvText = await response.text();
+                const beverages = parseCSV(csvText);
+                
+                // Assicurati che ogni bevanda abbia un id univoco e il flag isBeverage
+                beverages.forEach((item, idx) => {
+                    if (!item.id || item.id === '') {
+                        item.id = `beverage_${item.nome}_${item.categoria}_${idx}`;
+                    }
+                    item.isBeverage = true; // Flag per identificare le bevande
+                    // Per le bevande, normalizza descrizione/ingredienti
+                    if (!item.descrizione && item.ingredienti) {
+                        item.descrizione = item.ingredienti;
+                    }
+                    if (!item.ingredienti && item.descrizione) {
+                        item.ingredienti = item.descrizione;
+                    }
+                    // Se non c'è né descrizione né ingredienti, usa una stringa vuota
+                    if (!item.descrizione) {
+                        item.descrizione = '';
+                    }
+                    if (!item.ingredienti) {
+                        item.ingredienti = '';
+                    }
+                });
+                
+                console.log(`Caricate ${beverages.length} bevande`);
+                return beverages;
+            } catch (error) {
+                console.warn("Errore nel caricamento delle bevande:", error);
+                return [];
+            }
+        }
+
+        // Funzione per generare il menu da CSV
+        async function loadMenuFromCSV() {
+            try {
+                // Carica pizze
+                const pizzeResponse = await fetch('./menu_pizze.csv');
+                if (!pizzeResponse.ok) throw new Error("Errore nel caricamento del CSV delle pizze");
+                const pizzeText = await pizzeResponse.text();
+                const pizzeItems = parseCSV(pizzeText);
+                
+                // Assicurati che ogni pizza abbia un id univoco
+                pizzeItems.forEach((item, idx) => {
+                    if (!item.id || item.id === '') {
+                        item.id = `${item.nome}_${item.categoria}_${idx}`;
+                    }
+                    item.isBeverage = false; // Flag per identificare le pizze
+                });
+                
+                // Carica bevande
+                const beverages = await loadBeveragesFromCSV();
+                
+                // Estrai categorie solo dalle pizze (non dalle bevande)
+                const pizzaCategories = [...new Set(pizzeItems.map(item => item.categoria))];
+                
+                // Estrai tutti gli ingredienti unici per il menu a tendina
+                await loadAdditionsFromFirestore();
+                
+                // Salva menuItems globalmente per uso in altre funzioni
+                window.menuItems = [...pizzeItems, ...beverages];
+                window.pizzeItems = pizzeItems;
+                window.beverageItems = beverages;
+
+                // Genera la sezione bevande fissa in alto
+                renderBeveragesSection(beverages);
+                
+                // Genera i filtri e le sezioni delle pizze
+                renderCategoryFilters(pizzaCategories);
+                renderPizzaSections(pizzeItems, pizzaCategories);
+                
+            } catch (error) {
+                console.error("Errore:", error);
+                document.getElementById('pizzaSections').innerHTML = `
+                    <div class="alert alert-danger">
+                        Errore nel caricamento del menu. Verifica che:
+                        <ul>
+                            <li>Il file menu_pizze.csv esista</li>
+                            <li>Il formato del CSV sia corretto</li>
+                            <li>La struttura contenga le colonne: nome, prezzo, ingredienti, categoria</li>
+                        </ul>
+                        Dettaglio errore: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Genera il menu bevande nell'offcanvas
+        function renderBeveragesSection(beverages) {
+            const beveragesContainer = document.getElementById('beveragesContent');
+            
+            if (!beverages || beverages.length === 0) {
+                beveragesContainer.innerHTML = `
+                    <div class="text-center text-muted py-4">
+                        <i class="bi bi-cup-straw-x" style="font-size: 2rem;"></i>
+                        <p class="mt-2">Nessuna bevanda disponibile</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Raggruppa bevande per categoria
+            const beverageCategories = [...new Set(beverages.map(item => item.categoria))];
+            
+            let html = '';
+            
+            beverageCategories.forEach(category => {
+                const categoryBeverages = beverages.filter(item => item.categoria === category);
+                
+                html += `<div class="beverage-category-header">
+                    <i class="bi bi-cup-straw"></i>
+                    <span>${category}</span>
+                </div>`;
+                
+                categoryBeverages.forEach(beverage => {
+                    const allergens = beverage.allergeni ? beverage.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
+                    const description = beverage.descrizione || beverage.ingredienti || '';
+                    
+                    html += `
+                        <div class="beverage-item ${allergens.length > 0 ? 'allergen-warning' : ''}" data-beverage-id="${beverage.id}">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <div class="beverage-name">${beverage.nome}</div>
+                                    ${description ? `<div class="beverage-description">${description}</div>` : ''}
+                                    ${allergens.length > 0 ? `<div class="mt-2">${getAllergenBadges(allergens)}</div>` : ''}
+                                </div>
+                                <div class="beverage-price ms-3">${parseFloat(beverage.prezzo).toFixed(2)}€</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+            
+            beveragesContainer.innerHTML = html;
+            
+            // Aggiungi event listener per ogni bevanda
+            beverages.forEach(beverage => {
+                const item = beveragesContainer.querySelector(`[data-beverage-id="${beverage.id}"]`);
+                if (item) {
+                    item.addEventListener('click', () => {
+                        addBeverageToCart(beverage);
+                        // Chiudi l'offcanvas dopo l'aggiunta (opzionale)
+                        // const offcanvas = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasBeverages'));
+                        // if (offcanvas) offcanvas.hide();
+                    });
+                }
+            });
+        }
+
+        // Genera i filtri delle categorie
+        function renderCategoryFilters(categories) {
+            const filtersContainer = document.getElementById('categoryFilters');
+            filtersContainer.innerHTML = '';
+            
+            // Filtro "Tutte"
+            const allFilter = document.createElement('div');
+            allFilter.className = 'category-tab active';
+            allFilter.textContent = 'Tutte';
+            allFilter.onclick = () => showAllCategories();
+            filtersContainer.appendChild(allFilter);
+            
+            // Filtri per categoria
+            categories.forEach(category => {
+                const filter = document.createElement('div');
+                filter.className = 'category-tab';
+                filter.textContent = category;
+                filter.onclick = () => filterByCategory(category);
+                filtersContainer.appendChild(filter);
+            });
+        }
+
+        // Genera le sezioni delle pizze e bevande
+        function renderPizzaSections(menuItems, categories) {
+            const sectionsContainer = document.getElementById('pizzaSections');
+            sectionsContainer.innerHTML = '';
+            
+            categories.forEach(category => {
+                const categoryItems = menuItems.filter(item => item.categoria === category);
+                
+                if (categoryItems.length > 0) {
+                    const section = document.createElement('section');
+                    section.className = 'category-section';
+                    section.id = `cat-${category.replace(/\s+/g, '-')}`;
+                    
+                    const title = document.createElement('h2');
+                    title.className = 'category-title';
+                    title.textContent = category;
+                    section.appendChild(title);
+                    
+                    const row = document.createElement('div');
+                    row.className = 'row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4';
+                    
+                    categoryItems.forEach(item => {
+                        const col = document.createElement('div');
+                        col.className = 'col';
+                        
+                        // Allergeni direttamente dall'item corrente
+                        const allergens = item.allergeni ? item.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
+                        
+                        // Determina se è una bevanda o una pizza
+                        const isBeverage = item.isBeverage === true;
+                        
+                        // Per le bevande mostra la descrizione, per le pizze gli ingredienti
+                        let description = '';
+                        if (isBeverage) {
+                            description = item.descrizione || item.ingredienti || '';
+                        } else {
+                            const ingredients = item.ingredienti || '';
+                            const ingredientList = ingredients.split(',').map(ing => ing.trim()).filter(ing => ing);
+                            description = `<span class="ingredients-description">${ingredientList.join('<br>')}</span>`;
+                        }
+                        
+                        col.innerHTML = `
+                            <div class="card pizza-card h-100" data-item-name="${item.nome}">
+                            
+                                <div class="card-body">
+                                    <h3 class="h5 card-title">${item.nome}</h3>
+                                    <div class="text-danger fw-bold mb-2">${parseFloat(item.prezzo).toFixed(2)}€</div>
+                                    <p class="card-text text-muted">
+                                        ${description}
+                                    </p>
+                                    ${allergens.length > 0 ? `<div class="allergen-badges">${getAllergenBadges(allergens)}</div>` : ''}
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Se è una bevanda, aggiungi direttamente al carrello, altrimenti mostra i dettagli
+                        if (isBeverage) {
+                            col.querySelector('.pizza-card').addEventListener('click', () => addBeverageToCart(item));
+                        } else {
+                            col.querySelector('.pizza-card').addEventListener('click', () => showPizzaDetails(item));
+                        }
+                        row.appendChild(col);
+                    });
+                    
+                    section.appendChild(row);
+                    sectionsContainer.appendChild(section);
+                }
+            });
+            
+            // Applica l'evidenziazione allergeni dopo aver renderizzato le pizze
+            highlightPizzasWithAllergens();
+        }
+
+        // Genera i badge degli allergeni
+        function getAllergenBadges(allergens) {
+            if (allergens.length === 0) return '';
+            
+            return allergens
+                .sort((a, b) => a - b)
+                .map(a => `<span class="allergen-badge">${a}</span>`)
+                .join('');
+        }
+
+        // Mostra dettagli pizza e gestione ingredienti
+        function showPizzaDetails(pizza) {
+            currentPizza = pizza;
+            currentModifications = { removed: [], added: [], choices: {} };
+            selectedAdditions = [];
+            
+            // Determina l'impasto originale della pizza
+            const originalIngredients = pizza.ingredienti.split(',').map(i => i.trim());
+            const originalDough = originalIngredients.find(ingredient => 
+                ingredient.toLowerCase().startsWith('impasto')
+            );
+            
+            // Mappa l'impasto originale al tipo corretto
+            let defaultDoughType = 'normale';
+            if (originalDough) {
+                if (originalDough.toLowerCase().includes('proteico')) {
+                    defaultDoughType = 'proteico';
+                } else if (originalDough.toLowerCase().includes('carbone')) {
+                    defaultDoughType = 'carbone';
+                } else if (originalDough.toLowerCase().includes('ruota')) {
+                    defaultDoughType = 'ruota_carro_40';
+                } else if (originalDough.toLowerCase().includes('tirato')) {
+                    defaultDoughType = 'tirato';
+                }
+            }
+            
+            // Reset selezione impasto con il tipo originale
+            // Il prezzo è 0 per l'impasto originale della pizza
+            selectedDough = {
+                type: defaultDoughType,
+                price: 0,
+                originalType: defaultDoughType // Salva il tipo originale per calcoli futuri
+            };
+            
+            document.getElementById('pizzaModalTitle').textContent = pizza.nome;
+            document.getElementById('pizzaModalBasePrice').textContent = parseFloat(pizza.prezzo).toFixed(2);
+            document.getElementById('pizzaModalExtraPrice').textContent = '0.00';
+            document.getElementById('pizzaModalTotalPrice').textContent = parseFloat(pizza.prezzo).toFixed(2);
+            document.getElementById('pizzaQuantity').value = 1;
+            
+            // Reset selezione impasto nel DOM
+            resetDoughSelection();
+            
+            // Aggiorna la visualizzazione degli ingredienti con l'impasto selezionato
+            updateIngredientsDisplay();
+            
+            // Aggiorna la visualizzazione dei prezzi degli impasti
+            updateDoughPricesDisplay();
+            
+            // Nascondi la sezione impasti per le pizze senza glutine, dolci e stuzzichini
+            const doughSection = document.querySelector('.dough-section');
+            const ingredientList = document.getElementById('ingredientList');
+            const addIngredientsBtn = document.getElementById('showAdditionsBtn');
+            
+            if (pizza.categoria === 'PIZZA SENZA GLUTINE' || pizza.categoria === 'DOLCI' || pizza.categoria === 'STUZZICHINI') {
+                doughSection.style.display = 'none';
+            } else {
+                doughSection.style.display = 'block';
+            }
+            
+            // Nascondi la lista ingredienti e il pulsante aggiungi ingredienti per i dolci
+            if (pizza.categoria === 'DOLCI') {
+                ingredientList.style.display = 'none';
+                addIngredientsBtn.style.display = 'none';
+            } else {
+                ingredientList.style.display = 'block';
+                addIngredientsBtn.style.display = 'block';
+            }
+            
+            // Imposta immagine se presente nel CSV
+            const imgEl = document.getElementById('pizzaModalImage');
+            if (pizza.immagine) {
+                imgEl.src = pizza.immagine;
+                imgEl.style.display = 'block';
+            } else {
+                imgEl.style.display = 'none';
+            }
+            
+            // Mostra allergeni della pizza
+            const allergens = pizza.allergeni ? pizza.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
+            const allergensEl = document.getElementById('pizzaAllergens');
+
+            if (allergens.length > 0) {
+                allergensEl.innerHTML = `
+                    <div class="alert alert-warning">
+                        <strong>Allergeni:</strong> ${allergens.sort((a, b) => a - b).join(', ')}
+                    </div>
+                `;
+            } else {
+                allergensEl.innerHTML = `
+                    <div class="alert alert-success">
+                        Questa pizza non contiene allergeni comuni
+                    </div>
+                `;
+            }
+            
+            // Prepara la lista degli ingredienti modificabili
+            renderIngredientList(pizza);
+            
+            new bootstrap.Modal(document.getElementById('pizzaModal')).show();
+        }
+
+        // Funzioni per gestire la selezione degli impasti
+        function resetDoughSelection() {
+            // Reset visual selection
+            document.querySelectorAll('.dough-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Select the correct option based on selectedDough.type
+            const correctOption = document.querySelector(`.dough-option[data-dough="${selectedDough.type}"]`);
+            if (correctOption) {
+                correctOption.classList.add('selected');
+                correctOption.querySelector('input[type="radio"]').checked = true;
+            }
+        }
+
+        function setupDoughEventListeners() {
+            document.querySelectorAll('.dough-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove selection from all options
+                    document.querySelectorAll('.dough-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selection to clicked option
+                    this.classList.add('selected');
+                    
+                    // Update radio button
+                    const radio = this.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                    
+                    // Update selected dough data
+                    const newDoughType = this.dataset.dough;
+                    const newDoughPrice = parseFloat(this.dataset.price);
+                    
+                    // Calcola il prezzo: 0 se è l'impasto originale, altrimenti il prezzo dell'impasto
+                    let finalPrice = 0;
+                    if (selectedDough.originalType !== newDoughType) {
+                        finalPrice = newDoughPrice;
+                    }
+                    
+                    selectedDough = {
+                        type: newDoughType,
+                        price: finalPrice,
+                        originalType: selectedDough.originalType // Mantieni il tipo originale
+                    };
+                    
+                    // Update ingredients display with new dough
+                    updateIngredientsDisplay();
+                    
+                    // Update total price
+                    updatePizzaPrice();
+                });
+            });
+        }
+
+        // Aggiorna la visualizzazione degli ingredienti base con l'impasto selezionato
+        function updateIngredientsDisplay() {
+            if (!currentPizza) return;
+            
+            // Ottieni gli ingredienti originali
+            const originalIngredients = currentPizza.ingredienti.split(',').map(i => i.trim());
+            
+            // Trova l'impasto originale
+            const originalDoughIndex = originalIngredients.findIndex(ingredient => 
+                ingredient.toLowerCase().startsWith('impasto')
+            );
+            
+            // Crea la nuova lista di ingredienti
+            let updatedIngredients = [...originalIngredients];
+            
+            // Mappa dei tipi di impasto
+            const doughTypeMap = {
+                'normale': 'impasto classico',
+                'baby': 'impasto baby',
+                'proteico': 'impasto proteico', 
+                'carbone': 'impasto al carbone',
+                'tirato': 'impasto tirato',
+                'tirato_carbone': 'tirato al carbone',
+                'tirato_proteico': 'tirato proteico',
+                'ruota_carro_40': 'ruota di carro 40 cm',
+                'doppio': 'impasto doppio'
+            };
+            
+            // Sostituisci l'impasto se trovato
+            if (originalDoughIndex !== -1) {
+                updatedIngredients[originalDoughIndex] = doughTypeMap[selectedDough.type] || 'impasto classico';
+            } else {
+                // Se non c'è un impasto negli ingredienti, aggiungilo all'inizio
+                updatedIngredients.unshift(doughTypeMap[selectedDough.type] || 'impasto classico');
+            }
+            
+            // Aggiorna la visualizzazione
+            document.getElementById('pizzaModalBaseIngredients').textContent = updatedIngredients.join(', ');
+        }
+
+        // Aggiorna la visualizzazione dei prezzi degli impasti
+        function updateDoughPricesDisplay() {
+            if (!selectedDough.originalType) return;
+            
+            // Mappa dei prezzi degli impasti
+            const doughPrices = {
+                'normale': 0,
+                'baby': 0,
+                'proteico': 2.00,
+                'carbone': 2.00,
+                'tirato': 2.00,
+                'tirato_carbone': 4.00,
+                'tirato_proteico': 4.00,
+                'ruota_carro_40': 4.00,
+                'doppio': 3.00
+            };
+            
+            // Aggiorna ogni opzione di impasto
+            document.querySelectorAll('.dough-option').forEach(option => {
+                const doughType = option.dataset.dough;
+                const priceElement = option.querySelector('.dough-price');
+                
+                if (doughType === selectedDough.originalType) {
+                    // Impasto originale - mostra "Incluso"
+                    priceElement.textContent = 'Incluso';
+                    priceElement.classList.remove('extra');
+                } else {
+                    // Altri impasti - mostra il prezzo
+                    const price = doughPrices[doughType] || 0;
+                    priceElement.textContent = `+${price.toFixed(2)}€`;
+                    priceElement.classList.add('extra');
+                }
+            });
+        }
+
+        // Renderizza la lista degli ingredienti modificabili
+        function renderIngredientList(pizza) {
+            ingredientListEl.innerHTML = '';
+            
+            // Aggiungi titolo sezione
+            const title = document.createElement('h6');
+            title.className = 'mt-3';
+            title.textContent = 'Personalizza ingredienti:';
+            ingredientListEl.appendChild(title);
+            
+            // Ingredienti base della pizza (esclusi gli impasti)
+            const baseIngredients = pizza.ingredienti.split(',')
+                .map(i => i.trim())
+                .filter(ingredient => !ingredient.toLowerCase().startsWith('impasto'));
+            
+            // Inizializza choices se non esiste
+            if (!currentModifications.choices) {
+                currentModifications.choices = {};
+            }
+            
+            // Per ogni ingrediente base, crea un elemento con pulsante rimozione
+            baseIngredients.forEach(ingredient => {
+                // Controlla se l'ingrediente ha il "/" (scelta alternativa)
+                if (ingredient.includes('/')) {
+                    // Ingrediente con scelta
+                    const options = ingredient.split('/').map(o => o.trim());
+                    const ingredientItem = document.createElement('div');
+                    ingredientItem.className = 'ingredient-item';
+                    
+                    // Prendi la scelta già fatta se esiste, altrimenti usa la prima opzione
+                    const currentChoice = currentModifications.choices[ingredient] || options[0];
+                    
+                    let html = `<div style="width: 100%;"><strong>${ingredient}</strong><br>`;
+                    options.forEach(option => {
+                        const isChecked = currentChoice === option;
+                        html += `
+                            <div class="form-check form-check-inline" style="margin: 5px 10px 5px 0;">
+                                <input class="form-check-input choice-ingredient" type="radio" 
+                                       name="choice-${ingredient.replace(/[^a-zA-Z0-9_-]/g, '')}" 
+                                       id="choice-${ingredient.replace(/[^a-zA-Z0-9_-]/g, '')}-${option.replace(/[^a-zA-Z0-9_-]/g, '')}" 
+                                       value="${option}" 
+                                       data-ingredient="${ingredient}"
+                                       ${isChecked ? 'checked' : ''}>
+                                <label class="form-check-label" for="choice-${ingredient.replace(/[^a-zA-Z0-9_-]/g, '')}-${option.replace(/[^a-zA-Z0-9_-]/g, '')}">
+                                    ${option}
+                                </label>
+                            </div>
+                        `;
+                    });
+                    html += '</div>';
+                    ingredientItem.innerHTML = html;
+                    ingredientListEl.appendChild(ingredientItem);
+                } else {
+                    // Ingrediente normale (può essere rimosso/aggiunto)
+                    const ingredientItem = document.createElement('div');
+                    ingredientItem.className = 'ingredient-item';
+                    
+                    const isRemoved = currentModifications.removed.includes(ingredient);
+                    
+                    ingredientItem.innerHTML = `
+                        <span class="${isRemoved ? 'removed-ingredient' : ''}">${ingredient}</span>
+                        <div class="ingredient-actions">
+                            <button class="btn btn-sm ${isRemoved ? 'btn-success' : 'btn-outline-danger'} toggle-ingredient" data-ingredient="${ingredient}" data-action="${isRemoved ? 'add' : 'remove'}">
+                                ${isRemoved ? 'Aggiungi' : 'Rimuovi'}
+                            </button>
+                        </div>
+                    `;
+                    
+                    ingredientListEl.appendChild(ingredientItem);
+                }
+            });
+            
+            // Mostra ingredienti aggiunti se presenti
+            if (currentModifications.added.length > 0) {
+                const addedTitle = document.createElement('h6');
+                addedTitle.className = 'mt-3';
+                addedTitle.textContent = 'Ingredienti aggiunti:';
+                ingredientListEl.appendChild(addedTitle);
+                
+                currentModifications.added.forEach(added => {
+                    const addedItem = document.createElement('div');
+                    addedItem.className = 'ingredient-item added-ingredient';
+                    
+                    addedItem.innerHTML = `
+                        <span>${added.ingredient} (+${added.price.toFixed(2)}€)</span>
+                        <div class="ingredient-actions">
+                            <button class="btn btn-sm btn-outline-danger remove-added" data-ingredient="${added.ingredient}">
+                                Rimuovi
+                            </button>
+                        </div>
+                    `;
+                    
+                    ingredientListEl.appendChild(addedItem);
+                });
+            }
+            
+            // Aggiungi event listeners
+            document.querySelectorAll('.toggle-ingredient').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const ingredient = this.getAttribute('data-ingredient');
+                    const action = this.getAttribute('data-action');
+                    
+                    if (action === 'remove') {
+                        removeIngredient(ingredient);
+                    } else {
+                        addBaseIngredient(ingredient);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.remove-added').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const ingredient = this.getAttribute('data-ingredient');
+                    removeAddedIngredient(ingredient);
+                });
+            });
+            
+            // Aggiungi event listeners per le scelte di ingredienti alternativi
+            document.querySelectorAll('.choice-ingredient').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const ingredient = this.getAttribute('data-ingredient');
+                    const choice = this.value;
+                    currentModifications.choices[ingredient] = choice;
+                    updatePizzaPrice();
+                });
+            });
+            
+            // Aggiorna il pulsante per mostrare le aggiunte
+            showAdditionsBtn.onclick = () => showAdditionsModal(pizza);
+        }
+
+        // Mostra il modal per aggiungere ingredienti
+        function showAdditionsModal(pizza) {
+            additionsListEl.innerHTML = '';
+            selectedAdditions = [...currentModifications.added];
+            
+            // Filtra gli ingredienti già presenti nella pizza o già aggiunti
+            const baseIngredients = pizza.ingredienti.split(',').map(i => i.trim());
+            // Se la pizza è la BASE (SG), consenti solo ingredienti usable
+            const isGlutenFreeBase = (typeof pizza.nome === 'string') && (pizza.nome.trim().toLowerCase() === 'base');
+            const availableAdditions = (window.__allAdditions || [])
+                .filter(a => !baseIngredients.includes(a.ingredient))
+                .filter(a => !isGlutenFreeBase || a.usable === true);
+            
+            availableAdditions.forEach(add => {
+                const ingredient = add.ingredient;
+                const price = add.price || 0;
+                const isSelected = selectedAdditions.some(a => a.ingredient === ingredient);
+                
+                const item = document.createElement('div');
+                item.className = 'addition-item';
+                
+                item.innerHTML = `
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" 
+                               id="add-${ingredient.replace(/[^a-zA-Z0-9_-]/g, '')}" 
+                               value="${ingredient}" 
+                               ${isSelected ? 'checked' : ''}
+                               data-price="${price}">
+                        <label class="form-check-label" for="add-${ingredient.replace(/[^a-zA-Z0-9_-]/g, '')}">
+                            ${ingredient} (+${price.toFixed(2)}€)
+                        </label>
+                    </div>
+                `;
+                
+                additionsListEl.appendChild(item);
+            });
+            
+            // Aggiungi event listener per i checkbox
+            additionsListEl.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const ingredient = this.value;
+                    const price = parseFloat(this.getAttribute('data-price'));
+                    
+                    if (this.checked) {
+                        selectedAdditions.push({ ingredient, price });
+                    } else {
+                        selectedAdditions = selectedAdditions.filter(a => a.ingredient !== ingredient);
+                    }
+                });
+            });
+            
+            // Mostra il modal
+            new bootstrap.Modal(document.getElementById('additionsModal')).show();
+        }
+
+        // Rimuovi ingrediente base
+        function removeIngredient(ingredient) {
+            if (!currentModifications.removed.includes(ingredient)) {
+                currentModifications.removed.push(ingredient);
+                updatePizzaPrice();
+                renderIngredientList(currentPizza);
+            }
+        }
+
+        // Aggiungi ingrediente base (precedentemente rimosso)
+        function addBaseIngredient(ingredient) {
+            currentModifications.removed = currentModifications.removed.filter(i => i !== ingredient);
+            updatePizzaPrice();
+            renderIngredientList(currentPizza);
+        }
+
+        // Conferma aggiunte selezionate
+        confirmAdditionsBtn.onclick = () => {
+            const isGlutenFreeBase = (typeof currentPizza.nome === 'string') && (currentPizza.nome.trim().toLowerCase() === 'base');
+            let additions = [...selectedAdditions];
+            if (isGlutenFreeBase) {
+                const dbAdds = window.__allAdditions || [];
+                additions = additions.filter(a => dbAdds.some(dbA => dbA.ingredient === a.ingredient && dbA.usable === true));
+            }
+            currentModifications.added = additions;
+            updatePizzaPrice();
+            renderIngredientList(currentPizza);
+            bootstrap.Modal.getInstance(document.getElementById('additionsModal')).hide();
+        };
+
+        // Rimuovi ingrediente aggiunto
+        function removeAddedIngredient(ingredient) {
+            currentModifications.added = currentModifications.added.filter(i => i.ingredient !== ingredient);
+            updatePizzaPrice();
+            renderIngredientList(currentPizza);
+        }
+
+        // Aggiorna prezzo totale nel modal
+        function updatePizzaPrice() {
+            const basePrice = parseFloat(currentPizza.prezzo);
+            let extraPrice = 0;
+            
+            // Calcola costo ingredienti aggiunti
+            currentModifications.added.forEach(ing => {
+                extraPrice += ing.price;
+            });
+            
+            // Aggiungi costo impasto
+            extraPrice += selectedDough.price;
+
+            // Sincronizza con il DB: evita ingredienti non più presenti (opzionale)
+            if (window.__allAdditions) {
+                currentModifications.added = currentModifications.added.filter(a => 
+                    window.__allAdditions.some(dbA => dbA.ingredient === a.ingredient)
+                );
+            }
+            
+            document.getElementById('pizzaModalExtraPrice').textContent = extraPrice.toFixed(2);
+            document.getElementById('pizzaModalTotalPrice').textContent = (basePrice + extraPrice).toFixed(2);
+        }
+
+        // Aggiungi bevanda al carrello (senza personalizzazioni)
+        function addBeverageToCart(beverage) {
+            const basePrice = parseFloat(beverage.prezzo);
+            
+            // Cerca se la bevanda è già nel carrello
+            const existingItemIndex = cart.findIndex(item => 
+                item.id === beverage.id && item.isBeverage === true
+            );
+            
+            if (existingItemIndex >= 0) {
+                // Bevanda già nel carrello, aumenta quantità
+                cart[existingItemIndex].quantity += 1;
+                cart[existingItemIndex].total = cart[existingItemIndex].quantity * basePrice;
+            } else {
+                // Nuova bevanda nel carrello
+                cart.push({
+                    id: beverage.id,
+                    name: beverage.nome,
+                    basePrice: basePrice,
+                    extraPrice: 0,
+                    quantity: 1,
+                    total: basePrice,
+                    isBeverage: true,
+                    category: (beverage.categoria || 'Birre/Bibite'),
+                    categoria: (beverage.categoria || 'Birre/Bibite'),
+                    description: beverage.descrizione || beverage.ingredienti || '',
+                    removed: [],
+                    added: [],
+                    dough: { type: 'normale', price: 0 }
+                });
+            }
+            
+            updateCartUI();
+            
+            // Mostra notifica
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+                color: white;
+                padding: 15px 25px;
+                border-radius: 12px;
+                box-shadow: 0 4px 20px rgba(40, 167, 69, 0.3);
+                z-index: 9999;
+                font-weight: 600;
+                animation: slideIn 0.3s ease-out;
+            `;
+            notification.innerHTML = `<i class="bi bi-check-circle"></i> ${beverage.nome} aggiunta al carrello!`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-in';
+                setTimeout(() => notification.remove(), 300);
+            }, 2000);
+        }
+
+        // Aggiungi al carrello
+        function addToCart() {
+            const quantity = parseInt(document.getElementById('pizzaQuantity').value) || 1;
+            const basePrice = parseFloat(currentPizza.prezzo);
+            let extraPrice = 0;
+            
+            // Calcola costo ingredienti aggiunti
+            currentModifications.added.forEach(ing => {
+                extraPrice += ing.price;
+            });
+            
+            // Aggiungi costo impasto
+            extraPrice += selectedDough.price;
+            
+            const totalPrice = basePrice + extraPrice;
+            
+            const existingItemIndex = cart.findIndex(item => 
+                item.id === currentPizza.id && 
+                JSON.stringify(item.removed) === JSON.stringify(currentModifications.removed) &&
+                JSON.stringify(item.added) === JSON.stringify(currentModifications.added) &&
+                JSON.stringify(item.dough) === JSON.stringify(selectedDough) &&
+                JSON.stringify(item.choices || {}) === JSON.stringify(currentModifications.choices || {})
+            );
+            
+            if (existingItemIndex >= 0) {
+                // Pizza con le stesse modifiche già nel carrello, aumenta quantità
+                cart[existingItemIndex].quantity += quantity;
+                cart[existingItemIndex].total = cart[existingItemIndex].quantity * totalPrice;
+            } else {
+                // Nuova pizza nel carrello
+                cart.push({
+                    id: currentPizza.id,
+                    name: currentPizza.nome,
+                    basePrice: basePrice,
+                    extraPrice: extraPrice,
+                    quantity: quantity,
+                    total: totalPrice * quantity,
+                    baseIngredients: currentPizza.ingredienti,
+                    removed: [...currentModifications.removed],
+                    added: [...currentModifications.added],
+                    dough: {...selectedDough},
+                    choices: {...(currentModifications.choices || {})}
+                });
+            }
+            
+            updateCartUI();
+            bootstrap.Modal.getInstance(document.getElementById('pizzaModal')).hide();
+            alert(`${quantity}x ${currentPizza.nome} personalizzata aggiunta al carrello!`);
+        }
+
+        // Funzione helper per ottenere gli ingredienti finali considerando le scelte
+        function getFinalIngredients(item) {
+            const ingredients = item.baseIngredients.split(',').map(i => i.trim());
+            const choices = item.choices || {};
+            
+            return ingredients.map(ingredient => {
+                // Se l'ingrediente ha una scelta salvata, usa quella
+                if (choices[ingredient]) {
+                    return choices[ingredient];
+                }
+                return ingredient;
+            });
+        }
+
+        // Aggiorna UI carrello
+        function updateCartUI() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCounter.textContent = totalItems;
+            cartItemsEl.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItemsEl.innerHTML = '<div class="text-center text-muted py-4"><i class="bi bi-cart-x" style="font-size: 2rem;"></i><p class="mt-2">Il tuo carrello è vuoto</p></div>';
+                if (cartTotalEl) cartTotalEl.textContent = '0.00';
+                if (copertoCountEl) copertoCountEl.textContent = '0';
+                if (copertoTotalEl) copertoTotalEl.textContent = '0.00';
+                if (totalWithCopertoEl) totalWithCopertoEl.textContent = '0.00';
+                checkOrderFields();
+                return;
+            }
+            
+            let grandTotal = 0;
+            let totalPizzas = 0;
+            
+            cart.forEach((item, index) => {
+                grandTotal += item.total;
+                // Conta solo le pizze per il coperto, non le bevande, non i dolci e non gli stuzzichini
+                if (!item.isBeverage && item.categoria !== 'DOLCI' && item.categoria !== 'STUZZICHINI') {
+                    totalPizzas += item.quantity;
+                }
+                
+                const itemEl = document.createElement('div');
+                itemEl.className = 'cart-item';
+                
+                // Assicurati che l'item abbia la proprietà dough (compatibilità con carrelli esistenti)
+                if (!item.dough) {
+                    item.dough = { type: 'normale', price: 0 };
+                }
+                
+                // Assicurati che l'item abbia la proprietà choices (compatibilità con carrelli esistenti)
+                if (!item.choices) {
+                    item.choices = {};
+                }
+                
+                // Mostra modifiche agli ingredienti e impasto (solo per pizze, non per bevande)
+                let modificationsHtml = '';
+                const isBeverage = item.isBeverage === true;
+                
+                if (!isBeverage) {
+                    // Ottieni gli ingredienti finali considerando le scelte
+                    const finalIngredients = getFinalIngredients(item);
+                    
+                    // Per visualizzare i rimossi, devi confrontare con gli ingredienti finali (non con quelli originali con "/")
+                    const removedIngredients = item.removed.filter(r => {
+                        // Controlla che l'ingrediente rimosso non sia uno che era una scelta
+                        return !item.baseIngredients.includes('/') || !item.baseIngredients.split(',').some(ing => ing.trim().includes('/') && item.choices && item.choices[ing.trim()] === r);
+                    });
+                    
+                    const hasModifications = removedIngredients.length > 0 || item.added.length > 0 || (item.dough && item.dough.type !== 'normale');
+                    
+                    if (hasModifications) {
+                        modificationsHtml = '<div class="mt-2"><small class="text-muted">';
+                        
+                        // Mostra impasto se diverso da normale
+                        if (item.dough && item.dough.type !== 'normale') {
+                            const doughNames = {
+                                'proteico': 'Impasto Proteico',
+                                'carbone': 'Impasto al Carbone',
+                                'tirato': 'Impasto Tirato',
+                                'tirato_carbone': 'Tirato al Carbone',
+                                'tirato_proteico': 'Tirato Proteico',
+                                'ruota_carro_40': 'Ruota di Carro 40 cm'
+                            };
+                            modificationsHtml += `<span class="text-primary"><i class="bi bi-circle"></i> ${doughNames[item.dough.type] || item.dough.type}</span>`;
+                        }
+                        
+                        if (removedIngredients.length > 0) {
+                            if (item.dough && item.dough.type !== 'normale') modificationsHtml += '<br>';
+                            const removedList = removedIngredients.map(r => `• ${r}`).join('<br>');
+                            modificationsHtml += `<span class="text-danger" style="font-size: 0.75rem;">Rimossi:<br>${removedList}</span>`;
+                        }
+                        
+                        if (item.added.length > 0) {
+                            if (removedIngredients.length > 0 || (item.dough && item.dough.type !== 'normale')) modificationsHtml += '<br>';
+                            const addedList = item.added.map(a => `• ${a.ingredient}`).join('<br>');
+                            modificationsHtml += `<span class="text-success" style="font-size: 0.75rem;">Aggiunti:<br>${addedList}</span>`;
+                        }
+                        
+                        modificationsHtml += '</small></div>';
+                    }
+                } else {
+                    // Per le bevande, mostra la descrizione se presente
+                    if (item.description) {
+                        modificationsHtml = `<div class="mt-1"><small class="text-muted fst-italic">${item.description}</small></div>`;
+                    }
+                }
+                
+                itemEl.innerHTML = `
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="mb-1">${isBeverage ? '<i class="bi bi-cup-straw"></i> ' : ''}${item.name}</h6>
+                            <small class="text-muted">${item.quantity}x</small>
+                            ${modificationsHtml}
+                        </div>
+                        <div class="text-end">
+                            <button class="btn btn-sm btn-outline-danger ms-2 remove-item" data-index="${index}">✕</button>
+                        </div>
+                    </div>
+                `;
+                cartItemsEl.appendChild(itemEl);
+            });
+            
+            // Calcola coperto (2€ per pizza)
+            const coperto = 2 * totalPizzas;
+            const totalWithCoperto = grandTotal + coperto;
+            
+            if (cartTotalEl) cartTotalEl.textContent = grandTotal.toFixed(2);
+            if (copertoCountEl) copertoCountEl.textContent = totalPizzas;
+            if (copertoTotalEl) copertoTotalEl.textContent = coperto.toFixed(2);
+            if (totalWithCopertoEl) totalWithCopertoEl.textContent = totalWithCoperto.toFixed(2);
+            
+            document.querySelectorAll('.remove-item').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    cart.splice(parseInt(this.getAttribute('data-index')), 1);
+                    updateCartUI();
+                });
+            });
+            
+            checkOrderFields();
+        }
+
+        // Salva ordine su Firebase
+        async function saveOrderToFirebase(orderData) {
+            try {
+                showFirebaseStatus('Salvataggio ordine in corso...', 'loading');
+                
+                // Aggiungi timestamp all'ordine
+                orderData.timestamp = firebase.firestore.FieldValue.serverTimestamp();
+                
+                // Salva l'ordine nella collezione "orders"
+                const docRef = await db.collection("orders").add(orderData);
+                const docRef1 = await db.collection("orders").add(orderData);
+                
+                showFirebaseStatus('Ordine salvato con successo! ID: ' + docRef.id, 'success');
+                showFirebaseStatus('Ordine salvato con successo! ID: ' + docRef1.id, 'success');
+                return true;
+            } catch (error) {
+                console.error("Errore nel salvataggio su Firebase:", error);
+                showFirebaseStatus('Errore nel salvataggio: ' + error.message, 'error');
+                return false;
+            }
+        }
+
+        // Conferma ordine
+        async function checkout() {
+            const orderName = orderNameInput.value.trim();
+            const waiterNumber = waiterNumberInput.value.trim();
+            
+            if (!orderName || !waiterNumber) {
+                alert('Compila tutti i campi obbligatori!');
+                return;
+            }
+            
+            if (cart.length === 0) {
+                alert('Il carrello è vuoto!');
+                return;
+            }
+            
+            // Prepara SOLO i dati essenziali per Firebase
+            const normalizedCart = cart.map((item, index) => ({
+                ...item,
+                category: (item.category || item.categoria || "").toLowerCase(),
+                __originalIndex: index
+            }));
+
+            const isBeverageItem = (item) => {
+                if (item.isBeverage === true) return true;
+                if (item.isBeverage === false) return false;
+                if (typeof item.isBeverage === 'string') {
+                    const normalised = item.isBeverage.trim().toLowerCase();
+                    if (normalised === 'true') return true;
+                    if (normalised === 'false') return false;
+                }
+                return item.category === 'birre/bibite';
+            };
+
+            normalizedCart.forEach(item => {
+                if (!item.category) {
+                    item.category = isBeverageItem(item) ? 'birre/bibite' : 'pizze';
+                }
+            });
+
+            const getOrderPriority = (item) => {
+                if (item.category === 'stuzzichini') return 0; // stuzzichini vengono prima
+                if (isBeverageItem(item) || item.category === 'birre/bibite') return 2; // bevande vengono ultime
+                return 1; // pizze vengono nel mezzo
+            };
+
+            const sortedCartForFirebase = [...normalizedCart].sort((a, b) => {
+                const priorityDiff = getOrderPriority(a) - getOrderPriority(b);
+                if (priorityDiff !== 0) return priorityDiff;
+                return a.__originalIndex - b.__originalIndex;
+            });
+
+            const pizzeOrdinate = sortedCartForFirebase.map(item => {
+                const isBeverage = isBeverageItem(item) || item.category === 'birre/bibite';
+                let nomeCompleto = item.name;
+
+                if (!isBeverage) {
+                    // Aggiungi impasto se diverso da normale
+                    if (item.dough && item.dough.type !== 'normale') {
+                        const doughNames = {
+                            'proteico': 'Impasto Proteico',
+                            'carbone': 'Impasto al Carbone',
+                            'tirato': 'Impasto Tirato',
+                            'tirato_carbone': 'Tirato al Carbone',
+                            'tirato_proteico': 'Tirato Proteico'
+                        };
+                        nomeCompleto += ` - ${doughNames[item.dough.type] || item.dough.type}`;
+                    }
+
+                    // Aggiungi modifiche al nome se presenti
+                    const choices = item.choices || {};
+                    
+                    // Prepara ingredienti rimossi (escludendo quelli che sono scelte)
+                    const baseIngredients = item.baseIngredients ? item.baseIngredients.split(',').map(i => i.trim()) : [];
+                    const ingredientiConScelta = baseIngredients.filter(ing => ing.includes('/'));
+                    const ingredientiRimossi = item.removed.filter(r => 
+                        !ingredientiConScelta.some(ing => choices[ing] === r)
+                    );
+                    
+                    if (ingredientiRimossi.length > 0 || item.added.length > 0) {
+                        let modifiche = [];
+                        if (ingredientiRimossi.length > 0) {
+                            modifiche.push(`SENZA: ${ingredientiRimossi.join(', ')}`);
+                        }
+                        if (item.added.length > 0) {
+                            // Estrai solo i nomi degli ingredienti dagli oggetti
+                            const nomiIngredienti = item.added.map(a => a.ingredient || a);
+                            modifiche.push(`CON: ${nomiIngredienti.join(', ')}`);
+                        }
+                        nomeCompleto += ` (${modifiche.join(' - ')})`;
+                    }
+                    
+                    // Aggiungi le scelte di ingredienti alternativi se presenti
+                    if (Object.keys(choices).length > 0) {
+                        let scelteStr = [];
+                        for (const [ingredientWithSlash, choice] of Object.entries(choices)) {
+                            // Se la scelta è diversa dalla prima opzione, mostrala
+                            const options = ingredientWithSlash.split('/').map(o => o.trim());
+                            if (choice !== options[0]) {
+                                scelteStr.push(`${choice}`);
+                            }
+                        }
+                        if (scelteStr.length > 0) {
+                            nomeCompleto += ` - Scelta: ${scelteStr.join(', ')}`;
+                        }
+                    }
+                }
+
+                return {
+                    pizza: nomeCompleto,
+                    quantita: item.quantity
+                };
+            });
+
+            // Calcola il totale complessivo dell'ordine
+            let grandTotal = 0;
+            let totalPizzas = 0;
+            cart.forEach(item => {
+                grandTotal += item.total;
+                if (!isBeverageItem(item) && item.categoria !== 'DOLCI' && item.categoria !== 'STUZZICHINI') {
+                    totalPizzas += item.quantity;
+                }
+            });
+            const coperto = 2 * totalPizzas;
+            const totalWithCoperto = grandTotal + coperto;
+            
+            const orderData = {
+                tavolo: orderName,
+                cameriere: waiterNumber,
+                status: "Nuovo",
+                pizze: pizzeOrdinate,
+                totale: totalWithCoperto.toFixed(2)
+            };
+            
+            // Salva su Firebase
+            const success = await saveOrderToFirebase(orderData);
+            
+            if (success) {
+                // Resetta il carrello solo se il salvataggio è riuscito
+                cart = [];
+                orderNameInput.value = '';
+                waiterNumberInput.value = '';
+                
+                // Resetta la selezione delle carte
+                selectedSuit = null;
+                selectedNumber = null;
+                document.querySelectorAll('.suit-btn').forEach(btn => btn.classList.remove('selected'));
+                document.querySelectorAll('.number-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                    btn.classList.add('disabled');
+                });
+                const selectedCardDisplay = document.getElementById('selectedCardDisplay');
+                selectedCardDisplay.textContent = 'Seleziona prima il seme, poi il numero';
+                selectedCardDisplay.classList.add('empty');
+                
+                updateCartUI();
+                
+                // Non chiudere automaticamente l'offcanvas per mostrare il messaggio di successo
+            } else {
+                alert("Si è verificato an errore durante il salvataggio dell'ordine. Riprova.");
+            }
+        }
+
+        // Filtri
+        function showAllCategories() {
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.textContent === 'Tutte');
+            });
+            document.querySelectorAll('.category-section').forEach(section => {
+                section.style.display = 'block';
+            });
+        }
+
+        function filterByCategory(category) {
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.textContent === category);
+            });
+            document.querySelectorAll('.category-section').forEach(section => {
+                section.style.display = section.id === `cat-${category.replace(/\s+/g, '-')}` ? 'block' : 'none';
+            });
+        }
+
+        // Aggiorna la lista degli allergeni selezionati
+        function updateSelectedAllergensList() {
+            if (userAllergens.length === 0) {
+                selectedAllergensList.innerHTML = 'Nessun allergene selezionato';
+                return;
+            }
+            
+            selectedAllergensList.innerHTML = userAllergens
+                .sort((a, b) => a - b)
+                .map(a => `<span class="badge bg-danger me-1">${a}</span>`)
+                .join(' ');
+        }
+
+        // Evidenzia le pizze che contengono allergeni selezionati
+        function highlightPizzasWithAllergens() {
+            const pizzaCards = document.querySelectorAll('.pizza-card');
+
+            pizzaCards.forEach(card => {
+                card.classList.remove('allergen-warning');
+
+                const itemName = card.getAttribute('data-item-name');
+                const item = window.menuItems.find(p => p.nome === itemName);
+
+                if (!item) return;
+
+                // Parse allergens from CSV data
+                const allergens = item.allergeni ? item.allergeni.split(',').map(a => parseInt(a.trim())).filter(a => !isNaN(a)) : [];
+
+                // Controlla se l'item contiene allergeni selezionati
+                const hasAllergen = userAllergens.some(allergen =>
+                    allergens.includes(allergen)
+                );
+
+                if (hasAllergen) {
+                    card.classList.add('allergen-warning');
+                }
+            });
+        }
+
+        // Setup selettore carte da briscola
+        function setupCardSelector() {
+            const suitButtons = document.querySelectorAll('.suit-btn');
+            const numberButtons = document.querySelectorAll('.number-btn');
+            const selectedCardDisplay = document.getElementById('selectedCardDisplay');
+            
+            // Gestione selezione seme
+            suitButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Rimuovi selezione precedente
+                    suitButtons.forEach(b => b.classList.remove('selected'));
+                    
+                    // Seleziona il nuovo seme
+                    this.classList.add('selected');
+                    selectedSuit = this.getAttribute('data-suit');
+                    
+                    // Abilita i numeri
+                    numberButtons.forEach(nb => {
+                        nb.classList.remove('disabled');
+                    });
+                    
+                    // Aggiorna il display
+                    updateCardDisplay();
+                });
+            });
+            
+            // Gestione selezione numero
+            numberButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (this.classList.contains('disabled')) return;
+                    
+                    // Rimuovi selezione precedente
+                    numberButtons.forEach(b => b.classList.remove('selected'));
+                    
+                    // Seleziona il nuovo numero
+                    this.classList.add('selected');
+                    selectedNumber = this.getAttribute('data-number');
+                    
+                    // Aggiorna il display
+                    updateCardDisplay();
+                });
+            });
+        }
+        
+        // Aggiorna il display della carta selezionata
+        function updateCardDisplay() {
+            const selectedCardDisplay = document.getElementById('selectedCardDisplay');
+            const orderNameInput = document.getElementById('orderName');
+            
+            if (selectedSuit && selectedNumber) {
+                const cardValue = `${suitIcons[selectedSuit]} ${suitNames[selectedSuit]} ${selectedNumber}`;
+                selectedCardDisplay.textContent = cardValue;
+                selectedCardDisplay.classList.remove('empty');
+                
+                // Aggiorna il campo nascosto con il valore alfanumerico
+                orderNameInput.value = `${suitNames[selectedSuit]}-${selectedNumber}`;
+                
+                // Controlla se i campi sono compilati per abilitare il pulsante
+                checkOrderFields();
+            } else if (selectedSuit) {
+                selectedCardDisplay.textContent = `${suitIcons[selectedSuit]} ${suitNames[selectedSuit]} - Seleziona il numero`;
+                selectedCardDisplay.classList.add('empty');
+                orderNameInput.value = '';
+            } else {
+                selectedCardDisplay.textContent = 'Seleziona prima il seme, poi il numero';
+                selectedCardDisplay.classList.add('empty');
+                orderNameInput.value = '';
+            }
+        }
+
+        // Inizializzazione
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMenuFromCSV();
+            updateCartUI();
+            
+            // Setup event listeners per gli impasti
+            setupDoughEventListeners();
+            
+            // Setup per i pulsanti allergeni
+            document.querySelectorAll('.allergen-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                    const allergen = parseInt(this.getAttribute('data-allergen'));
+                    
+                    if (this.classList.contains('selected')) {
+                        if (!userAllergens.includes(allergen)) {
+                            userAllergens.push(allergen);
+                        }
+                    } else {
+                        userAllergens = userAllergens.filter(a => a !== allergen);
+                    }
+                    
+                    updateSelectedAllergensList();
+                });
+            });
+            
+            // Applica la selezione allergeni
+            applyAllergensBtn.addEventListener('click', function() {
+                highlightPizzasWithAllergens();
+                bootstrap.Modal.getInstance(document.getElementById('allergensModal')).hide();
+            });
+            
+            // Cancella la selezione allergeni
+            clearAllergensBtn.addEventListener('click', function() {
+                userAllergens = [];
+                document.querySelectorAll('.allergen-btn').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                updateSelectedAllergensList();
+                highlightPizzasWithAllergens();
+            });
+            
+            // Setup selettore carte da briscola
+            setupCardSelector();
+            
+            // Gestione del tasto back del telefono
+            let modalOpen = false;
+            
+            // Aggiungi stato quando il modal si apre
+            document.getElementById('pizzaModal').addEventListener('show.bs.modal', function() {
+                modalOpen = true;
+                window.history.pushState({ modal: true }, '', '');
+            });
+            
+            // Rimuovi lo stato quando il modal si chiude
+            document.getElementById('pizzaModal').addEventListener('hide.bs.modal', function() {
+                modalOpen = false;
+            });
+            
+            // Gestisci il tasto back del telefono
+            window.addEventListener('popstate', function(event) {
+                if (modalOpen && bootstrap.Modal.getInstance(document.getElementById('pizzaModal'))) {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('pizzaModal'));
+                    if (modal) {
+                        modal.hide();
+                        modalOpen = false;
+                    }
+                }
+            });
+        });
+
+        // Event listeners
+        addToCartBtn.addEventListener('click', addToCart);
+        checkoutBtn.addEventListener('click', checkout);
+    </script>
+</body>
     <script type="module" src="./app.js"></script>
   </body>
 </html>
